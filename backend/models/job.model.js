@@ -22,7 +22,13 @@ const jobSchema = new mongoose.Schema(
     salary: {
       type: Number,
       required: true,
-      min: 0, // Ensure salary is non-negative
+      min: 0,
+    },
+
+    experience: {
+      type: Number,
+      required: true,
+      min: 0,
     },
     location: {
       type: String,

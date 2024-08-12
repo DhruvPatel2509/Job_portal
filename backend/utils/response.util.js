@@ -7,7 +7,7 @@
  * @param {object} data - The data to send in the response.
  * @param {string} message - The message to include in the response.
  */
-export const sendResponse = (res, statusCode, data = null, message = "") => {
+const sendResponse = (res, statusCode, data = null, message = "") => {
   const response = {
     success: statusCode >= 200 && statusCode < 300,
     message,
@@ -16,3 +16,5 @@ export const sendResponse = (res, statusCode, data = null, message = "") => {
 
   res.status(statusCode).json(response);
 };
+
+export default sendResponse;

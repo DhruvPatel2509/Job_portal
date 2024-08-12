@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { sendResponse } from "../utils/response.util.js";
+import sendResponse from "../utils/response.util.js";
 
 export const auth = async (req, res, next) => {
   try {

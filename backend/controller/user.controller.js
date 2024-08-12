@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { User } from "../models/user.model.js";
-import { sendResponse } from "../utils/response.util.js";
+import sendResponse from "../utils/response.util.js";
 import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
