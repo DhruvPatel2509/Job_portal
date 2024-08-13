@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { LogOut, User2 } from "lucide-react";
 
-const Navbar = () => {
+export const Navbar = () => {
   const [user, setUser] = useState(false);
 
   return (
@@ -24,7 +24,7 @@ const Navbar = () => {
           <div>
             <ul className="flex gap-5 font-medium items-center">
               <li>
-                <Link>Home</Link>
+                <Link to={"/"}>Home</Link>
               </li>
               <li>
                 <Link>Jobs</Link>
@@ -67,26 +67,30 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <li>
-                    <Button variant="outline">Login</Button>
-                  </li>
-                  <li>
-                    <Button
-                      variant="outline"
-                      className="bg-[#20B2AA] text-white
+                  <Link to={"/login"}>
+                    <li>
+                      <Button variant="outline">Login</Button>
+                    </li>
+                  </Link>
+                  <Link to={"/signup"}>
+                    <li>
+                      <Button
+                        variant="outline"
+                        className="bg-[#20B2AA] text-white
                       hover:bg-[#008080] hover:text-white "
-                    >
-                      Signup
-                    </Button>
-                  </li>
+                      >
+                        Signup
+                      </Button>
+                    </li>
+                  </Link>
                 </>
               )}
             </ul>
           </div>
         </div>
       </div>
+      <br />
+      <hr />
     </>
   );
 };
-
-export default Navbar;
