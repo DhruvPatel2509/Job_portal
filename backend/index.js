@@ -13,7 +13,14 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:5173", // Replace with your client's origin
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+  credentials: true, // Allows cookies or other credentials to be sent
+};
+
+app.use(cors(corsOptions));
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/company", companyRouter);

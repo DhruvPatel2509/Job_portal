@@ -1,19 +1,69 @@
 import React, { useState } from "react";
-import { Navbar } from "../shared/Navbar";
+import axios from "axios";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { Link } from "react-router-dom";
+import { USER_API_END_POINT } from "../../utils/constant";
+import { toast } from "sonner";
 
 export const Signup = () => {
-  const [input, setInput] = useState({});
+  const [input, setInput] = useState({
+    fullname: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    role: "",
+    file: "",
+  });
+
+  const changeEventHandler = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const changeFileHandler = (e) => {
+    setInput({ ...input, file: e.target.files?.[0] });
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("fullname", input.fullname);
+    formData.append("email", input.email);
+    formData.append("phoneNumber", input.phoneNumber);
+    formData.append("role", input.role);
+    formData.append("password", input.password);
+    if (input.file) {
+      formData.append("file", input.file);
+    }
+
+    try {
+      console.log(input);
+
+      const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
+
+      console.log("Response:", res.data);
+      toast.success(res.data.message);
+    } catch (error) {
+      console.error(
+        "Error:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
 
   return (
     <>
       <div className="flex items-center justify-center max-w-7xl mx-auto ">
         <form
-          action=""
+          onSubmit={submitHandler}
           className="w-1/2 border border-gray-400 rounded-md p-4 my-10"
         >
           <h1 className="font-bold text-xl mb-5">Sign Up</h1>
@@ -25,6 +75,8 @@ export const Signup = () => {
               type="text"
               placeholder="Dhruv Patel"
               name="fullname"
+              value={input.fullname}
+              onChange={changeEventHandler}
             />
           </div>
 
@@ -35,16 +87,20 @@ export const Signup = () => {
               type="email"
               placeholder="you@example.com"
               name="email"
+              value={input.email}
+              onChange={changeEventHandler}
             />
           </div>
 
           <div className="my-3 flex flex-col gap-2">
-            <Label htmlFor="phonenumber">Phone Number: </Label>
+            <Label htmlFor="phoneNumber">Phone Number: </Label>
             <Input
-              id="phonenumber"
-              type="number"
+              id="phoneNumber"
+              type="text"
               placeholder="+91"
-              name="phonenumber"
+              name="phoneNumber"
+              value={input.phoneNumber}
+              onChange={changeEventHandler}
             />
           </div>
 
@@ -55,6 +111,8 @@ export const Signup = () => {
               type="password"
               placeholder="minimum 6 characters"
               name="password"
+              value={input.password}
+              onChange={changeEventHandler}
             />
           </div>
 
@@ -66,6 +124,8 @@ export const Signup = () => {
                   <Input
                     id="student"
                     type="radio"
+                    checked={input.role === "student"}
+                    onChange={changeEventHandler}
                     name="role"
                     value="student"
                     className="cursor-pointer"
@@ -78,6 +138,8 @@ export const Signup = () => {
                   <Input
                     id="recruiter"
                     type="radio"
+                    checked={input.role === "recruiter"}
+                    onChange={changeEventHandler}
                     name="role"
                     value="recruiter"
                     className="cursor-pointer"
@@ -93,6 +155,7 @@ export const Signup = () => {
               <Input
                 id="profile"
                 type="file"
+                onChange={changeFileHandler}
                 accept="image/*"
                 className="cursor-pointer"
               />
