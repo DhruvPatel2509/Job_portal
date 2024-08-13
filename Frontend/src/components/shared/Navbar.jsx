@@ -71,7 +71,13 @@ const Navbar = () => {
                     <Button variant="outline">Login</Button>
                   </li>
                   <li>
-                    <Button variant="outline">Register</Button>
+                    <Button
+                      variant="outline"
+                      className="bg-[#20B2AA] text-white
+                      hover:bg-[#008080] hover:text-white "
+                    >
+                      Signup
+                    </Button>
                   </li>
                 </>
               )}
