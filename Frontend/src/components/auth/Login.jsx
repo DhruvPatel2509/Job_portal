@@ -1,5 +1,4 @@
 import React from "react";
-import { Navbar } from "../shared/Navbar";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,8 +8,6 @@ import { Link } from "react-router-dom";
 export const Login = () => {
   return (
     <>
-      <Navbar />
-
       <div className="flex items-center justify-center max-w-7xl mx-auto ">
         <form
           action=""

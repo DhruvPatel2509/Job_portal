@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navbar } from "../shared/Navbar";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -7,13 +7,10 @@ import { RadioGroup } from "@/components/ui/radio-group";
 import { Link } from "react-router-dom";
 
 export const Signup = () => {
-
-    
+  const [input, setInput] = useState({});
 
   return (
     <>
-      <Navbar />
-
       <div className="flex items-center justify-center max-w-7xl mx-auto ">
         <form
           action=""
