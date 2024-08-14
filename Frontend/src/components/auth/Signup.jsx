@@ -7,6 +7,9 @@ import { RadioGroup } from "@/components/ui/radio-group";
 import { Link } from "react-router-dom";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
+import { setLoading } from "../../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Loader2 } from "lucide-react";
 
 export const Signup = () => {
   const [input, setInput] = useState({
@@ -25,6 +28,8 @@ export const Signup = () => {
   const changeFileHandler = (e) => {
     setInput({ ...input, file: e.target.files?.[0] });
   };
+  const { loading } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -40,7 +45,7 @@ export const Signup = () => {
     }
 
     try {
-      console.log(input);
+      dispatch(setLoading(true));
 
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: {
@@ -56,6 +61,8 @@ export const Signup = () => {
         "Error:",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -162,9 +169,20 @@ export const Signup = () => {
             </div>
           </div>
 
-          <Button type="submit" className="w-full my-4">
-            Signup
-          </Button>
+          { loading ? (
+            <>
+              <Button className="w-full my-4">
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please Wait
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button type="submit" className="w-full my-4">
+                Signup
+              </Button>
+            </>
+          )}
           <span className="text-[0.9rem]">
             Already have an account?{" "}
             <Link to={"/login"} className="text-blue-600">
