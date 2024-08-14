@@ -8,9 +8,10 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { LogOut, User2 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 export const Navbar = () => {
-  const [user, setUser] = useState(false);
+  const { authUser } = useSelector((store) => store.auth);
 
   return (
     <>
@@ -32,7 +33,7 @@ export const Navbar = () => {
               <li>
                 <Link to={"/browser"}>Browse</Link>
               </li>
-              {user ? (
+              {authUser ? (
                 <>
                   <li>
                     <Popover>
