@@ -18,7 +18,6 @@ export const Login = () => {
     role: "",
   });
 
-  
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -50,7 +49,7 @@ export const Login = () => {
   };
   return (
     <>
-      <div className="flex items-center justify-center max-w-7xl mx-auto ">
+      <div className="flex items-center justify-center max-w-7xl mx-auto min-h-[77.2vh] ">
         <form
           onSubmit={submitHandler}
           className="w-[40%] border border-gray-400 rounded-md p-4 my-10"

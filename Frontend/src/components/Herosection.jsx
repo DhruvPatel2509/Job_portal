@@ -21,7 +21,7 @@ export const Herosection = () => {
         <div className="flex w-[40%] shadow-lg border border-gray-200 pl-2 rounded-full items-center gap-4 mx-auto ">
           <input
             placeholder="Find Your Dream Job"
-            className="outline-none border-none w-full py-2"
+            className="outline-none border-none w-full p-2"
           />
           <Button className="rounded-r-full bg-[#6A38C2] ">
             <Search className="w-5 h-5" />

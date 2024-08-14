@@ -27,10 +27,10 @@ export const Navbar = () => {
                 <Link to={"/"}>Home</Link>
               </li>
               <li>
-                <Link>Jobs</Link>
+                <Link to={"/jobs"}>Jobs</Link>
               </li>
               <li>
-                <Link>Browse</Link>
+                <Link to={"/browse"}>Browse</Link>
               </li>
               {user ? (
                 <>
