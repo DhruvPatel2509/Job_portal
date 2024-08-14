@@ -90,7 +90,7 @@ export const Navbar = () => {
         </div>
       </div>
       <br />
-      <hr />
+      <hr className="mb-5" />
     </>
   );
 };
