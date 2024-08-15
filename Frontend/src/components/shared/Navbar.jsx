@@ -54,9 +54,11 @@ export const Navbar = () => {
                           </div>
                         </div>
                         <div className="flex flex-col items-start mt-1">
-                          <Button variant="link">
-                            <User2 /> &nbsp; View Profile
-                          </Button>
+                          <Link to="/profile">
+                            <Button variant="link">
+                              <User2 /> &nbsp; View Profile
+                            </Button>
+                          </Link>
                           <Button variant="link">
                             <LogOut /> &nbsp; Logout
                           </Button>
