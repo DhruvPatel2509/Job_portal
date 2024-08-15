@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
-  import { Label } from "@/components/ui/label";
+import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { RadioGroup } from "@/components/ui/radio-group";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
 import { setLoading } from "../../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
+import * as Yup from "yup";
 
 export const Signup = () => {
   const [input, setInput] = useState({
@@ -19,6 +20,31 @@ export const Signup = () => {
     password: "",
     role: "",
     file: "",
+  });
+  const [errors, setErrors] = useState({});
+
+  const validateSchema = Yup.object({
+    fullname: Yup.string().required("Full name is Required"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is Required"),
+    phoneNumber: Yup.string()
+      .matches(/^\d{10}$/, "Phone Number must be 10 digits")
+      .required("Phone Number is Required"),
+    password: Yup.string()
+      .required("Password is Required")
+      .min(6, "Password must be at least 6 digit"),
+    // .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    // .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+    // .matches(/[0-9]/, "Password must contain at least one number")
+    // .matches(
+    //   /[!@#$%^&*(),.?":{}|<>]/,
+    //   "Password must contain at least one special character"
+    // ),
+    role: Yup.string().oneOf(
+      ["student", "recruiter", "other"],
+      "Role is Required"
+    ),
   });
 
   const changeEventHandler = (e) => {
@@ -30,9 +56,23 @@ export const Signup = () => {
   };
   const { loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    try {
+      await validateSchema.validate(input, { abortEarly: false });
+    } catch (error) {
+      const newErrors = {};
+
+      error.inner.forEach((error) => {
+        newErrors[error.path] = error.message;
+      });
+
+      setErrors(newErrors);
+      return;
+    }
 
     const formData = new FormData();
     formData.append("fullname", input.fullname);
@@ -43,24 +83,22 @@ export const Signup = () => {
     if (input.file) {
       formData.append("file", input.file);
     }
+    console.log(formData);
 
     try {
       dispatch(setLoading(true));
-
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
         withCredentials: true,
       });
-
       console.log("Response:", res.data);
       toast.success(res.data.message);
+      navigate("/login");
     } catch (error) {
-      console.error(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
+      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
     } finally {
       dispatch(setLoading(false));
     }
@@ -75,8 +113,16 @@ export const Signup = () => {
         >
           <h1 className="font-bold text-xl mb-5">Sign Up</h1>
 
-          <div className="my-3 flex flex-col gap-2">
-            <Label htmlFor="fullname">Full Name:</Label>
+          <div className="my-3 flex flex-col gap-2 ">
+            <Label htmlFor="fullname">
+              Full Name:
+              {errors.fullname && (
+                <div className="text-sm font-semibold text-red-500 ">
+                  {errors.fullname}
+                </div>
+              )}
+            </Label>
+
             <Input
               id="fullname"
               type="text"
@@ -87,8 +133,15 @@ export const Signup = () => {
             />
           </div>
 
-          <div className="my-3 flex flex-col gap-2">
-            <Label htmlFor="email">Email: </Label>
+          <div className="my-3 flex flex-col gap-2 ">
+            <Label htmlFor="email">
+              Email:{" "}
+              {errors.email && (
+                <div className="text-sm font-semibold text-red-500 ">
+                  {errors.email}
+                </div>
+              )}{" "}
+            </Label>
             <Input
               id="email"
               type="email"
@@ -99,8 +152,15 @@ export const Signup = () => {
             />
           </div>
 
-          <div className="my-3 flex flex-col gap-2">
-            <Label htmlFor="phoneNumber">Phone Number: </Label>
+          <div className="my-3 flex flex-col gap-2 ">
+            <Label htmlFor="phoneNumber">
+              Phone Number:{" "}
+              {errors.phoneNumber && (
+                <div className="text-sm font-semibold text-red-500 ">
+                  {errors.phoneNumber}
+                </div>
+              )}
+            </Label>
             <Input
               id="phoneNumber"
               type="text"
@@ -111,8 +171,15 @@ export const Signup = () => {
             />
           </div>
 
-          <div className="my-3 flex flex-col gap-2">
-            <Label htmlFor="password">Password: </Label>
+          <div className="my-3 flex flex-col gap-2 ">
+            <Label htmlFor="password">
+              Password:{" "}
+              {errors.password && (
+                <div className="text-sm font-semibold text-red-500 ">
+                  {errors.password}
+                </div>
+              )}
+            </Label>
             <Input
               id="password"
               type="password"
@@ -123,9 +190,16 @@ export const Signup = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between my-3">
+          <div className="flex items-center justify-between my-3 ">
             <div>
-              <Label>Choose Your Role</Label>
+              <Label>
+                Choose Your Role:{" "}
+                {errors.role && (
+                  <div className="text-sm font-semibold text-red-500 ">
+                    {errors.role}
+                  </div>
+                )}
+              </Label>
               <RadioGroup className="flex items-center gap-4">
                 <div className="flex items-center space-x-2">
                   <Input
@@ -169,7 +243,7 @@ export const Signup = () => {
             </div>
           </div>
 
-          { loading ? (
+          {loading ? (
             <>
               <Button className="w-full my-4">
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

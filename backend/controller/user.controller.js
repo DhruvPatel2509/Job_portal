@@ -7,6 +7,8 @@ export const register = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, password, role } = req.body;
 
+    console.log(req.file);
+
     if (!fullname || !email || !phoneNumber || !password || !role) {
       return sendResponse(res, 400, null, "Something is Missing");
     }
@@ -19,7 +21,7 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await User.create({
+    const user = await User.create({
       fullname,
       email,
       phoneNumber,
@@ -27,7 +29,12 @@ export const register = async (req, res) => {
       role,
     });
 
-    return sendResponse(res, 201, null, "User Registered Successfully");
+    return sendResponse(
+      res,
+      201,
+      user,
+      `Welcome, ${user.fullname}! Your account has been successfully created.`
+    );
   } catch (error) {
     console.error(error);
     return sendResponse(res, 500, null, "Internal Server Error");

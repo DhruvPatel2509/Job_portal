@@ -12,7 +12,6 @@ import { useSelector } from "react-redux";
 
 export const Navbar = () => {
   const { authUser } = useSelector((store) => store.auth);
-
   return (
     <>
       <div className="bg-[#ffffff] mb-3">
@@ -31,7 +30,7 @@ export const Navbar = () => {
                 <Link to={"/jobs"}>Jobs</Link>
               </li>
               <li>
-                <Link to={"/browser"}>Browse</Link>
+                <Link to={"/browse"}>Browse</Link>
               </li>
               {authUser ? (
                 <>

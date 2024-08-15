@@ -1,7 +1,7 @@
 import React from "react";
-import Jobcard from "../components/Jobcard";
+import Jobcard from "../Jobcard";
 
-function Browser() {
+function Browse() {
   const randomJobs = [1, 1, 1];
   return (
     <>
@@ -21,4 +21,4 @@ function Browser() {
   );
 }
 
-export default Browser;
+export default Browse;

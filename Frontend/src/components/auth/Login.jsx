@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { RadioGroup } from "@/components/ui/radio-group";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
@@ -24,6 +24,7 @@ export const Login = () => {
 
   const { loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -39,11 +40,11 @@ export const Login = () => {
       dispatch(setAuthUser(res.data.user));
 
       toast.success(res.data.message);
+
+      navigate("/");
     } catch (error) {
-      console.error(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
+      toast.error(error.response.data.message);
+      console.error("Error:", error.response.data.message);
     } finally {
       dispatch(setLoading(false));
     }
@@ -66,6 +67,7 @@ export const Login = () => {
               name="email"
               value={input.email}
               onChange={changeEventHandler}
+              required
             />
           </div>
 
@@ -78,6 +80,7 @@ export const Login = () => {
               name="password"
               value={input.password}
               onChange={changeEventHandler}
+              required
             />
           </div>
           <div className="flex items-center justify-between my-3">
