@@ -78,6 +78,7 @@ export const login = async (req, res) => {
       email: user.email,
       phoneNumber: user.phoneNumber,
       role: user.role,
+      profile: user.profile,
     };
 
     // Send response with token as a cookie
@@ -114,6 +115,7 @@ export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
     const userId = req.userId; // Assuming req.userId is where the user ID is stored
+    console.log(req.file);
 
     // Construct an object with only the fields that are provided
     const updateFields = {};

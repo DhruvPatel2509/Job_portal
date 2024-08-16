@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Contact, Mail, Pen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import AppliedJobTable from "../AppliedJobTable";
+import UpdateProfile from "../UpdateProfile";
+import { useSelector } from "react-redux";
 
 function Profile() {
-  const skills = ["html", "css", "javaScript", "c++"];
   const isResume = true;
+  const { authUser } = useSelector((store) => store.auth);
+  const [open, setOpen] = useState(false);
+  const skills = [1, 2];
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
@@ -18,25 +22,26 @@ function Profile() {
               <AvatarImage src="https://github.com/shadcn.png" />
             </Avatar>
             <div>
-              <h1 className="font-medium text-xl">Full Name</h1>
-              <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Necessitatibus ipsa itaque debitis?{" "}
-              </p>
+              <h1 className="font-medium text-xl">{authUser.fullname}</h1>
+              <p>{authUser.bio}</p>
             </div>
           </div>
-          <Button className="text-right" variant="outline">
+          <Button
+            onClick={() => setOpen(true)}
+            className="text-right"
+            variant="outline"
+          >
             <Pen />
           </Button>
         </div>
         <div className="my-5">
           <div className="flex items-center gap-3 my-2">
             <Mail />
-            <span>patel@gmail.com</span>
+            <span>{authUser.email}</span>
           </div>
           <div className="flex items-center gap-3 my-2">
             <Contact />
-            <span>8901212015</span>
+            <span> {authUser.phoneNumber} </span>
           </div>
         </div>
         <div>
@@ -66,6 +71,8 @@ function Profile() {
         <h1 className="font-bold text-lg my-5">Applied Jobs</h1>
         <AppliedJobTable />
       </div>
+
+      <UpdateProfile open={open} setOpen={setOpen} />
     </>
   );
 }
