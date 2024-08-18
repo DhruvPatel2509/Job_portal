@@ -1,9 +1,13 @@
 import React from "react";
 import FilterCard from "../FilterCard";
 import Jobcard from "../Jobcard";
+import { useSelector } from "react-redux";
 
-const jobsArray = [1, 2, 3, 3, 3, 3, 3, 3, 3, 3];
 function Jobs() {
+  const { allJobs } = useSelector((state) => state.job);
+
+  
+
   return (
     <>
       <div className="max-w-7xl mx-auto mt-4">
@@ -12,7 +16,7 @@ function Jobs() {
             <FilterCard />
           </div>
 
-          {jobsArray <= 0 ? (
+          {allJobs <= 0 ? (
             <>
               <span>Jobs Not Found</span>
             </>
@@ -20,9 +24,9 @@ function Jobs() {
             <>
               <div className="flex-1 h-[88vh] overflow-y-auto  ">
                 <div className=" grid grid-cols-3 gap-4 ">
-                  {jobsArray.map((job, index) => (
+                  {allJobs.map((job) => (
                     <div>
-                      <Jobcard />
+                      <Jobcard job={job} key={job._id} />
                     </div>
                   ))}
                 </div>

@@ -4,7 +4,6 @@ import sendResponse from "../utils/response.util.js";
 export const auth = async (req, res, next) => {
   try {
     const token = req.cookies.token;
-    console.log(token);
     if (!token) {
       return sendResponse(res, 401, "", `User not Authenticated`);
     }
