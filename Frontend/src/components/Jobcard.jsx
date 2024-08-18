@@ -32,27 +32,21 @@ function Jobcard({ job }) {
         </Button>
         <div>
           <h1 className="font-bold">{job?.company?.name}</h1>
-          <h1 className="font-bold">{job?.company?.name}</h1>
           <p className="text-sm text-gray-600">India</p>
         </div>
       </div>
       <div>
         <h1 className="font-bold text-lg my-2">{job.title}</h1>
         <p className="text-sm text-gray-600">{job.description}</p>
-        <h1 className="font-bold text-lg my-2">{job.title}</h1>
-        <p className="text-sm text-gray-600">{job.description}</p>
       </div>
       <div className="flex items-center gap-2 mt-4">
         <Badge variant="ghost" className="text-blue-700 font-bold">
           {job.position} Position
-          {job.position} Position
         </Badge>
         <Badge variant="ghost" className="text-red-700 font-bold">
           {job.salary} LPA
-          {job.salary} LPA
         </Badge>
         <Badge variant="ghost" className="text-purple-800 font-bold">
-          {job.jobType}
           {job.jobType}
         </Badge>
       </div>
