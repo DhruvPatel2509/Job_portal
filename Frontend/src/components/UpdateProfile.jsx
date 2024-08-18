@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { USER_API_END_POINT } from "../utils/constant";
 import { setAuthUser } from "../redux/authSlice";
+import { toast } from "sonner";
 
 function UpdateProfile({ open, setOpen }) {
   const [loading, setLoading] = useState(false);
@@ -32,7 +33,7 @@ function UpdateProfile({ open, setOpen }) {
   };
 
   const fileChangeHandler = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    setInput({ ...input, file: e.target.files[0] });
   };
 
   const handleSubmit = async (e) => {
@@ -48,6 +49,7 @@ function UpdateProfile({ open, setOpen }) {
     }
 
     try {
+      setLoading(true);
       const res = await axios.put(
         `${USER_API_END_POINT}/profile/update`,
         formData,
@@ -60,11 +62,14 @@ function UpdateProfile({ open, setOpen }) {
       );
       dispatch(setAuthUser(res.data.data));
       console.log("Response:", res.data);
-      //   toast.success(res.data.message);
-      //   navigate("/login");
+      toast.success(res.data.message);
+      setOpen(false);
     } catch (error) {
       console.log(error);
-      //   toast.error(error.response.data.message);
+      toast.error(error.response.data.message);
+      setOpen(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -105,11 +110,11 @@ function UpdateProfile({ open, setOpen }) {
               </div>
 
               <div className="grid grid-cols-4 items-center gap-4">
-                <label htmlFor="phoneNumber">Number</label>
+                <label htmlFor="number">Number</label>
                 <input
                   type="text"
-                  name="phoneNumber"
-                  id="phoneNumber"
+                  name="number"
+                  id="number"
                   value={input.number}
                   onChange={changeEventHandler}
                   className="col-span-3 py-1.5 border-2 border-gray-300 rounded"

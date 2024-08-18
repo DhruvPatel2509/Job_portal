@@ -2,31 +2,57 @@ import bcrypt from "bcrypt";
 import { User } from "../models/user.model.js";
 import sendResponse from "../utils/response.util.js";
 import jwt from "jsonwebtoken";
+import uploadOnCloudinary from "../utils/cloudinary.js";
 
 export const register = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, password, role } = req.body;
+    const file = req.file;
 
-    console.log(req.file);
-
+    // Validate required fields
     if (!fullname || !email || !phoneNumber || !password || !role) {
       return sendResponse(res, 400, null, "Something is Missing");
     }
 
+    // Check if user already exists
     const existingUser = await User.findOne({ email });
-
     if (existingUser) {
       return sendResponse(res, 400, null, "User Already Exists");
     }
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Initialize profile photo URL
+    let profilePhotoUrl = null;
+
+    if (file) {
+      console.log(file);
+
+      // Upload the file to Cloudinary
+      const uploadResult = await uploadOnCloudinary(file.path);
+
+      if (uploadResult) {
+        profilePhotoUrl = uploadResult.secure_url;
+      } else {
+        return sendResponse(res, 500, null, "Failed to upload profile photo");
+      }
+    }
+
+    // Create new user
     const user = await User.create({
       fullname,
       email,
       phoneNumber,
       password: hashedPassword,
       role,
+      profile: {
+        bio: "",
+        skills: [],
+        resume: null,
+        resumeOrignalName: "",
+        profilePhoto: profilePhotoUrl,
+      },
     });
 
     return sendResponse(
@@ -115,32 +141,39 @@ export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
     const userId = req.userId; // Assuming req.userId is where the user ID is stored
-    console.log(req.file);
+    const file = req.file;
+    console.log(file);
 
-    // Construct an object with only the fields that are provided
-    const updateFields = {};
-
-    if (fullname) updateFields.fullname = fullname;
-    if (email) updateFields.email = email;
-    if (phoneNumber) updateFields.phoneNumber = phoneNumber;
-    if (bio || skills) {
-      updateFields.profile = updateFields.profile || {};
-      if (bio) updateFields.profile.bio = bio;
-      if (skills) {
-        updateFields.profile.skills = skills.split(",");
-      }
-    }
-
-    // Update user document
-    const user = await User.findByIdAndUpdate(
-      userId,
-      updateFields,
-      { new: true, runValidators: true } // Option to return the updated document and run validators
-    );
+    let user = await User.findById(userId);
 
     if (!user) {
       return sendResponse(res, 404, null, "User Not Found");
     }
+
+    if (fullname) user.fullname = fullname;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+
+    if (bio) user.profile.bio = bio;
+    if (skills) {
+      user.profile.skills = skills
+        .split(",")
+        .map((skill) => skill.trim()) // Trim whitespace from each skill
+        .filter((skill) => skill.length > 0); // Filter out empty skills
+    }
+
+    if (file) {
+      console.log(file);
+
+      const uploadResult = await uploadOnCloudinary(file.path);
+
+      if (uploadResult) {
+        user.profile.resume = uploadResult.secure_url;
+        user.profile.resumeOrignalName = file.originalname;
+      }
+    }
+
+    await user.save();
 
     const userResponse = {
       _id: user._id,

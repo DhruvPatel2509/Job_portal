@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Popover,
@@ -8,10 +8,29 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { LogOut, User2 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { USER_API_END_POINT } from "../../utils/constant";
+import { setAuthUser } from "../../redux/authSlice";
 
 export const Navbar = () => {
   const { authUser } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const logOutHandler = async () => {
+    try {
+      const res = await axios.get(`${USER_API_END_POINT}/logOut`, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        dispatch(setAuthUser(null));
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="bg-[#ffffff] mb-3">
@@ -38,19 +57,21 @@ export const Navbar = () => {
                     <Popover>
                       <PopoverTrigger>
                         <Avatar>
-                          <AvatarImage src="https://github.com/shadcn.png" />
+                          <AvatarImage src={authUser?.profile?.profilePhoto} />
                           <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                       </PopoverTrigger>
                       <PopoverContent className="w-80 mt-2 bg-[#fefefe]">
                         <div className="flex gap-7 items-center">
                           <Avatar>
-                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarImage
+                              src={authUser?.profile?.profilePhoto}
+                            />
                             <AvatarFallback>CN</AvatarFallback>
                           </Avatar>
                           <div>
-                            <h1 className="font-bold">Patel Dhruv</h1>
-                            <p>Lorem ipsum dolor sit amet </p>
+                            <h1 className="font-bold"> {authUser?.fullname}</h1>
+                            <p> {authUser?.profile?.bio} </p>
                           </div>
                         </div>
                         <div className="flex flex-col items-start mt-1">
@@ -59,7 +80,7 @@ export const Navbar = () => {
                               <User2 /> &nbsp; View Profile
                             </Button>
                           </Link>
-                          <Button variant="link">
+                          <Button variant="link" onClick={logOutHandler}>
                             <LogOut /> &nbsp; Logout
                           </Button>
                         </div>

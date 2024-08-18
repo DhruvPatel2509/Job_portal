@@ -6,13 +6,13 @@ import {
   updateProfile,
 } from "../controller/user.controller.js";
 import { auth } from "../middleware/auth.middleware.js";
-import { singleUpload } from "../middleware/multer.js";
+import { upload } from "../middleware/multer.js";
 
 const userRouter = express.Router();
 
-userRouter.post("/register", singleUpload, register);
+userRouter.post("/register", upload.single("file"), register);
 userRouter.post("/login", login);
 userRouter.get("/logOut", logOut);
-userRouter.put("/profile/update", auth, singleUpload, updateProfile);
+userRouter.put("/profile/update", auth, upload.single("file"), updateProfile);
 
 export default userRouter;
