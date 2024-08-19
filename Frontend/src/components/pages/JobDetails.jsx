@@ -3,12 +3,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { JOB_API_END_POINT } from "../../utils/constant";
+import {
+  APPLICATION_API_END_POINT,
+  JOB_API_END_POINT,
+} from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { setSingleJob } from "../../redux/jobSlice";
-function JobDetails() {
-  const isApplied = false;
+import { toast } from "sonner";
 
+function JobDetails() {
   const params = useParams();
   const jobId = params.id;
   const dispatch = useDispatch();
@@ -17,7 +20,6 @@ function JobDetails() {
       const res = await axios.get(`${JOB_API_END_POINT}/getJob/${jobId}`, {
         withCredentials: true,
       });
-      console.log(res);
 
       if (res.data.success) {
         dispatch(setSingleJob(res.data.data));
@@ -27,11 +29,39 @@ function JobDetails() {
     }
   };
 
+  const { authUser } = useSelector((state) => state.auth);
+  const { singleJob } = useSelector((state) => state.job);
+
+  const checkIfApplied = () => {
+    if (singleJob && singleJob.application) {
+      return singleJob.application.some(
+        (application) => application.applicant._id === authUser._id
+      );
+    }
+    return false;
+  };
+  const isApplied = checkIfApplied();
+
   useEffect(() => {
     fetchSingleJob();
-  }, [jobId]);
+  }, [jobId, isApplied]);
 
-  const { singleJob } = useSelector((state) => state.job);
+  const applyJob = async () => {
+    try {
+      const res = await axios.post(
+        `${APPLICATION_API_END_POINT}/applyJob/${jobId}`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      fetchSingleJob();
+
+      toast.success(res.data.message);
+    } catch (error) {
+      console.error("Error applying for the job:", error);
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto my-10">
@@ -52,11 +82,12 @@ function JobDetails() {
         </div>
         <Button
           disabled={isApplied}
+          onClick={!isApplied ? applyJob : undefined}
           className={`rounded-lg ${
             isApplied ? "bg-gray-600 cursor-not-allowed" : "bg-red-600"
           }`}
         >
-          {isApplied ? <>Applied</> : <> Apply Now</>}
+          {isApplied ? "Applied" : "Apply Now"}
         </Button>
       </div>
       <div>
