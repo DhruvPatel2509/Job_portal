@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -106,14 +106,14 @@ export const Signup = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center max-w-7xl mx-auto ">
+      <div className="flex items-center justify-center mx-auto max-w-7xl ">
         <form
           onSubmit={submitHandler}
-          className="w-1/2 border border-gray-400 rounded-md p-4 my-10"
+          className="w-1/2 p-4 my-10 border border-gray-400 rounded-md"
         >
-          <h1 className="font-bold text-xl mb-5">Sign Up</h1>
+          <h1 className="mb-5 text-xl font-bold">Sign Up</h1>
 
-          <div className="my-3 flex flex-col gap-2 ">
+          <div className="flex flex-col gap-2 my-3 ">
             <Label htmlFor="fullname">
               Full Name:
               {errors.fullname && (
@@ -133,7 +133,7 @@ export const Signup = () => {
             />
           </div>
 
-          <div className="my-3 flex flex-col gap-2 ">
+          <div className="flex flex-col gap-2 my-3 ">
             <Label htmlFor="email">
               Email:{" "}
               {errors.email && (
@@ -152,7 +152,7 @@ export const Signup = () => {
             />
           </div>
 
-          <div className="my-3 flex flex-col gap-2 ">
+          <div className="flex flex-col gap-2 my-3 ">
             <Label htmlFor="phoneNumber">
               Phone Number:{" "}
               {errors.phoneNumber && (
@@ -171,7 +171,7 @@ export const Signup = () => {
             />
           </div>
 
-          <div className="my-3 flex flex-col gap-2 ">
+          <div className="flex flex-col gap-2 my-3 ">
             <Label htmlFor="password">
               Password:{" "}
               {errors.password && (
@@ -246,7 +246,7 @@ export const Signup = () => {
           {loading ? (
             <>
               <Button className="w-full my-4">
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 Please Wait
               </Button>
             </>

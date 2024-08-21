@@ -15,6 +15,8 @@ import { setAuthUser } from "../../redux/authSlice";
 
 export const Navbar = () => {
   const { authUser } = useSelector((store) => store.auth);
+  const role = authUser?.role;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logOutHandler = async () => {
@@ -34,23 +36,36 @@ export const Navbar = () => {
   return (
     <>
       <div className="bg-[#ffffff] mb-3">
-        <div className="flex items-center justify-between mx-auto max-w-7xl mt-4">
+        <div className="flex items-center justify-between mx-auto mt-4 max-w-7xl">
           <div>
             <h1 className="text-2xl font-bold">
               Job<span className="text-[#F83002]">Portal</span>
             </h1>
           </div>
           <div>
-            <ul className="flex gap-5 font-medium items-center">
-              <li>
-                <Link to={"/"}>Home</Link>
-              </li>
-              <li>
-                <Link to={"/jobs"}>Jobs</Link>
-              </li>
-              <li>
-                <Link to={"/browse"}>Browse</Link>
-              </li>
+            <ul className="flex items-center gap-5 font-medium">
+              {role === "student" ? (
+                <>
+                  <li>
+                    <Link to={"/"}>Home</Link>
+                  </li>
+                  <li>
+                    <Link to={"/jobs"}>Jobs</Link>
+                  </li>
+                  <li>
+                    <Link to={"/browse"}>Browse</Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link to={"/admin/companies"}>Companies</Link>
+                  </li>
+                  <li>
+                    <Link to={"/admin/jobs"}>Jobs</Link>
+                  </li>
+                </>
+              )}
               {authUser ? (
                 <>
                   <li>
@@ -62,7 +77,7 @@ export const Navbar = () => {
                         </Avatar>
                       </PopoverTrigger>
                       <PopoverContent className="w-80 mt-2 bg-[#fefefe]">
-                        <div className="flex gap-7 items-center">
+                        <div className="flex items-center gap-7">
                           <Avatar>
                             <AvatarImage
                               src={authUser?.profile?.profilePhoto}
@@ -75,11 +90,17 @@ export const Navbar = () => {
                           </div>
                         </div>
                         <div className="flex flex-col items-start mt-1">
-                          <Link to="/profile">
-                            <Button variant="link">
-                              <User2 /> &nbsp; View Profile
-                            </Button>
-                          </Link>
+                          {role === "student" ? (
+                            <>
+                              <Link to="/profile">
+                                <Button variant="link">
+                                  <User2 /> &nbsp; View Profile
+                                </Button>
+                              </Link>
+                            </>
+                          ) : (
+                            <></>
+                          )}
                           <Button variant="link" onClick={logOutHandler}>
                             <LogOut /> &nbsp; Logout
                           </Button>

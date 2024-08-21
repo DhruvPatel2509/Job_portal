@@ -41,7 +41,11 @@ export const Login = () => {
 
       toast.success(res.data.message);
 
-      navigate("/");
+      if (res.data.user.role === "recruiter") {
+        navigate("/admin/companies");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       toast.error(error.response.data.message);
       console.error("Error:", error.response.data.message);
