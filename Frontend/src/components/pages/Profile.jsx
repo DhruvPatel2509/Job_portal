@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Contact, Mail, Pen } from "lucide-react";
@@ -16,14 +16,14 @@ function Profile() {
 
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
+      <div className="max-w-4xl p-8 mx-auto my-5 bg-white border border-gray-200 rounded-2xl">
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
-            <Avatar className="h-24 w-24">
+            <Avatar className="w-24 h-24">
               <AvatarImage src={authUser?.profile?.profilePhoto}  />
             </Avatar>
             <div>
-              <h1 className="font-medium text-xl">{authUser?.fullname}</h1>
+              <h1 className="text-xl font-medium">{authUser?.fullname}</h1>
               <p>{authUser?.profile?.bio}</p>
             </div>
           </div>
@@ -54,12 +54,12 @@ function Profile() {
           </div>
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label className="text-md font-bold">Resume</Label>
+          <Label className="font-bold text-md">Resume</Label>
           {isResume ? (
             <a
               target="_blank"
               href={authUser?.profile?.resume}
-              className="text-blue-500 w-full hover:underline cursor-pointer"
+              className="w-full text-blue-500 cursor-pointer hover:underline"
             >
               {authUser?.profile?.resumeOrignalName}
             </a>
@@ -69,7 +69,7 @@ function Profile() {
         </div>
       </div>
       <div className="max-w-4xl mx-auto bg-white rounded-2xl">
-        <h1 className="font-bold text-lg my-5">Applied Jobs</h1>
+        <h1 className="my-5 text-lg font-bold">Applied Jobs</h1>
         <AppliedJobTable />
       </div>
 

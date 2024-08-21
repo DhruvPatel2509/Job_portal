@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -12,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { setAuthUser } from "../../redux/authSlice";
+import { setAllJobs, setSingleJob } from "../../redux/jobSlice";
+import { setSingleCompany } from "../../redux/companySlice";
 
 export const Navbar = () => {
   const { authUser } = useSelector((store) => store.auth);
@@ -26,6 +27,9 @@ export const Navbar = () => {
       });
       if (res.data.success) {
         dispatch(setAuthUser(null));
+        dispatch(setSingleJob(null));
+        dispatch(setAllJobs(null));
+        dispatch(setSingleCompany(null));
         navigate("/");
       }
     } catch (error) {
