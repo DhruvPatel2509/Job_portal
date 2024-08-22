@@ -63,7 +63,7 @@ const appRouter = createBrowserRouter([
       },
     ],
   },
-]);
+]); 
 export default function App() {
   return (
     <>
