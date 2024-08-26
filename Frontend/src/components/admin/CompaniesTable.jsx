@@ -18,6 +18,7 @@ import {
 import { Edit2Icon, MoreHorizontalIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
 function CompaniesTable() {
@@ -27,7 +28,7 @@ function CompaniesTable() {
 
   const [filterCompany, setFilterCompany] = useState(allCompanies);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     const filteredCompany =
       allCompanies.length > 0 &&
@@ -43,7 +44,7 @@ function CompaniesTable() {
   }, [allCompanies, searchCompanyByText]);
 
   const editHandler = (id) => {
-    console.log(id);
+    navigate(`/admin/companie/${id}`);
   };
 
   return (
