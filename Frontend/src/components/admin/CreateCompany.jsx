@@ -8,7 +8,6 @@ import { COMPANY_API_END_POINT } from "../../utils/constant";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
-import { setSingleCompany } from "../../redux/companySlice";
 
 function CreateCompany() {
   const navigate = useNavigate();
@@ -27,10 +26,11 @@ function CreateCompany() {
           withCredentials: true,
         }
       );
-      console.log(res);
+
       if (res.data.success) {
         toast.success(res.data.message);
-        dispatch(setSingleCompany(res.data.data));
+
+        navigate(`/admin/companie/${res.data.data._id}`);
       }
     } catch (error) {
       if (error.response) {

@@ -1,4 +1,3 @@
-import React from "react";
 import { Herosection } from "../Herosection";
 import CategoryCarousal from "../CategoryCarousal";
 import LatestJob from "../LatestJob";

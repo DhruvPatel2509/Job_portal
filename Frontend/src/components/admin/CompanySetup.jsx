@@ -1,21 +1,43 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Loader, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { COMPANY_API_END_POINT } from "../../utils/constant";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setSingleComapny } from "../../redux/companySlice";
+import useGetSingleCompany from "../../hooks/useGetSingleCompany";
+import { toast } from "sonner";
 
 function CompanySetup() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const params = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const companyId = params.id;
+  useGetSingleCompany(companyId);
+  const { singleCompany } = useSelector((state) => state.company);
+
   const [input, setInput] = useState({
-    name: "",
-    description: "",
-    website: "",
-    location: "",
+    name: singleCompany?.name || "",
+    description: singleCompany.description || "",
+    website: singleCompany.website || "",
+    location: singleCompany.location || "",
     file: null,
   });
 
-  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setInput({
+      name: singleCompany?.name || "",
+      description: singleCompany.description || "",
+      website: singleCompany.website || "",
+      location: singleCompany.location || "",
+      file: null,
+    });
+  }, [singleCompany]);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -23,11 +45,15 @@ function CompanySetup() {
 
   const changeFileHandler = (e) => {
     const file = e.target.files?.[0];
-    setInput({ ...input, file });
+    if (file) {
+      // File validation can go here
+      setInput({ ...input, file });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
 
     const formData = new FormData();
     formData.append("name", input.name);
@@ -37,14 +63,23 @@ function CompanySetup() {
     if (input.file) {
       formData.append("file", input.file);
     }
+
     try {
+      setLoading(true);
       const res = await axios.put(
         `${COMPANY_API_END_POINT}/updateCompany/${params.id}`,
-        formData
+        formData,
+        { withCredentials: true }
       );
-      console.log(res);
+      if (res.data.success) {
+        toast.success(res.data.message);
+        navigate("/admin/companies");
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,10 +87,11 @@ function CompanySetup() {
     <>
       <div className="max-w-xl mx-auto my-10">
         <form onSubmit={handleSubmit}>
-          <div className="flex items-center gap-5 py-8 ">
+          <div className="flex items-center gap-5 py-8">
             <Button
               variant="outline"
               className="flex items-center gap-2 font-semibold text-gray-500"
+              onClick={() => navigate(-1)} // Navigate back
             >
               <ArrowLeft />
               <span>Back</span>
@@ -70,9 +106,9 @@ function CompanySetup() {
                 name="name"
                 value={input.name}
                 onChange={changeEventHandler}
+                required
               />
             </div>
-
             <div>
               <Label>Description</Label>
               <Input
@@ -80,9 +116,9 @@ function CompanySetup() {
                 name="description"
                 value={input.description}
                 onChange={changeEventHandler}
+                required
               />
             </div>
-
             <div>
               <Label>Website</Label>
               <Input
@@ -90,9 +126,9 @@ function CompanySetup() {
                 name="website"
                 value={input.website}
                 onChange={changeEventHandler}
+                required
               />
             </div>
-
             <div>
               <Label>Location</Label>
               <Input
@@ -100,9 +136,9 @@ function CompanySetup() {
                 name="location"
                 value={input.location}
                 onChange={changeEventHandler}
+                required
               />
             </div>
-
             <div>
               <Label>Logo</Label>
               <Input
@@ -112,10 +148,12 @@ function CompanySetup() {
               />
             </div>
           </div>
+          {error && <p className="text-red-500">{error}</p>}
           <Button type="submit" className="w-full my-8">
             {loading ? (
               <>
-                <Loader2 /> Please Wait
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Please Wait
               </>
             ) : (
               <>Submit</>

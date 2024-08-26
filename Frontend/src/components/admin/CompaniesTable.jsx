@@ -15,8 +15,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Edit2Icon, MoreHorizontalIcon } from "lucide-react";
+import { useSelector } from "react-redux";
+// import { useNavigate } from "react-router-dom";
 
 function CompaniesTable() {
+  const { allCompanies } = useSelector((state) => state.company);
+  // const navigate = useNavigate();
+
+  const editHandler = (id) => {
+    console.log(id);
+  };
+
   return (
     <>
       <Table>
@@ -30,27 +39,37 @@ function CompaniesTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableCell>
-            <Avatar>
-              <AvatarImage src="" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </TableCell>
-          <TableCell>Company Name</TableCell>
-          <TableCell>18-08-2024</TableCell>
-          <TableCell className="text-right cursor-pointer">
-            <Popover>
-              <PopoverTrigger>
-                <MoreHorizontalIcon />
-              </PopoverTrigger>
-              <PopoverContent className="w-32">
-                <div className="flex items-center gap-2 cursor-pointer w-fit">
-                  <Edit2Icon className="w-4" />
-                  <span>Edit</span>
-                </div>
-              </PopoverContent>
-            </Popover>
-          </TableCell>
+          {allCompanies &&
+            allCompanies.map((c) => (
+              <TableRow key={c._id}>
+                <TableCell>
+                  <Avatar className="w-[80px] h-[45px]">
+                    <AvatarImage src={c.logo} alt={`${c.name} Logo`} />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </TableCell>
+                <TableCell>{c.name}</TableCell>
+                <TableCell>
+                  {new Date(c.createdAt).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="text-right cursor-pointer">
+                  <Popover>
+                    <PopoverTrigger>
+                      <MoreHorizontalIcon />
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-32"
+                      onClick={() => editHandler(c._id)}
+                    >
+                      <div className="flex items-center gap-2 cursor-pointer w-fit">
+                        <Edit2Icon className="w-4" />
+                        <span>Edit</span>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </>

@@ -142,7 +142,6 @@ export const updateProfile = async (req, res) => {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
     const userId = req.userId; // Assuming req.userId is where the user ID is stored
     const file = req.file;
-    console.log(file);
 
     let user = await User.findById(userId);
 

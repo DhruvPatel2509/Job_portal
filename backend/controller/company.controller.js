@@ -1,5 +1,6 @@
 import sendResponse from "../utils/response.util.js";
 import { Company } from "../models/company.model.js";
+import uploadOnCloudinary from "../utils/cloudinary.js";
 
 export const registerCompany = async (req, res) => {
   try {
@@ -60,23 +61,40 @@ export const getCompanyById = async (req, res) => {
 
 export const updateCompany = async (req, res) => {
   try {
-    const companyId = req.params.id;
+    const { id: companyId } = req.params;
     const { name, description, website, location } = req.body;
+    const file = req.file;
 
+    // Validate the companyId
     if (!companyId) {
       return sendResponse(res, 400, null, "Company ID is required");
     }
 
-    const updateData = { name, description, website, location };
-
-    const company = await Company.findByIdAndUpdate(companyId, updateData, {
-      new: true,
-    });
-
+    // Find the company by ID
+    const company = await Company.findById(companyId);
     if (!company) {
       return sendResponse(res, 404, null, "Company Not Found");
     }
 
+    // Handle file upload if provided
+    if (file) {
+      const uploadResult = await uploadOnCloudinary(file.path);
+      if (uploadResult) {
+        company.logo = uploadResult.secure_url;
+        company.logoOriginalName = file.originalname;
+      }
+    }
+
+    // Update company fields only if they exist in the request body
+    if (name) company.name = name;
+    if (description) company.description = description;
+    if (website) company.website = website;
+    if (location) company.location = location;
+
+    // Save the updated company
+    await company.save();
+
+    // Send success response
     return sendResponse(res, 200, company, "Company Updated Successfully");
   } catch (error) {
     console.error("Error updating company:", error);

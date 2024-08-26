@@ -85,7 +85,7 @@ function UpdateProfile({ open, setOpen }) {
           </DialogHeader>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid items-center grid-cols-4 gap-4">
                 <label htmlFor="name">Name</label>
                 <input
                   type="text"
@@ -97,7 +97,7 @@ function UpdateProfile({ open, setOpen }) {
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid items-center grid-cols-4 gap-4">
                 <label htmlFor="email">Email</label>
                 <input
                   type="email"
@@ -109,7 +109,7 @@ function UpdateProfile({ open, setOpen }) {
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid items-center grid-cols-4 gap-4">
                 <label htmlFor="number">Number</label>
                 <input
                   type="text"
@@ -121,7 +121,7 @@ function UpdateProfile({ open, setOpen }) {
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid items-center grid-cols-4 gap-4">
                 <label htmlFor="bio">Bio</label>
                 <input
                   type="text"
@@ -133,7 +133,7 @@ function UpdateProfile({ open, setOpen }) {
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid items-center grid-cols-4 gap-4">
                 <label htmlFor="skills">Skills</label>
                 <input
                   type="text"
@@ -145,7 +145,7 @@ function UpdateProfile({ open, setOpen }) {
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid items-center grid-cols-4 gap-4">
                 <label htmlFor="file">Resume</label>
                 <input
                   type="file"
@@ -161,7 +161,7 @@ function UpdateProfile({ open, setOpen }) {
               {loading ? (
                 <>
                   <Button className="w-full my-4">
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                     Please Wait
                   </Button>
                 </>
