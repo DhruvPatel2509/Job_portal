@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Popover,
@@ -15,12 +16,31 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Edit2Icon, MoreHorizontalIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 
 function CompaniesTable() {
-  const { allCompanies } = useSelector((state) => state.company);
+  const { allCompanies, searchCompanyByText } = useSelector(
+    (state) => state.company
+  );
+
+  const [filterCompany, setFilterCompany] = useState(allCompanies);
+
   // const navigate = useNavigate();
+  useEffect(() => {
+    const filteredCompany =
+      allCompanies.length > 0 &&
+      allCompanies.filter((company) => {
+        if (!searchCompanyByText) {
+          return true;
+        }
+        return company?.name
+          ?.toLowerCase()
+          .includes(searchCompanyByText.toLowerCase());
+      });
+    setFilterCompany(filteredCompany);
+  }, [allCompanies, searchCompanyByText]);
 
   const editHandler = (id) => {
     console.log(id);
@@ -39,8 +59,8 @@ function CompaniesTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {allCompanies &&
-            allCompanies.map((c) => (
+          {filterCompany &&
+            filterCompany.map((c) => (
               <TableRow key={c._id}>
                 <TableCell>
                   <Avatar className="w-[80px] h-[45px]">
