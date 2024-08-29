@@ -13,12 +13,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 const corsOptions = {
-  origin: "https://job-portal-uhs9.onrender.com/", // Replace with your client's origin
+  origin: true, // Allows requests from any origin
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
   credentials: true, // Allows cookies or other credentials to be sent
 };
+
+app.use(cors(corsOptions));
 
 app.use(cors(corsOptions));
 
