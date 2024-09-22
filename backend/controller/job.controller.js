@@ -14,6 +14,7 @@ export const postJob = async (req, res) => {
       company,
       experience,
     } = req.body;
+    console.log(req.body);
 
     // Check for missing fields
     if (
@@ -123,7 +124,9 @@ export const adminPostedJob = async (req, res) => {
     }
 
     // Find jobs posted by the admin
-    const jobs = await Job.find({ createdBy: adminId });
+    const jobs = await Job.find({ createdBy: adminId }).populate({
+      path: "company",
+    });
 
     // Check if jobs array is empty
     if (!jobs) {

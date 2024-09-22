@@ -15,6 +15,7 @@ function JobsAdmin() {
   useEffect(() => {
     dispatch(setSearchJobByText(input));
   }, [dispatch, input]);
+
   return (
     <>
       <div className="max-w-6xl mx-auto my-10 ">
@@ -24,7 +25,7 @@ function JobsAdmin() {
             placeholder="Filter By Name"
             onChange={(e) => setInput(e.target.value)}
           />
-          <Button onClick={() => navigate("/admin/companie/create")}>
+          <Button onClick={() => navigate("/admin/jobs/create")}>
             New Jobs
           </Button>
         </div>

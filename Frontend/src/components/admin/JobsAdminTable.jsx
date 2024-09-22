@@ -25,6 +25,7 @@ function JobsAdminTable() {
   const { alljobsAdmin, searchJobByText } = useSelector((state) => state.job);
 
   const [filterJobs, setFilterJobs] = useState(alljobsAdmin);
+  console.log(alljobsAdmin);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -34,8 +35,11 @@ function JobsAdminTable() {
         if (!searchJobByText) {
           return true;
         }
-        return job?.name?.toLowerCase().includes(searchJobByText.toLowerCase());
+        return job?.title
+          ?.toLowerCase()
+          .includes(searchJobByText.toLowerCase());
       });
+
     setFilterJobs(filteredJobs);
   }, [alljobsAdmin, searchJobByText]);
 
@@ -59,8 +63,8 @@ function JobsAdminTable() {
           {filterJobs &&
             filterJobs.map((c) => (
               <TableRow key={c._id}>
+                <TableCell>{c?.company?.name}</TableCell>
                 <TableCell>{c.title}</TableCell>
-                <TableCell>{c.jobType}</TableCell>
                 <TableCell>
                   {new Date(c.createdAt).toLocaleDateString()}
                 </TableCell>
