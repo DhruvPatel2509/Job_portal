@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Edit2Icon, MoreHorizontalIcon } from "lucide-react";
+import { Edit2Icon, Eye, MoreHorizontalIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -73,13 +73,23 @@ function JobsAdminTable() {
                     <PopoverTrigger>
                       <MoreHorizontalIcon />
                     </PopoverTrigger>
-                    <PopoverContent
-                      className="w-32"
-                      onClick={() => editHandler(c._id)}
-                    >
-                      <div className="flex items-center gap-2 cursor-pointer w-fit">
+                    <PopoverContent className="w-32">
+                      <div
+                        onClick={() => editHandler(c._id)}
+                        className="flex items-center gap-2 cursor-pointer w-fit"
+                      >
                         <Edit2Icon className="w-4" />
                         <span>Edit</span>
+                      </div>
+
+                      <div
+                        onClick={() =>
+                          navigate(`/admin/jobs/${c._id}/applicants`)
+                        }
+                        className="flex mt-3 items-center gap-2 cursor-pointer w-fit"
+                      >
+                        <Eye className="w-4" />
+                        <span>Applicants</span>
                       </div>
                     </PopoverContent>
                   </Popover>

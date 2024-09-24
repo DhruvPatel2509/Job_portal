@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import { Button } from "@/components/ui/button";
 import { Bookmark } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -9,29 +9,44 @@ function Jobcard({ job }) {
   const daysAgo = (mongoTime) => {
     const timeDifference = new Date() - new Date(mongoTime);
     const days = Math.floor(timeDifference / (24 * 60 * 60 * 1000));
-    const min = Math.floor(timeDifference / (24 * 60 * 60));
+    const minutes = Math.floor(
+      (timeDifference % (24 * 60 * 60 * 1000)) / (60 * 1000)
+    );
 
     if (days < 1) {
-      return `${min} Minute Ago`;
-    } else return `${days} Days Ago`;
+      return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+    }
+    return `${days} day${days !== 1 ? "s" : ""} ago`;
   };
+
   const navigate = useNavigate();
+
   return (
     <div className="rounded-md p-5 shadow-xl border-gray-100">
       <div className="flex items-center justify-between">
-        <p className=" text-sm text-gray-600 ">{daysAgo(job?.createdAt)}</p>
-        <Button variant="outline" className="rounded-full" size="icon">
+        <p className="text-sm text-gray-600">{daysAgo(job?.createdAt)}</p>
+        <Button
+          variant="outline"
+          className="rounded-full"
+          size="icon"
+          aria-label="Bookmark Job"
+        >
           <Bookmark />
         </Button>
       </div>
-      <div className="flex items-center gap-2 my-2 ">
+      <div className="flex items-center gap-2 my-2">
         <Button variant="outline" className="p-6" size="icon">
           <Avatar>
-            <AvatarImage src="https://www.shutterstock.com/image-vector/circle-line-simple-design-logo-600nw-2174926871.jpg" />
+            <AvatarImage
+              src={job?.company?.logo || "default-logo.png"}
+              alt="Company Logo"
+            />
           </Avatar>
         </Button>
         <div>
-          <h1 className="font-bold">{job?.company?.name}</h1>
+          <h1 className="font-bold">
+            {job?.company?.name || "Unknown Company"}
+          </h1>
           <p className="text-sm text-gray-600">India</p>
         </div>
       </div>
@@ -57,7 +72,7 @@ function Jobcard({ job }) {
         >
           Details
         </Button>
-        <Button className="bg-purple-800 ">Save For Later</Button>
+        <Button className="bg-purple-800">Save For Later</Button>
       </div>
     </div>
   );

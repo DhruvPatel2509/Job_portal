@@ -23,8 +23,8 @@ function Jobs() {
               <div className="flex-1 h-[88vh] overflow-y-auto  ">
                 <div className=" grid grid-cols-3 gap-4 ">
                   {allJobs.map((job) => (
-                    <div>
-                      <Jobcard job={job} key={job._id} />
+                    <div key={job._id}>
+                      <Jobcard job={job} />
                     </div>
                   ))}
                 </div>
