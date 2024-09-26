@@ -11,7 +11,7 @@ function Browse() {
         </h1>
         <div className="grid grid-cols-3 gap-4 ">
           {randomJobs.map((item, index) => (
-            <div>
+            <div key={index}>
               <Jobcard />
             </div>
           ))}

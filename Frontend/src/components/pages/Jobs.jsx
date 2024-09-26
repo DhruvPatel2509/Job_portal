@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 function Jobs() {
   const { allJobs } = useSelector((state) => state.job);
+  
 
   return (
     <>

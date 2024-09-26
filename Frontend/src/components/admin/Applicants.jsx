@@ -10,6 +10,8 @@ function Applicants() {
   const params = useParams();
   const dispatch = useDispatch();
 
+  
+
   useEffect(() => {
     const fetchApplicants = async () => {
       try {

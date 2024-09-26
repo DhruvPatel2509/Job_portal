@@ -11,7 +11,7 @@ function useGetSingleCompany(companyId) {
     const fetchSingleCompany = async () => {
       try {
         const res = await axios.get(
-          `${COMPANY_API_END_POINT}/getCompany/${companyId}`, // Added the missing '/'
+          `${COMPANY_API_END_POINT}/getCompany/${companyId}`, 
           {
             withCredentials: true,
           }

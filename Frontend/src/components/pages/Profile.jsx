@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Contact, Mail, Pen } from "lucide-react";
@@ -6,13 +6,38 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import AppliedJobTable from "../AppliedJobTable";
 import UpdateProfile from "../UpdateProfile";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { APPLICATION_API_END_POINT } from "../../utils/constant";
+import { setAllAppliedJobs } from "../../redux/jobSlice";
+import useGetAppliedJobs from "../../hooks/useGetAppliedJobs";
 
 function Profile() {
   const isResume = true;
   const { authUser } = useSelector((store) => store.auth);
+
   const [open, setOpen] = useState(false);
   const skills = authUser?.profile?.skills || [];
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   const fetchAppliedJobs = async () => {
+  //     axios.defaults.withCredentials = true;
+  //     try {
+  //       const res = await axios.get(
+  //         `${APPLICATION_API_END_POINT}/getAppliedJob`
+  //       );
+  //       console.log(res.data.data);
+
+  //       if (res.data.success) {
+  //         dispatch(setAllAppliedJobs(res.data.data));
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchAppliedJobs();
+  // });
+  useGetAppliedJobs();
 
   return (
     <>
@@ -20,7 +45,7 @@ function Profile() {
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
             <Avatar className="w-24 h-24">
-              <AvatarImage src={authUser?.profile?.profilePhoto}  />
+              <AvatarImage src={authUser?.profile?.profilePhoto} />
             </Avatar>
             <div>
               <h1 className="text-xl font-medium">{authUser?.fullname}</h1>

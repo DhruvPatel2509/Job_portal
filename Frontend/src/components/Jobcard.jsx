@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 
 function Jobcard({ job }) {
+  console.log(job);
+
   const daysAgo = (mongoTime) => {
     const timeDifference = new Date() - new Date(mongoTime);
     const days = Math.floor(timeDifference / (24 * 60 * 60 * 1000));
@@ -51,18 +53,18 @@ function Jobcard({ job }) {
         </div>
       </div>
       <div>
-        <h1 className="font-bold text-lg my-2">{job.title}</h1>
-        <p className="text-sm text-gray-600">{job.description}</p>
+        <h1 className="font-bold text-lg my-2">{job?.title}</h1>
+        <p className="text-sm text-gray-600">{job?.description}</p>
       </div>
       <div className="flex items-center gap-2 mt-4">
         <Badge variant="ghost" className="text-blue-700 font-bold">
-          {job.position} Position
+          {job?.position} Position
         </Badge>
         <Badge variant="ghost" className="text-red-700 font-bold">
-          {job.salary} LPA
+          {job?.salary} LPA
         </Badge>
         <Badge variant="ghost" className="text-purple-800 font-bold">
-          {job.jobType}
+          {job?.jobType}
         </Badge>
       </div>
       <div className="flex items-center gap-4 mt-4">
