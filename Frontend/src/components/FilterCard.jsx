@@ -44,10 +44,10 @@ function FilterCard() {
         <hr className="mt-3 " />
         <RadioGroup>
           {filterData.map((data, index) => (
-            <div>
+            <div key={index}>
               <h1 className="font-bold text-md">{data.filterType}</h1>
               {data.array.map((item, index) => (
-                <div className="flex items-center space-x-2 my-2">
+                <div key={index} className="flex items-center space-x-2 my-2">
                   <RadioGroupItem value={item}></RadioGroupItem>
                   <Label>{item}</Label>
                 </div>

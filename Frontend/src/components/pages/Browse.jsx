@@ -1,21 +1,41 @@
-import React from "react";
 import Jobcard from "../Jobcard";
+import useGetAllJobs from "../../hooks/useGetAllJobs";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { setSearchedQuery, setSearchJobByText } from "../../redux/jobSlice";
 
 function Browse() {
-  const randomJobs = [1, 1, 1];
+  const { allJobs } = useSelector((store) => store.job);
+  console.log(allJobs);
+  useGetAllJobs();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      dispatch(setSearchedQuery("")); // Reset the searchedQuery when leaving the page
+    };
+  }, [dispatch]);
+
   return (
     <>
       <div className="max-w-7xl mx-auto my-10">
-        <h1 className="font-bold text-xl my-10">
-          Search Results ({randomJobs.length})
-        </h1>
-        <div className="grid grid-cols-3 gap-4 ">
-          {randomJobs.map((item, index) => (
-            <div key={index}>
-              <Jobcard />
+        {allJobs && allJobs?.length > 0 ? (
+          <>
+            <h1 className="font-bold text-xl my-10">
+              Search Results ({allJobs?.length})
+            </h1>
+            <div className="grid grid-cols-3 gap-4 ">
+              {allJobs?.map((job, index) => (
+                <div key={index}>
+                  <Jobcard job={job} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        ) : (
+          <>
+            <h1 className="text-center font-bold text-[26px]">NO JOBS FOUND</h1>
+          </>
+        )}
       </div>
     </>
   );

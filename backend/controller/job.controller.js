@@ -61,23 +61,17 @@ export const getAllJobs = async (req, res) => {
     // Construct the query for search
     const query = {
       $or: [
-        {
-          title: { $regex: keyword, $options: "i" },
-        },
-        {
-          description: { $regex: keyword, $options: "i" },
-        },
+        { title: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
       ],
     };
 
     // Find jobs based on the query
-    const jobs = await Job.find(query).populate({
-      path: "company",
-    });
+    const jobs = await Job.find(query).populate("company");
 
     // Check if jobs array is empty
-    if (!jobs) {
-      return sendResponse(res, 404, null, "No Jobs Found");
+    if (jobs.length === 0) {
+      return sendResponse(res, 200, null, "No Jobs Found");
     }
 
     return sendResponse(res, 200, jobs, "Jobs Found");
