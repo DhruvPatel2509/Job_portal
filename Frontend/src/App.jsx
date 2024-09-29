@@ -13,6 +13,8 @@ import CompanySetup from "./components/admin/CompanySetup";
 import JobsAdmin from "./components/admin/JobsAdmin";
 import CreateAdminJob from "./components/admin/CreateAdminJob";
 import Applicants from "./components/admin/Applicants";
+import NotFound from "./components/NotFound";
+// import ProtectedRoutes from "./components/admin/Protectedroutes";
 
 const appRouter = createBrowserRouter([
   {
@@ -23,63 +25,28 @@ const appRouter = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/signup",
-        element: <Signup />,
-      },
-      {
-        path: "/jobs",
-        element: <Jobs />,
-      },
-      {
-        path: "jobs/jobDetails/:id",
-        element: <JobDetails />,
-      },
-      {
-        path: "/browse",
-        element: <Browse />,
-      },
-      {
-        path: "/profile",
-        element: <Profile />,
-      },
-      //admin
+      { path: "/login", element: <Login /> },
+      { path: "/signup", element: <Signup /> },
+      { path: "/jobs", element: <Jobs /> },
+      { path: "/jobs/jobDetails/:id", element: <JobDetails /> },
+      { path: "/browse", element: <Browse /> },
+      { path: "/profile", element: <Profile /> },
+      // Admin routes
       {
         path: "/admin/companies",
         element: <Companies />,
       },
-      {
-        path: "/admin/jobs",
-        element: <JobsAdmin />,
-      },
-      {
-        path: "/admin/companie/create",
-        element: <CreateCompany />,
-      },
-      {
-        path: "/admin/companie/:id",
-        element: <CompanySetup />,
-      },
-      {
-        path: "/admin/jobs/create",
-        element: <CreateAdminJob />,
-      },
-
-      {
-        path: "/admin/jobs/:id/applicants",
-        element: <Applicants />,
-      },
+      { path: "/admin/jobs", element: <JobsAdmin /> },
+      { path: "/admin/companies/create", element: <CreateCompany /> },
+      { path: "/admin/companies/:id", element: <CompanySetup /> },
+      { path: "/admin/jobs/create", element: <CreateAdminJob /> },
+      { path: "/admin/jobs/:id/applicants", element: <Applicants /> },
+      // Catch-all for 404
+      { path: "*", element: <NotFound /> },
     ],
   },
 ]);
+
 export default function App() {
-  return (
-    <>
-      <RouterProvider router={appRouter} />
-    </>
-  );
+  return <RouterProvider router={appRouter} />;
 }

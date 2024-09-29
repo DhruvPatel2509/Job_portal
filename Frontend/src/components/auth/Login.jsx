@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ export const Login = () => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const { loading } = useSelector((store) => store.auth);
+  const { loading, authUser } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const submitHandler = async (e) => {
@@ -41,7 +41,7 @@ export const Login = () => {
 
       toast.success(res.data.message);
 
-      if (res.data.user.role === "recruiter") {
+      if (res.data.user.role == "recruiter") {
         navigate("/admin/companies");
       } else {
         navigate("/");
@@ -53,6 +53,7 @@ export const Login = () => {
       dispatch(setLoading(false));
     }
   };
+
   return (
     <>
       <div className="flex items-center justify-center max-w-7xl mx-auto min-h-[77.2vh] ">

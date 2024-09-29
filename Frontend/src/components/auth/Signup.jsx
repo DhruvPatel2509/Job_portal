@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -54,7 +54,7 @@ export const Signup = () => {
   const changeFileHandler = (e) => {
     setInput({ ...input, file: e.target.files?.[0] });
   };
-  const { loading } = useSelector((store) => store.auth);
+  const { loading, authUser } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -103,6 +103,11 @@ export const Signup = () => {
       dispatch(setLoading(false));
     }
   };
+  useEffect(() => {
+    if (authUser) {
+      navigate("/");
+    }
+  });
 
   return (
     <>
