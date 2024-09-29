@@ -2,17 +2,22 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function AuthRedirect({ redirectTo, component }) {
+function AuthRedirect({ component }) {
   const { authUser } = useSelector((store) => store.auth);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (authUser) {
-      navigate(redirectTo); // Redirect if user is already logged in
+      if (authUser.role === "student") {
+        navigate("/"); // Redirect student to home
+      } else {
+        navigate("/admin/companies"); // Redirect admin to companies
+      }
     }
-  }, [authUser, navigate, redirectTo]);
+  }, [authUser, navigate]);
 
-  return <>{!authUser ? component : null}</>; // Render the component if user is not logged in
+  // Render the component if the user is not logged in
+  return !authUser ? component : null;
 }
 
 export default AuthRedirect;

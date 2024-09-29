@@ -25,11 +25,11 @@ const appRouter = createBrowserRouter([
       { path: "/", element: <Home /> },
       {
         path: "/login",
-        element: <AuthRedirect redirectTo="/" component={<Login />} />,
+        element: <AuthRedirect  component={<Login />} />,
       },
       {
         path: "/signup",
-        element: <AuthRedirect redirectTo="/" component={<Signup />} />,
+        element: <AuthRedirect  component={<Signup />} />,
       },
       {
         path: "/jobs",
