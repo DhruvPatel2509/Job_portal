@@ -47,7 +47,7 @@ function Jobcard({ job }) {
           <h1 className="font-bold">
             {job?.company?.name || "Unknown Company"}
           </h1>
-          <p className="text-sm text-gray-600">India</p>
+          <p className="text-sm text-gray-600"> {job?.location} </p>
         </div>
       </div>
       <div>
