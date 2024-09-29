@@ -15,6 +15,7 @@ import CreateAdminJob from "./components/admin/CreateAdminJob";
 import Applicants from "./components/admin/Applicants";
 import NotFound from "./components/NotFound";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
+import AuthRedirect from "./components/auth/AuthRedirect"; // Import the new AuthRedirect component
 
 const appRouter = createBrowserRouter([
   {
@@ -22,8 +23,14 @@ const appRouter = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: "/", element: <Home /> },
-      { path: "/login", element: <Login /> },
-      { path: "/signup", element: <Signup /> },
+      {
+        path: "/login",
+        element: <AuthRedirect redirectTo="/" component={<Login />} />,
+      },
+      {
+        path: "/signup",
+        element: <AuthRedirect redirectTo="/" component={<Signup />} />,
+      },
       {
         path: "/jobs",
         element: (
