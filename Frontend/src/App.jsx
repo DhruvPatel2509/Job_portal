@@ -14,33 +14,97 @@ import JobsAdmin from "./components/admin/JobsAdmin";
 import CreateAdminJob from "./components/admin/CreateAdminJob";
 import Applicants from "./components/admin/Applicants";
 import NotFound from "./components/NotFound";
-// import ProtectedRoutes from "./components/admin/Protectedroutes";
+import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
+      { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <Signup /> },
-      { path: "/jobs", element: <Jobs /> },
-      { path: "/jobs/jobDetails/:id", element: <JobDetails /> },
-      { path: "/browse", element: <Browse /> },
-      { path: "/profile", element: <Profile /> },
+      {
+        path: "/jobs",
+        element: (
+          <ProtectedRoute role="student">
+            <Jobs />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/jobs/jobDetails/:id",
+        element: (
+          <ProtectedRoute role="student">
+            <JobDetails />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/browse",
+        element: (
+          <ProtectedRoute role="student">
+            <Browse />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedRoute role="student">
+            <Profile />
+          </ProtectedRoute>
+        ),
+      },
       // Admin routes
       {
         path: "/admin/companies",
-        element: <Companies />,
+        element: (
+          <ProtectedRoute role="admin">
+            <Companies />
+          </ProtectedRoute>
+        ),
       },
-      { path: "/admin/jobs", element: <JobsAdmin /> },
-      { path: "/admin/companies/create", element: <CreateCompany /> },
-      { path: "/admin/companies/:id", element: <CompanySetup /> },
-      { path: "/admin/jobs/create", element: <CreateAdminJob /> },
-      { path: "/admin/jobs/:id/applicants", element: <Applicants /> },
+      {
+        path: "/admin/jobs",
+        element: (
+          <ProtectedRoute role="admin">
+            <JobsAdmin />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/companies/create",
+        element: (
+          <ProtectedRoute role="admin">
+            <CreateCompany />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/companies/:id",
+        element: (
+          <ProtectedRoute role="admin">
+            <CompanySetup />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/jobs/create",
+        element: (
+          <ProtectedRoute role="admin">
+            <CreateAdminJob />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/jobs/:id/applicants",
+        element: (
+          <ProtectedRoute role="admin">
+            <Applicants />
+          </ProtectedRoute>
+        ),
+      },
       // Catch-all for 404
       { path: "*", element: <NotFound /> },
     ],

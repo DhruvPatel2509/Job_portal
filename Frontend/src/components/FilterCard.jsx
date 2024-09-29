@@ -23,8 +23,8 @@ function FilterCard() {
   }, [selectedValue, dispatch]);
 
   const getUniqueValues = (key) => {
-    const values = allJobs.map((job) => job[key]).filter(Boolean);
-    return [...new Set(values.map((value) => value.toLowerCase()))];
+    const values = allJobs?.map((job) => job[key]).filter(Boolean);
+    return [...new Set(values?.map((value) => value.toLowerCase()))];
   };
 
   const uniqueTitles = getUniqueValues("title");
