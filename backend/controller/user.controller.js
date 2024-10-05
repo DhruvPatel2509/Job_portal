@@ -140,8 +140,9 @@ export const logOut = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
-    const userId = req.userId; // Assuming req.userId is where the user ID is stored
-    const file = req.file;
+    const userId = req.userId;
+    const resumeFile = req.files["file"];
+    const profilePhoto = req.files["profilePhoto"];
 
     let user = await User.findById(userId);
 
@@ -157,18 +158,22 @@ export const updateProfile = async (req, res) => {
     if (skills) {
       user.profile.skills = skills
         .split(",")
-        .map((skill) => skill.trim()) // Trim whitespace from each skill
-        .filter((skill) => skill.length > 0); // Filter out empty skills
+        .map((skill) => skill.trim())
+        .filter((skill) => skill.length > 0);
     }
 
-    if (file) {
-      console.log(file);
-
-      const uploadResult = await uploadOnCloudinary(file.path);
-
+    if (resumeFile) {
+      const uploadResult = await uploadOnCloudinary(resumeFile[0].path);
       if (uploadResult) {
         user.profile.resume = uploadResult.secure_url;
-        user.profile.resumeOrignalName = file.originalname;
+        user.profile.resumeOrignalName = resumeFile[0].filename;
+      }
+    }
+
+    if (profilePhoto) {
+      const uploadResult = await uploadOnCloudinary(profilePhoto[0].path); // Upload profile photo
+      if (uploadResult) {
+        user.profile.profilePhoto = uploadResult.secure_url; // Save photo URL
       }
     }
 
@@ -189,3 +194,56 @@ export const updateProfile = async (req, res) => {
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
+
+// export const updateProfile = async (req, res) => {
+//   try {
+//     const { fullname, email, phoneNumber, bio, skills } = req.body;
+//     const userId = req.userId; // Assuming req.userId is where the user ID is stored
+//     const file = req.file;
+
+//     let user = await User.findById(userId);
+
+//     if (!user) {
+//       return sendResponse(res, 404, null, "User Not Found");
+//     }
+
+//     if (fullname) user.fullname = fullname;
+//     if (email) user.email = email;
+//     if (phoneNumber) user.phoneNumber = phoneNumber;
+
+//     if (bio) user.profile.bio = bio;
+//     if (skills) {
+//       user.profile.skills = skills
+//         .split(",")
+//         .map((skill) => skill.trim()) // Trim whitespace from each skill
+//         .filter((skill) => skill.length > 0); // Filter out empty skills
+//     }
+
+//     if (file) {
+//       console.log(file);
+
+//       const uploadResult = await uploadOnCloudinary(file.path);
+
+//       if (uploadResult) {
+//         user.profile.resume = uploadResult.secure_url;
+//         user.profile.resumeOrignalName = file.originalname;
+//       }
+//     }
+
+//     await user.save();
+
+//     const userResponse = {
+//       _id: user._id,
+//       fullname: user.fullname,
+//       email: user.email,
+//       phoneNumber: user.phoneNumber,
+//       role: user.role,
+//       profile: user.profile,
+//     };
+
+//     return sendResponse(res, 200, userResponse, "Profile Updated Successfully");
+//   } catch (error) {
+//     console.error(error);
+//     return sendResponse(res, 500, null, "Internal Server Error");
+//   }
+// };

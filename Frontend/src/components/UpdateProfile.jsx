@@ -16,7 +16,6 @@ import { toast } from "sonner";
 
 function UpdateProfile({ open, setOpen }) {
   const [loading, setLoading] = useState(false);
-
   const { authUser } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const [input, setInput] = useState({
@@ -26,6 +25,7 @@ function UpdateProfile({ open, setOpen }) {
     bio: authUser?.profile?.bio,
     skills: authUser?.profile?.skills,
     file: authUser?.profile?.resume,
+    profilePhoto: authUser?.profile?.profilePhoto,
   });
 
   const changeEventHandler = (e) => {
@@ -34,6 +34,10 @@ function UpdateProfile({ open, setOpen }) {
 
   const fileChangeHandler = (e) => {
     setInput({ ...input, file: e.target.files[0] });
+  };
+
+  const profilePhotoChangeHandler = (e) => {
+    setInput({ ...input, profilePhoto: e.target.files[0] }); // Handle profile photo change
   };
 
   const handleSubmit = async (e) => {
@@ -46,6 +50,9 @@ function UpdateProfile({ open, setOpen }) {
     formData.append("skills", input.skills);
     if (input.file) {
       formData.append("file", input.file);
+    }
+    if (input.profilePhoto) {
+      formData.append("profilePhoto", input.profilePhoto); // Append profile photo
     }
 
     try {
@@ -61,7 +68,6 @@ function UpdateProfile({ open, setOpen }) {
         }
       );
       dispatch(setAuthUser(res.data.data));
-      console.log("Response:", res.data);
       toast.success(res.data.message);
       setOpen(false);
     } catch (error) {
@@ -153,24 +159,32 @@ function UpdateProfile({ open, setOpen }) {
                   id="file"
                   onChange={fileChangeHandler}
                   accept="application/pdf"
-                  className="col-span-3 py-1.5 "
+                  className="col-span-3 py-1.5"
+                />
+              </div>
+
+              <div className="grid items-center grid-cols-4 gap-4">
+                <label htmlFor="profilePhoto">Profile Photo</label>
+                <input
+                  type="file"
+                  name="profilePhoto"
+                  id="profilePhoto"
+                  onChange={profilePhotoChangeHandler}
+                  accept="image/*"
+                  className="col-span-3 py-1.5"
                 />
               </div>
             </div>
             <DialogFooter>
               {loading ? (
-                <>
-                  <Button className="w-full my-4">
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Please Wait
-                  </Button>
-                </>
+                <Button className="w-full my-4">
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Please Wait
+                </Button>
               ) : (
-                <>
-                  <Button type="submit" className="w-full my-4">
-                    Update
-                  </Button>
-                </>
+                <Button type="submit" className="w-full my-4">
+                  Update
+                </Button>
               )}
             </DialogFooter>
           </form>

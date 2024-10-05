@@ -12,14 +12,15 @@ cloudinary.config({
 });
 
 const uploadOnCloudinary = async (localFilePath) => {
-  const filePath = path.resolve(localFilePath); // Ensure path is absolute
-  console.log("File path:", filePath);
+  console.log(localFilePath);
+
+  const filePath = path.resolve(localFilePath);
 
   try {
     const res = await cloudinary.uploader.upload(filePath, {
       resource_type: "auto", // Use "raw" for non-image files like PDFs
     });
-    console.log("Cloudinary response:", res);
+
     fs.unlinkSync(filePath);
 
     return res;

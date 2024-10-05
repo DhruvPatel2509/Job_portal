@@ -13,6 +13,14 @@ const userRouter = express.Router();
 userRouter.post("/register", upload.single("file"), register);
 userRouter.post("/login", login);
 userRouter.get("/logOut", logOut);
-userRouter.put("/profile/update", auth, upload.single("file"), updateProfile);
+userRouter.put(
+  "/profile/update",
+  auth,
+  upload.fields([
+    { name: "file", maxCount: 1 }, // For resume
+    { name: "profilePhoto", maxCount: 1 }, // For profile photo
+  ]),
+  updateProfile
+);
 
 export default userRouter;

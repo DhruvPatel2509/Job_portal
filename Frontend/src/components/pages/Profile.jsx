@@ -32,7 +32,7 @@ function Profile() {
             </div>
           </div>
           <Button
-            onClick={() => setOpen(true)}
+            onClick={() => setOpen(!open)}
             className="text-right"
             variant="outline"
           >
