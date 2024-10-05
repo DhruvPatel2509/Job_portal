@@ -11,14 +11,15 @@ cloudinary.config({
   api_secret: process.env.API_SEC,
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
+const uploadOnCloudinary = async (localFilePath, folder) => {
   console.log(localFilePath);
 
   const filePath = path.resolve(localFilePath);
 
   try {
     const res = await cloudinary.uploader.upload(filePath, {
-      resource_type: "auto", // Use "raw" for non-image files like PDFs
+      resource_type: "auto", 
+      folder: folder, 
     });
 
     fs.unlinkSync(filePath);

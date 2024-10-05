@@ -30,7 +30,7 @@ export const register = async (req, res) => {
       console.log(file);
 
       // Upload the file to Cloudinary
-      const uploadResult = await uploadOnCloudinary(file.path);
+      const uploadResult = await uploadOnCloudinary(file.path, "ProfilePhoto");
 
       if (uploadResult) {
         profilePhotoUrl = uploadResult.secure_url;
@@ -163,7 +163,10 @@ export const updateProfile = async (req, res) => {
     }
 
     if (resumeFile) {
-      const uploadResult = await uploadOnCloudinary(resumeFile[0].path);
+      const uploadResult = await uploadOnCloudinary(
+        resumeFile[0].path,
+        "Resume"
+      );
       if (uploadResult) {
         user.profile.resume = uploadResult.secure_url;
         user.profile.resumeOrignalName = resumeFile[0].filename;
@@ -171,7 +174,10 @@ export const updateProfile = async (req, res) => {
     }
 
     if (profilePhoto) {
-      const uploadResult = await uploadOnCloudinary(profilePhoto[0].path); // Upload profile photo
+      const uploadResult = await uploadOnCloudinary(
+        profilePhoto[0].path,
+        "ProfilePhoto"
+      ); // Upload profile photo
       if (uploadResult) {
         user.profile.profilePhoto = uploadResult.secure_url; // Save photo URL
       }

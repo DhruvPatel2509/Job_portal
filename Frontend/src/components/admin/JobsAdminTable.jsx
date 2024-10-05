@@ -25,7 +25,6 @@ function JobsAdminTable() {
   const { alljobsAdmin, searchJobByText } = useSelector((state) => state.job);
 
   const [filterJobs, setFilterJobs] = useState(alljobsAdmin);
-  console.log(alljobsAdmin);
 
   const navigate = useNavigate();
   useEffect(() => {
