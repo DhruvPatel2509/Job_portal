@@ -19,73 +19,56 @@ export const Signup = () => {
     phoneNumber: "",
     password: "",
     role: "",
-    file: "",
+    file: null,
   });
   const [errors, setErrors] = useState({});
 
-  const validateSchema = Yup.object({
-    fullname: Yup.string().required("Full name is Required"),
+  const validationSchema = Yup.object({
+    fullname: Yup.string().required("Full name is required"),
     email: Yup.string()
       .email("Invalid email format")
-      .required("Email is Required"),
+      .required("Email is required"),
     phoneNumber: Yup.string()
-      .matches(/^\d{10}$/, "Phone Number must be 10 digits")
-      .required("Phone Number is Required"),
+      .matches(/^\d{10}$/, "Phone number must be 10 digits")
+      .required("Phone number is required"),
     password: Yup.string()
-      .required("Password is Required")
-      .min(6, "Password must be at least 6 digit"),
-    // .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-    // .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-    // .matches(/[0-9]/, "Password must contain at least one number")
-    // .matches(
-    //   /[!@#$%^&*(),.?":{}|<>]/,
-    //   "Password must contain at least one special character"
-    // ),
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters"),
     role: Yup.string().oneOf(
       ["student", "recruiter", "other"],
-      "Role is Required"
+      "Role is required"
     ),
   });
 
-  const changeEventHandler = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
-
-  const changeFileHandler = (e) => {
-    setInput({ ...input, file: e.target.files?.[0] });
-  };
   const { loading, authUser } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const submitHandler = async (e) => {
+  useEffect(() => {
+    if (authUser) {
+      navigate("/");
+    }
+  }, [authUser, navigate]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInput((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    setInput((prev) => ({ ...prev, file: e.target.files[0] }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await validateSchema.validate(input, { abortEarly: false });
-    } catch (error) {
-      const newErrors = {};
-
-      error.inner.forEach((error) => {
-        newErrors[error.path] = error.message;
+      await validationSchema.validate(input, { abortEarly: false });
+      const formData = new FormData();
+      Object.keys(input).forEach((key) => {
+        formData.append(key, input[key]);
       });
 
-      setErrors(newErrors);
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("fullname", input.fullname);
-    formData.append("email", input.email);
-    formData.append("phoneNumber", input.phoneNumber);
-    formData.append("role", input.role);
-    formData.append("password", input.password);
-    if (input.file) {
-      formData.append("file", input.file);
-    }
-    console.log(formData);
-
-    try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: {
@@ -93,183 +76,114 @@ export const Signup = () => {
         },
         withCredentials: true,
       });
-      console.log("Response:", res.data);
+
       toast.success(res.data.message);
       navigate("/login");
     } catch (error) {
-      console.log(error.response.data.message);
-      toast.error(error.response.data.message);
+      if (error.name === "ValidationError") {
+        const newErrors = error.inner.reduce((acc, err) => {
+          acc[err.path] = err.message;
+          return acc;
+        }, {});
+        setErrors(newErrors);
+      } else {
+        toast.error(error.response?.data?.message || "An error occurred");
+      }
     } finally {
       dispatch(setLoading(false));
     }
   };
-  useEffect(() => {
-    if (authUser) {
-      navigate("/");
-    }
-  });
 
   return (
-    <>
-      <div className="flex items-center justify-center mx-auto max-w-7xl ">
-        <form
-          onSubmit={submitHandler}
-          className="w-1/2 p-4 my-10 border border-gray-400 rounded-md"
-        >
-          <h1 className="mb-5 text-xl font-bold">Sign Up</h1>
+    <div className="flex items-center justify-center mx-auto max-w-7xl">
+      <form
+        onSubmit={handleSubmit}
+        className="w-1/2 p-4 my-10 border border-gray-400 rounded-md"
+      >
+        <h1 className="mb-5 text-xl font-bold">Sign Up</h1>
 
-          <div className="flex flex-col gap-2 my-3 ">
-            <Label htmlFor="fullname">
-              Full Name:
-              {errors.fullname && (
-                <div className="text-sm font-semibold text-red-500 ">
-                  {errors.fullname}
-                </div>
-              )}
-            </Label>
-
-            <Input
-              id="fullname"
-              type="text"
-              placeholder="Dhruv Patel"
-              name="fullname"
-              value={input.fullname}
-              onChange={changeEventHandler}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2 my-3 ">
-            <Label htmlFor="email">
-              Email:{" "}
-              {errors.email && (
-                <div className="text-sm font-semibold text-red-500 ">
-                  {errors.email}
-                </div>
-              )}{" "}
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              name="email"
-              value={input.email}
-              onChange={changeEventHandler}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2 my-3 ">
-            <Label htmlFor="phoneNumber">
-              Phone Number:{" "}
-              {errors.phoneNumber && (
-                <div className="text-sm font-semibold text-red-500 ">
-                  {errors.phoneNumber}
+        {["fullname", "email", "phoneNumber", "password"].map((field) => (
+          <div key={field} className="flex flex-col gap-2 my-3">
+            <Label htmlFor={field}>
+              {field.charAt(0).toUpperCase() +
+                field.slice(1).replace(/([A-Z])/g, " $1")}
+              :
+              {errors[field] && (
+                <div className="text-sm font-semibold text-red-500">
+                  {errors[field]}
                 </div>
               )}
             </Label>
             <Input
-              id="phoneNumber"
-              type="text"
-              placeholder="+91"
-              name="phoneNumber"
-              value={input.phoneNumber}
-              onChange={changeEventHandler}
+              id={field}
+              type={field === "password" ? "password" : "text"}
+              placeholder={
+                field === "phoneNumber" ? "e.g. 9876543210" : `Your ${field}`
+              }
+              name={field}
+              value={input[field]}
+              onChange={handleChange}
+              className="placeholder-gray-500"
             />
           </div>
+        ))}
 
-          <div className="flex flex-col gap-2 my-3 ">
-            <Label htmlFor="password">
-              Password:{" "}
-              {errors.password && (
-                <div className="text-sm font-semibold text-red-500 ">
-                  {errors.password}
+        <div className="flex items-center justify-between my-3">
+          <div>
+            <Label>
+              Choose Your Role:{" "}
+              {errors.role && (
+                <div className="text-sm font-semibold text-red-500">
+                  {errors.role}
                 </div>
               )}
             </Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="minimum 6 characters"
-              name="password"
-              value={input.password}
-              onChange={changeEventHandler}
-            />
-          </div>
-
-          <div className="flex items-center justify-between my-3 ">
-            <div>
-              <Label>
-                Choose Your Role:{" "}
-                {errors.role && (
-                  <div className="text-sm font-semibold text-red-500 ">
-                    {errors.role}
-                  </div>
-                )}
-              </Label>
-              <RadioGroup className="flex items-center gap-4">
-                <div className="flex items-center space-x-2">
+            <RadioGroup className="flex items-center gap-4">
+              {["student", "recruiter"].map((role) => (
+                <div key={role} className="flex items-center space-x-2">
                   <Input
-                    id="student"
+                    id={role}
                     type="radio"
-                    checked={input.role === "student"}
-                    onChange={changeEventHandler}
+                    checked={input.role === role}
+                    onChange={handleChange}
                     name="role"
-                    value="student"
+                    value={role}
                     className="cursor-pointer"
                   />
-                  <Label htmlFor="student" className="cursor-pointer">
-                    Student
+                  <Label htmlFor={role} className="cursor-pointer">
+                    {role.charAt(0).toUpperCase() + role.slice(1)}
                   </Label>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Input
-                    id="recruiter"
-                    type="radio"
-                    checked={input.role === "recruiter"}
-                    onChange={changeEventHandler}
-                    name="role"
-                    value="recruiter"
-                    className="cursor-pointer"
-                  />
-                  <Label htmlFor="recruiter" className="cursor-pointer">
-                    Recruiter
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-            <div>
-              <Label htmlFor="profile">Profile</Label>
-              <Input
-                id="profile"
-                type="file"
-                onChange={changeFileHandler}
-                accept="image/*"
-                className="cursor-pointer"
-              />
-            </div>
+              ))}
+            </RadioGroup>
           </div>
+          <div>
+            <Label htmlFor="file">Profile Picture</Label>
+            <Input
+              id="file"
+              type="file"
+              onChange={handleFileChange}
+              accept="image/*"
+              className="cursor-pointer"
+            />
+          </div>
+        </div>
 
+        <Button type="submit" className="w-full my-4" disabled={loading}>
           {loading ? (
-            <>
-              <Button className="w-full my-4">
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Please Wait
-              </Button>
-            </>
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
           ) : (
-            <>
-              <Button type="submit" className="w-full my-4">
-                Signup
-              </Button>
-            </>
+            "Signup"
           )}
-          <span className="text-[0.9rem]">
-            Already have an account?{" "}
-            <Link to={"/login"} className="text-blue-600">
-              Login
-            </Link>
-          </span>
-        </form>
-      </div>
-    </>
+        </Button>
+
+        <span className="text-[0.9rem]">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600">
+            Login
+          </Link>
+        </span>
+      </form>
+    </div>
   );
 };

@@ -44,7 +44,7 @@ function CompaniesTable() {
   }, [allCompanies, searchCompanyByText]);
 
   const editHandler = (id) => {
-    navigate(`/admin/companie/${id}`);
+    navigate(`/admin/companies/${id}`);
   };
 
   return (

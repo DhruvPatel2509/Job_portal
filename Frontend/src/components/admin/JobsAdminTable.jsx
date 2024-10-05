@@ -44,7 +44,7 @@ function JobsAdminTable() {
   }, [alljobsAdmin, searchJobByText]);
 
   const editHandler = (id) => {
-    navigate(`/admin/companie/${id}`);
+    navigate(`/admin/companies/${id}`);
   };
 
   return (

@@ -24,7 +24,7 @@ function Companies() {
             placeholder="Filter By Name"
             onChange={(e) => setInput(e.target.value)}
           />
-          <Button onClick={() => navigate("/admin/companie/create")}>
+          <Button onClick={() => navigate("/admin/companies/create")}>
             New Company
           </Button>
         </div>

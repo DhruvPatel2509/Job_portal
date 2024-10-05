@@ -30,7 +30,7 @@ function CreateCompany() {
       if (res.data.success) {
         toast.success(res.data.message);
 
-        navigate(`/admin/companie/${res.data.data._id}`);
+        navigate(`/admin/companies/${res.data.data._id}`);
       }
     } catch (error) {
       if (error.response) {
