@@ -15,10 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: true, // Allows requests from any origin
+  origin: "https://job-portal-ui.onrender.com",
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
-  credentials: true, // Allows cookies or other credentials to be sent
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
