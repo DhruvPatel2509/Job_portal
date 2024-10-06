@@ -14,9 +14,7 @@ export const postJob = async (req, res) => {
       company,
       experience,
     } = req.body;
-    console.log(req.body);
 
-    // Check for missing fields
     if (
       !title ||
       !description ||
@@ -31,20 +29,17 @@ export const postJob = async (req, res) => {
       return sendResponse(res, 400, null, "All fields are required.");
     }
 
-    const userId = req.userId;
-
-    // Create new job entry
     const job = await Job.create({
       title,
       description,
-      requirements: requirements.split(",").map((req) => req.trim()), // Trim spaces
+      requirements: requirements.split(",").map((req) => req.trim()),
       salary: Number(salary),
       location,
       jobType,
       position,
       company,
       experience,
-      createdBy: userId,
+      createdBy: req.userId,
     });
 
     return sendResponse(res, 201, job, "New Job Created Successfully");
@@ -57,8 +52,6 @@ export const postJob = async (req, res) => {
 export const getAllJobs = async (req, res) => {
   try {
     const keyword = req.query.keyword || "";
-
-    // Construct the query for search
     const query = {
       $or: [
         { title: { $regex: keyword, $options: "i" } },
@@ -66,15 +59,9 @@ export const getAllJobs = async (req, res) => {
       ],
     };
 
-    // Find jobs based on the query
     const jobs = await Job.find(query).populate("company");
 
-    // Check if jobs array is empty
-    if (jobs.length === 0) {
-      return sendResponse(res, 200, null, "No Jobs Found");
-    }
-
-    return sendResponse(res, 200, jobs, "Jobs Found");
+    return sendResponse(res, 200, jobs.length ? jobs : null, "Jobs Found");
   } catch (error) {
     console.error("Error fetching jobs:", error);
     return sendResponse(res, 500, null, "Internal Server Error");
@@ -84,7 +71,6 @@ export const getAllJobs = async (req, res) => {
 export const getJobById = async (req, res) => {
   try {
     const jobId = req.params.id;
-
     if (!jobId) {
       return sendResponse(res, 400, null, "Job ID is required.");
     }
@@ -92,16 +78,12 @@ export const getJobById = async (req, res) => {
     const job = await Job.findById(jobId).populate({
       path: "application",
       options: { sort: { createdAt: -1 } },
-      populate: {
-        path: "applicant",
-      },
+      populate: { path: "applicant" },
     });
 
-    if (!job) {
-      return sendResponse(res, 404, null, "Job Not Found");
-    }
-
-    return sendResponse(res, 200, job, "Job Found");
+    return job
+      ? sendResponse(res, 200, job, "Job Found")
+      : sendResponse(res, 404, null, "Job Not Found");
   } catch (error) {
     console.error("Error fetching job by ID:", error);
     return sendResponse(res, 500, null, "Internal Server Error");
@@ -111,27 +93,69 @@ export const getJobById = async (req, res) => {
 export const adminPostedJob = async (req, res) => {
   try {
     const adminId = req.userId;
-
-    // Check if adminId is provided
     if (!adminId) {
       return sendResponse(res, 400, null, "Admin ID is required.");
     }
 
-    // Find jobs posted by the admin
-    const jobs = await Job.find({ createdBy: adminId }).populate({
-      path: "company",
-    });
+    const jobs = await Job.find({ createdBy: adminId }).populate("company");
 
-    // Check if jobs array is empty
-    if (!jobs) {
-      return sendResponse(res, 404, null, "No Jobs Found for this Admin");
+    return jobs.length
+      ? sendResponse(res, 200, jobs, "Jobs Found")
+      : sendResponse(res, 404, null, "No Jobs Found for this Admin");
+  } catch (error) {
+    console.error("Error fetching jobs posted by admin:", error);
+    return sendResponse(res, 500, null, "Internal Server Error");
+  }
+};
+
+export const updateJobById = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    if (!jobId) {
+      return sendResponse(res, 400, null, "Job ID is required.");
     }
 
-    // Return found jobs
-    return sendResponse(res, 200, jobs, "Jobs Found");
+    // Find the job by ID
+    const job = await Job.findById(jobId).populate("company");
+    if (!job) {
+      return sendResponse(res, 404, null, "Job Not Found");
+    }
+
+    // Update the fields of the job
+    const {
+      title,
+      description,
+      requirements,
+      salary,
+      location,
+      jobType,
+      position,
+      experience,
+    } = req.body;
+    console.log(title);
+
+    if (title) job.title = title.trim();
+    if (description) job.description = description.trim();
+    if (requirements) {
+      const reqArray = requirements
+        .split(",")
+        .map((req) => req.trim())
+        .filter(Boolean);
+      job.requirements = reqArray.length ? reqArray : [];
+    }
+    if (salary !== undefined && salary >= 0) job.salary = Number(salary);
+    if (location) job.location = location.trim();
+    if (jobType) job.jobType = jobType.trim();
+    if (position !== undefined) job.position = position;
+    if (experience !== undefined && experience >= 0)
+      job.experience = Number(experience);
+
+    // Save the updated job
+    const updatedJob = await job.save();
+
+    return sendResponse(res, 200, updatedJob, "Job Updated Successfully");
   } catch (error) {
-    // Log error and return a server error response
-    console.error("Error fetching jobs posted by admin:", error);
+    console.error("Error updating job by ID:", error.message || error);
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };

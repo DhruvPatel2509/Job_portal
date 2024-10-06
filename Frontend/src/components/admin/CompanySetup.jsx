@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { COMPANY_API_END_POINT } from "../../utils/constant";
 import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setSingleComapny } from "../../redux/companySlice";
+import { useSelector } from "react-redux";
 import useGetSingleCompany from "../../hooks/useGetSingleCompany";
 import { toast } from "sonner";
 
@@ -16,7 +15,6 @@ function CompanySetup() {
   const [error, setError] = useState(null);
   const params = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const companyId = params.id;
   useGetSingleCompany(companyId);
   const { singleCompany } = useSelector((state) => state.company);
