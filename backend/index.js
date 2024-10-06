@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: "https://job-portal-ui.onrender.com",
+  origin: "https://job-portal-1-9brz.onrender.com",
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
   credentials: true,
