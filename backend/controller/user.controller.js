@@ -79,18 +79,18 @@ export const login = async (req, res) => {
     // Find user by email
     const user = await User.findOne({ email });
     if (!user) {
-      return sendResponse(res, 400, null, "User does not exist");
+      return sendResponse(res, 401, null, "Invalid email or password");
     }
 
     // Check if the provided role matches the user's role
     if (role !== user.role) {
-      return sendResponse(res, 400, null, "Incorrect role");
+      return sendResponse(res, 403, null, "Access denied: incorrect role");
     }
 
     // Verify password
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
-      return sendResponse(res, 400, null, "Incorrect password");
+      return sendResponse(res, 401, null, "Invalid email or password");
     }
 
     // Create JWT token
@@ -118,7 +118,7 @@ export const login = async (req, res) => {
       .json({
         message: `Welcome back, ${user.fullname}`,
         success: true,
-        user: userResponse, // Renamed from userResponse to user for consistency
+        user: userResponse,
       });
   } catch (error) {
     console.error("Login error:", error);
