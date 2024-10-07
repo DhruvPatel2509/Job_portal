@@ -4,8 +4,9 @@ import LatestJob from "../LatestJob";
 import Footer from "../Footer";
 import useGetAllJobs from "../../hooks/useGetAllJobs";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setAuthUser } from "../../redux/authSlice";
 
 export const Home = () => {
   useGetAllJobs();
@@ -16,6 +17,8 @@ export const Home = () => {
   //     navigate("/admin/companies");
   //   }
   // });
+
+  
   return (
     <>
       <Herosection />

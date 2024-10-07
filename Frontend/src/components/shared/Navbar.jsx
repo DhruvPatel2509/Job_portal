@@ -12,12 +12,21 @@ import axios from "axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { setAuthUser } from "../../redux/authSlice";
 import { setAllJobs, setSingleJob } from "../../redux/jobSlice";
+import { useEffect } from "react";
 
 export const Navbar = () => {
   const { authUser } = useSelector((store) => store.auth);
   const role = authUser?.role;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    const data = localStorage.getItem("user");
+
+    if (data) {
+      const parseData = JSON.parse(data);
+      dispatch(setAuthUser(parseData));
+    }
+  }, [dispatch]);
 
   const logOutHandler = async () => {
     try {
@@ -28,6 +37,7 @@ export const Navbar = () => {
         dispatch(setAuthUser(null));
         dispatch(setSingleJob(null));
         dispatch(setAllJobs(null));
+        localStorage.removeItem("user");
         navigate("/login");
       }
     } catch (error) {
