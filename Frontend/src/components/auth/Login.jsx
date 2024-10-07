@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -38,6 +38,7 @@ export const Login = () => {
       });
 
       dispatch(setAuthUser(res.data.user));
+      localStorage.setItem("user", res.data.user);
 
       toast.success(res.data.message);
 

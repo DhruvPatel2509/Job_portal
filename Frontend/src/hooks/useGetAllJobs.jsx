@@ -18,7 +18,7 @@ function useGetAllJobs() {
           : `${JOB_API_END_POINT}/getAllJob`;
 
         const res = await axios.get(url);
-        console.log(res.data.data);
+
         dispatch(setAllJobs(res.data.data));
       } catch (error) {
         console.error("Error fetching jobs:", error);
