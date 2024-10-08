@@ -1,18 +1,16 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { COMPANY_API_END_POINT } from "../utils/constant";
 import { setAllCompanies } from "../redux/companySlice";
-import Cookies from "js-cookie";
 
 function useGetAllCompanies() {
   const dispatch = useDispatch();
-
+  const { token } = useSelector((store) => store.auth);
+  
   useEffect(() => {
     const fetchAllCompanies = async () => {
       try {
-        const token = Cookies.get("token"); // Get the token from cookies
-
         const res = await axios.get(`${COMPANY_API_END_POINT}/getCompany`, {
           headers: {
             Authorization: `Bearer ${token}`, // Include the token in the Authorization header

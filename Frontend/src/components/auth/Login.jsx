@@ -35,13 +35,27 @@ export const Login = () => {
       return;
     }
 
+    // Basic email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(input.email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
         withCredentials: true, // Allow cookies to be sent with requests
       });
 
-      Cookies.set("token", res.data.token);
+      // Set the token in a cookie
+      Cookies.set("token", res.data.token, {
+        expires: 1, // Optional: cookie expires in 7 days
+        path: "", // Optional: cookie is available in all paths
+        secure: true, // Set to true if using HTTPS
+        sameSite: "None", // Necessary for cross-site requests
+      });
+
       dispatch(setAuthUser(res.data.user));
       toast.success(res.data.message);
       navigate(res.data.user.role === "recruiter" ? "/admin/companies" : "/");
