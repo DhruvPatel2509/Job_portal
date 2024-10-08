@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 const corsOptions = {
   origin:
-    "http://localhost:5173" || "https://job-portal-olive-gamma.vercel.app",
+     "https://job-portal-olive-gamma.vercel.app",
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
   credentials: true, // Allows cookies to be sent
