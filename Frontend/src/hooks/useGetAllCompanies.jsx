@@ -7,7 +7,7 @@ import { setAllCompanies } from "../redux/companySlice";
 function useGetAllCompanies() {
   const dispatch = useDispatch();
   const { token } = useSelector((store) => store.auth);
-  
+
   useEffect(() => {
     const fetchAllCompanies = async () => {
       try {
