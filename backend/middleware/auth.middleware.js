@@ -3,7 +3,6 @@ import sendResponse from "../utils/response.util.js";
 
 export const auth = async (req, res, next) => {
   try {
-    // Check for token in cookies or headers
     const token = req.cookies.token || req.headers.authorization?.split(" ")[1]; // Example for Bearer token
 
     if (!token) {

@@ -16,7 +16,6 @@ function LatestJob() {
                 .slice(0, 6)
                 .map((job) => (
                   <LatestJobCards
-                    
                     key={job._id}
                     job={job}
                   />

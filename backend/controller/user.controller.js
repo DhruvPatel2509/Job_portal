@@ -108,18 +108,12 @@ export const login = async (req, res) => {
     };
 
     // Send response with token as a cookie
-    return res
-      .status(200)
-      .cookie("token", token, {
-        maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
-        httpOnly: true, // Prevent client-side access to the cookie
-        sameSite: "strict", // Prevent CSRF attacks
-      })
-      .json({
-        message: `Welcome back, ${user.fullname}`,
-        success: true,
-        user: userResponse,
-      });
+    return res.status(200).json({
+      message: `Welcome back, ${user.fullname}`,
+      success: true,
+      user: userResponse,
+      token: token,
+    });
   } catch (error) {
     console.error("Login error:", error);
     return sendResponse(res, 500, null, "Internal server error");

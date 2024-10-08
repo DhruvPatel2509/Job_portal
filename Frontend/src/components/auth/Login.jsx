@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthUser, setLoading } from "../../redux/authSlice";
 import { Loader2 } from "lucide-react";
+import Cookies from "js-cookie";
 
 export const Login = () => {
   const [input, setInput] = useState({
@@ -25,7 +26,7 @@ export const Login = () => {
   const { loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -42,18 +43,22 @@ export const Login = () => {
         },
         withCredentials: true,
       });
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      console.log(res.data);
+
+      // Set cookies instead of localStorage
+      Cookies.set("token", res.data.token, { expires: 1 });
+
       dispatch(setAuthUser(res.data.user));
       toast.success(res.data.message);
 
-      if (res.data.user.role === "recruiter") {
-        navigate("/admin/companies");
-      } else {
-        navigate("/");
-      }
+      // Navigate based on user role
+      navigate(res.data.user.role === "recruiter" ? "/admin/companies" : "/");
     } catch (error) {
       console.error(error);
-      toast.error("Login failed. Please check your credentials and try again.");
+      const errorMessage =
+        error.response?.data?.message ||
+        "Login failed. Please check your credentials and try again.";
+      toast.error(errorMessage);
     } finally {
       dispatch(setLoading(false));
     }
@@ -129,16 +134,16 @@ export const Login = () => {
           </div>
         </div>
 
-        {loading ? (
-          <Button className="w-full my-4" disabled>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Please Wait
-          </Button>
-        ) : (
-          <Button type="submit" className="w-full my-4">
-            Login
-          </Button>
-        )}
+        <Button type="submit" className="w-full my-4" disabled={loading}>
+          {loading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Please Wait
+            </>
+          ) : (
+            "Login"
+          )}
+        </Button>
 
         <span className="text-[0.9rem]">
           Don't have an account?

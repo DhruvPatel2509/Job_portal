@@ -13,7 +13,6 @@ import { USER_API_END_POINT } from "../../utils/constant";
 import { setAuthUser } from "../../redux/authSlice";
 import { setAllJobs, setSingleJob } from "../../redux/jobSlice";
 import { useEffect } from "react";
-
 export const Navbar = () => {
   const { authUser } = useSelector((store) => store.auth);
   const role = authUser?.role;
