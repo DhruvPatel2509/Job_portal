@@ -3,23 +3,25 @@ import sendResponse from "../utils/response.util.js";
 
 export const auth = async (req, res, next) => {
   try {
+    // Get the token from cookies or Authorization header
     const token = req.cookies.token || req.headers.authorization?.split(" ")[1]; // Example for Bearer token
-console.log(token);
+    console.log("Token:", token); // Debugging line
 
+    // Check if token exists
     if (!token) {
       return sendResponse(res, 401, "", "User not Authenticated");
     }
 
     // Verify the token
-    const decode = jwt.verify(token, process.env.JWT_KEY);
-    if (!decode) {
+    const decoded = jwt.verify(token, process.env.JWT_KEY); // Ensure JWT_KEY is set in your environment variables
+    if (!decoded) {
       return sendResponse(res, 401, "", "Invalid Token");
     }
 
-    // Attach user ID to the request
-    req.userId = decode.userId;
+    // Attach user ID to the request object
+    req.userId = decoded.userId;
 
-    // Proceed to the next middleware/route handler
+    // Proceed to the next middleware or route handler
     next();
   } catch (error) {
     console.error("Authentication Error:", error);
