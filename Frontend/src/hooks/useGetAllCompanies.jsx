@@ -11,7 +11,9 @@ function useGetAllCompanies() {
     const fetchAllCompanies = async () => {
       axios.defaults.withCredentials = true;
       try {
-        const res = await axios.get(`${COMPANY_API_END_POINT}/getCompany`);
+        const res = await axios.get(`${COMPANY_API_END_POINT}/getCompany`, {
+          withCredentials: true,
+        });
 
         if (res.status === 200) {
           dispatch(setAllCompanies(res.data.data));

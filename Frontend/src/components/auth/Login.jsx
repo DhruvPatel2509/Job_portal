@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthUser, setLoading } from "../../redux/authSlice";
 import { Loader2 } from "lucide-react";
+import Cookies from "js-cookie";
 
 export const Login = () => {
   const [input, setInput] = useState({
@@ -40,7 +41,8 @@ export const Login = () => {
         withCredentials: true, // Allow cookies to be sent with requests
       });
 
-      dispatch(setAuthUser(res.data.user)); // Assuming user data is still needed in Redux
+      Cookies.set("token", res.data.token);
+      dispatch(setAuthUser(res.data.user));
       toast.success(res.data.message);
       navigate(res.data.user.role === "recruiter" ? "/admin/companies" : "/");
     } catch (error) {
