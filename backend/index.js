@@ -19,10 +19,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: true, // Allows requests from any origin
+  origin: "http://localhost:5173/ ", // Replace with your frontend URL
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
-  credentials: true, // Allows cookies or other credentials to be sent
+  credentials: true, // Allows cookies to be sent
 };
 
 // Use CORS with the defined options

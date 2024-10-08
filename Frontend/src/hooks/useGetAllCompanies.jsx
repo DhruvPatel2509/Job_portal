@@ -9,28 +9,25 @@ function useGetAllCompanies() {
 
   useEffect(() => {
     const fetchAllCompanies = async () => {
-      axios.defaults.withCredentials = true;
       try {
         const res = await axios.get(`${COMPANY_API_END_POINT}/getCompany`, {
-          withCredentials: true,
+          withCredentials: true, 
         });
 
         if (res.status === 200) {
           dispatch(setAllCompanies(res.data.data));
         } else {
           dispatch(setAllCompanies([]));
-
           console.error(`Error: ${res.status}`);
         }
       } catch (error) {
         dispatch(setAllCompanies([]));
-
         console.error("Error fetching companies:", error.message);
       }
     };
 
     fetchAllCompanies();
-  });
+  }, [dispatch]); // Added dependency to useEffect
 }
 
 export default useGetAllCompanies;
