@@ -27,6 +27,8 @@ function Layout() {
 
     // Get the token cookie
     const token = Cookies.get("token");
+   
+
     token ? checkAuth() : dispatch(clearAuthUser(null));
 
     checkAuth();
