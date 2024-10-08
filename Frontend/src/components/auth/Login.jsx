@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthUser, setLoading } from "../../redux/authSlice";
 import { Loader2 } from "lucide-react";
-import Cookies from "js-cookie";
 
 export const Login = () => {
   const [input, setInput] = useState({
@@ -38,20 +37,11 @@ export const Login = () => {
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
+        withCredentials: true, // Allow cookies to be sent with requests
       });
-      console.log(res.data);
 
-      // Set cookies instead of localStorage
-      Cookies.set("token", res.data.token, { expires: 1 });
-
-      dispatch(setAuthUser(res.data.user));
+      dispatch(setAuthUser(res.data.user)); // Assuming user data is still needed in Redux
       toast.success(res.data.message);
-
-      // Navigate based on user role
       navigate(res.data.user.role === "recruiter" ? "/admin/companies" : "/");
     } catch (error) {
       console.error(error);

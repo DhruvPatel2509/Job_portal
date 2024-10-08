@@ -106,6 +106,11 @@ export const login = async (req, res) => {
       role: user.role,
       profile: user.profile,
     };
+    res.cookie("token", token, {
+      // httpOnly: true, // Prevents JavaScript access
+      sameSite: "Strict", // Helps prevent CSRF
+      expires: new Date(Date.now() + 86400000),
+    });
 
     // Send response with token as a cookie
     return res.status(200).json({
@@ -192,6 +197,19 @@ export const updateProfile = async (req, res) => {
   } catch (error) {
     console.error(error);
     return sendResponse(res, 500, null, "Internal Server Error");
+  }
+};
+
+export const retriveUser = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const user = await User.findById(userId).select("-password");
+    if (!user) return res.status(404).send("User not found.");
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.error("Error retrieving user:", error);
+    return res.status(500).send("Internal server error");
   }
 };
 

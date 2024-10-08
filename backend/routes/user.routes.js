@@ -3,6 +3,7 @@ import {
   login,
   logOut,
   register,
+  retriveUser,
   updateProfile,
 } from "../controller/user.controller.js";
 import { auth } from "../middleware/auth.middleware.js";
@@ -22,5 +23,6 @@ userRouter.put(
   ]),
   updateProfile
 );
+userRouter.get("/me", auth, retriveUser);
 
 export default userRouter;
