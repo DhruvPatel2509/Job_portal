@@ -17,9 +17,7 @@ import NotFound from "./components/NotFound";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import AuthRedirect from "./components/auth/AuthRedirect"; // Import the new AuthRedirect component
 import JobSetup from "./components/admin/JobSetup";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setAuthUser } from "./redux/authSlice";
+
 
 const appRouter = createBrowserRouter([
   {

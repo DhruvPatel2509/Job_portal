@@ -7,7 +7,7 @@ import { setAllCompanies } from "../redux/companySlice";
 function useGetAllCompanies() {
   const dispatch = useDispatch();
   const { token } = useSelector((store) => store.auth);
-
+  const { authUser } = useSelector((store) => store.auth);
   useEffect(() => {
     const fetchAllCompanies = async () => {
       try {
@@ -15,7 +15,7 @@ function useGetAllCompanies() {
           headers: {
             Authorization: `Bearer ${token}`, // Include the token in the Authorization header
           },
-          withCredentials: true, // Keep this if you need to send cookies
+          withCredentials: true,
         });
 
         if (res.status === 200) {
@@ -30,8 +30,10 @@ function useGetAllCompanies() {
       }
     };
 
-    fetchAllCompanies();
-  }, [dispatch]); // Added dependency to useEffect
+    if (authUser) {
+      fetchAllCompanies();
+    }
+  }, [dispatch, token, authUser]); // Added dependency to useEffect
 }
 
 export default useGetAllCompanies;

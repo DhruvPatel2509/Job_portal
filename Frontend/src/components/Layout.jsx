@@ -11,8 +11,10 @@ import {
 import { USER_API_END_POINT } from "../utils/constant"; // Adjust the import path
 import { Navbar } from "./shared/Navbar";
 import Cookies from "js-cookie";
+
 function Layout() {
   const dispatch = useDispatch();
+  const { authUser } = useSelector((store) => store.auth);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -21,7 +23,6 @@ function Layout() {
         const res = await axios.get(`${USER_API_END_POINT}/me`, {
           withCredentials: true,
         });
-
         dispatch(setAuthUser(res.data.user));
       } catch (error) {
         console.error("Authentication check failed:", error);
@@ -34,12 +35,12 @@ function Layout() {
     const token = Cookies.get("token");
     dispatch(setToken(token));
 
-    token ? checkAuth() : dispatch(clearAuthUser(null));
-
-    checkAuth();
+    if (token) {
+      checkAuth();
+    } else {
+      dispatch(clearAuthUser(null));
+    }
   }, [dispatch]);
-
- 
 
   return (
     <>

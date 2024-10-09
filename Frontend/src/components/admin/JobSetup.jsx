@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import useGetSingleJob from "../../hooks/useGetSingleJob";
 import { JOB_API_END_POINT } from "../../utils/constant";
+import { ArrowLeft } from "lucide-react"; // Import the back arrow icon
 
 function JobSetup() {
   const [loading, setLoading] = useState(false);
@@ -58,7 +59,7 @@ function JobSetup() {
       setLoading(true);
       const res = await axios.put(
         `${JOB_API_END_POINT}/updateJob/${jobId}`,
-        input, // Sending input directly as JSON
+        input,
         { withCredentials: true }
       );
 
@@ -70,7 +71,7 @@ function JobSetup() {
       const message =
         error.response?.data?.message ||
         "Something went wrong. Please try again.";
-      toast.error(message); // Show error using toast
+      toast.error(message);
       setError(message);
     } finally {
       setLoading(false);
@@ -83,6 +84,21 @@ function JobSetup() {
         onSubmit={handleSubmit}
         className="p-8 max-w-4xl border-gray-400 shadow-lg rounded-md"
       >
+        <div className="flex items-center gap-4 mb-5">
+          <Button
+            variant="outline"
+            className="flex items-center gap-2 font-semibold text-gray-500"
+            onClick={(e) => {
+              e.preventDefault(); // Prevent form submission
+              navigate(-1);
+            }} // Navigate back
+          >
+            <ArrowLeft />
+            <span>Back</span>
+          </Button>
+          <h1 className="text-xl font-bold">Job Setup</h1>
+        </div>
+
         {error && <p className="text-red-700">{error}</p>}
         <div className="grid grid-cols-2 gap-2">
           {Object.keys(input).map((key) => (
