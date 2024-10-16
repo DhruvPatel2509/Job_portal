@@ -14,7 +14,6 @@ import Cookies from "js-cookie";
 
 function Layout() {
   const dispatch = useDispatch();
-  const { authUser } = useSelector((store) => store.auth);
 
   useEffect(() => {
     const checkAuth = async () => {

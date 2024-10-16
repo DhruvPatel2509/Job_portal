@@ -11,7 +11,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { setAuthUser, setToken } from "../../redux/authSlice";
-import { setAllJobs, setSingleJob } from "../../redux/jobSlice";
+import {
+  setAllJobs,
+  setAllJobsAdmin,
+  setSingleJob,
+} from "../../redux/jobSlice";
+import { setAllCompanies } from "../../redux/companySlice";
 export const Navbar = () => {
   const { authUser } = useSelector((store) => store.auth);
   const role = authUser?.role;
@@ -27,13 +32,15 @@ export const Navbar = () => {
         dispatch(setAuthUser(null));
         dispatch(setSingleJob(null));
         dispatch(setAllJobs(null));
+        dispatch(setAllCompanies(null));
         dispatch(setToken(""));
-        localStorage.removeItem("user");
+        dispatch(setAllJobsAdmin(null));
+        console.log("Logedout");
+
         navigate("/login");
       }
     } catch (error) {
       console.error("Logout failed:", error);
-      // Show a user-friendly message or notification here
     }
   };
 

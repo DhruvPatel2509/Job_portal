@@ -31,8 +31,8 @@ function CompaniesTable() {
   const navigate = useNavigate();
   useEffect(() => {
     const filteredCompany =
-      allCompanies.length > 0 &&
-      allCompanies.filter((company) => {
+      allCompanies?.length > 0 &&
+      allCompanies?.filter((company) => {
         if (!searchCompanyByText) {
           return true;
         }

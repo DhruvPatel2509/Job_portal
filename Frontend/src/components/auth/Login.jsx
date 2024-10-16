@@ -8,7 +8,7 @@ import axios from "axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthUser, setLoading } from "../../redux/authSlice";
+import { setAuthUser, setLoading, setToken } from "../../redux/authSlice";
 import { Loader2 } from "lucide-react";
 import Cookies from "js-cookie";
 
@@ -57,8 +57,16 @@ export const Login = () => {
       });
 
       dispatch(setAuthUser(res.data.user));
+      dispatch(setToken(res.data.token));
       toast.success(res.data.message);
-      navigate(res.data.user.role === "recruiter" ? "/admin/companies" : "/");
+
+      setTimeout(
+        () =>
+          navigate(
+            res.data.user.role === "recruiter" ? "/admin/companies" : "/"
+          ),
+        1000
+      );
     } catch (error) {
       console.error(error);
       const errorMessage =

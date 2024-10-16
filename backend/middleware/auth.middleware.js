@@ -5,7 +5,7 @@ export const auth = async (req, res, next) => {
   try {
     // Get the token from cookies or Authorization header
     const token = req.cookies.token || req.headers.authorization?.split(" ")[1]; // Example for Bearer token
-    console.log("Token:", token); // Debugging line
+    console.log("Auth");
 
     // Check if token exists
     if (!token) {

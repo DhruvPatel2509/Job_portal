@@ -9,6 +9,7 @@ import { setSearchJobByText } from "../../redux/jobSlice";
 
 function JobsAdmin() {
   useGetJobsAdmin();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [input, setInput] = useState("");

@@ -204,8 +204,8 @@ export const updateProfile = async (req, res) => {
 export const retriveUser = async (req, res) => {
   try {
     const userId = req.userId;
-
     const user = await User.findById(userId).select("-password");
+
     if (!user) return res.status(404).send("User not found.");
     return res.status(200).json({ user });
   } catch (error) {

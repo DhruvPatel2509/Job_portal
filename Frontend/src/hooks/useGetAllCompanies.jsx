@@ -1,39 +1,33 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { COMPANY_API_END_POINT } from "../utils/constant";
 import { setAllCompanies } from "../redux/companySlice";
+import apiRequest from "../utils/axiosUtility";
 
 function useGetAllCompanies() {
   const dispatch = useDispatch();
   const { token } = useSelector((store) => store.auth);
   const { authUser } = useSelector((store) => store.auth);
+
   useEffect(() => {
     const fetchAllCompanies = async () => {
+      const endpoint = `${COMPANY_API_END_POINT}/getCompany`;
       try {
-        const res = await axios.get(`${COMPANY_API_END_POINT}/getCompany`, {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-          },
-          withCredentials: true,
-        });
-
+        const res = await apiRequest("GET", endpoint, {}, token);
+       
         if (res.status === 200) {
           dispatch(setAllCompanies(res.data.data));
-        } else {
-          dispatch(setAllCompanies([]));
-          console.error(`Error: ${res.status}`);
         }
       } catch (error) {
         dispatch(setAllCompanies([]));
-        console.error("Error fetching companies:", error.message);
+        console.error("Error fetching companies:", error);
       }
     };
 
     if (authUser) {
       fetchAllCompanies();
     }
-  }, [dispatch, token, authUser]); // Added dependency to useEffect
+  }, [dispatch, token, authUser]);
 }
 
 export default useGetAllCompanies;

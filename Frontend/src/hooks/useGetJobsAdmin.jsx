@@ -1,25 +1,28 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { JOB_API_END_POINT } from "../utils/constant";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAllJobsAdmin } from "../redux/jobSlice";
+import apiRequest from "../utils/axiosUtility";
 
 function useGetJobsAdmin() {
   const dispatch = useDispatch();
+  const { token } = useSelector((store) => store.auth); // Get token from auth state
+
   useEffect(() => {
     const fetchJobsAdmin = async () => {
       try {
-        const res = await axios.get(`${JOB_API_END_POINT}/adminPostedJob`, {
-          withCredentials: true,
-        });
+        const endpoint = `${JOB_API_END_POINT}/adminPostedJob`;
+        const res = await apiRequest("GET", endpoint, {}, token);
 
-        dispatch(setAllJobsAdmin(res.data.data));
+        if (res.status === 200) {
+          dispatch(setAllJobsAdmin(res.data.data));
+        }
       } catch (error) {
         console.log(error);
       }
     };
     fetchJobsAdmin();
-  }, [dispatch]);
+  }, [dispatch, token]);
 }
 
 export default useGetJobsAdmin;
