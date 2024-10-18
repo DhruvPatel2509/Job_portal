@@ -15,6 +15,7 @@ import axios from "axios";
 import { JOB_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 function CreateAdminJob() {
   const { allCompanies } = useSelector((store) => store.company);
@@ -89,6 +90,16 @@ function CreateAdminJob() {
         onSubmit={submitHandler}
         className="p-8 max-w-4xl border-gray-400 shadow-lg rounded-md"
       >
+        <Button
+          variant="outline"
+          className="flex items-center gap-2 font-semibold text-gray-500"
+          onClick={(e) => {
+            e.preventDefault(); // Prevent form submission
+            navigate(-1);
+          }}
+        >
+          <ArrowLeft /> <span>Back</span>
+        </Button>
         {error && <p className="text-red-700">{error}</p>}
         <div className="grid grid-cols-2 gap-2">
           <div>
