@@ -9,6 +9,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useGetSingleCompany from "../../hooks/useGetSingleCompany";
 import { toast } from "sonner";
+import apiRequest from "../../utils/axiosUtility";
 
 function CompanySetup() {
   const [loading, setLoading] = useState(false);
@@ -26,6 +27,7 @@ function CompanySetup() {
     location: singleCompany?.location || "",
     file: null,
   });
+  const { token } = useSelector((store) => store.auth);
 
   useEffect(() => {
     setInput({
@@ -63,11 +65,10 @@ function CompanySetup() {
 
     try {
       setLoading(true);
-      const res = await axios.put(
-        `${COMPANY_API_END_POINT}/updateCompany/${params.id}`,
-        formData,
-        { withCredentials: true }
-      );
+
+      const endpoint = `${COMPANY_API_END_POINT}/updateCompany/${params.id}`;
+      const res = await apiRequest("PUT", endpoint, formData, token);
+
       if (res.data.success) {
         toast.success(res.data.message);
         navigate("/admin/companies");

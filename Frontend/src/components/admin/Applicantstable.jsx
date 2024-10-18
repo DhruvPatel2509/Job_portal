@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table";
 import { useSelector } from "react-redux";
 import { APPLICATION_API_END_POINT } from "../../utils/constant";
-import axios from "axios";
 import { toast } from "sonner";
 import { MoreHorizontalIcon } from "lucide-react";
 import {
@@ -18,10 +17,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useEffect, useState } from "react";
+import apiRequest from "../../utils/axiosUtility";
 
 function Applicantstable() {
   const shortListingStatus = ["accepted", "rejected"];
   const { applicants } = useSelector((store) => store.application);
+  const { token } = useSelector((store) => store.auth);
 
   // Local state to manage applicants
   const [localApplicants, setLocalApplicants] = useState(applicants);
@@ -33,12 +34,10 @@ function Applicantstable() {
 
   const statusHandler = async (status, id) => {
     setLoading(true);
-    axios.defaults.withCredentials = true;
     try {
-      const res = await axios.put(
-        `${APPLICATION_API_END_POINT}/updateStatus/${id}`,
-        { status }
-      );
+      const endpoint = `${APPLICATION_API_END_POINT}/updateStatus/${id}`;
+      const res = await apiRequest("PUT", endpoint, { status }, token);
+
       toast.success(`${res.data.message} to ${status}`);
 
       // Update the status in local state
