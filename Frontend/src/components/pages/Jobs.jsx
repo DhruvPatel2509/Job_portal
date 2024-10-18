@@ -12,7 +12,7 @@ function Jobs() {
 
   useEffect(() => {
     if (searchedQuery) {
-      const filteredJobs = allJobs.filter((job) => {
+      const filteredJobs = allJobs?.filter((job) => {
         return (
           job?.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
           job?.description

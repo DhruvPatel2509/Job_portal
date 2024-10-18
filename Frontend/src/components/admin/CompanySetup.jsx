@@ -3,13 +3,12 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { COMPANY_API_END_POINT } from "../../utils/constant";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useGetSingleCompany from "../../hooks/useGetSingleCompany";
 import { toast } from "sonner";
 import apiRequest from "../../utils/axiosUtility";
+import { COMPANY_API_END_POINT } from "../../utils/constant";
 
 function CompanySetup() {
   const [loading, setLoading] = useState(false);
@@ -81,24 +80,47 @@ function CompanySetup() {
     }
   };
 
+  const deleteCompany = async () => {
+    try {
+      const endpoint = `${COMPANY_API_END_POINT}/deleteCompany/${params.id}`;
+      const res = await apiRequest("DELETE", endpoint, {}, token);
+
+      if (res.status === 200) {
+        toast.success("Company Deleted Successfully");
+        navigate("/admin/companies");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="max-w-xl mx-auto my-10">
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <form onSubmit={handleSubmit}>
-        <div className="flex items-center gap-5 py-8">
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 font-semibold text-gray-500"
-            onClick={(e) => {
-              e.preventDefault(); // Prevent form submission
-              navigate(-1);
-            }}
-          >
-            <ArrowLeft />
-            <span>Back</span>
-          </Button>
-          <h1 className="text-xl font-bold">Company Setup</h1>
+        <div className="flex items-center justify-between py-4 border-b mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Company Setup</h1>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              className="text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
+              onClick={deleteCompany}
+            >
+              DELETE
+            </Button>
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 font-semibold text-gray-600 border-gray-600 hover:bg-gray-200"
+              onClick={(e) => {
+                e.preventDefault(); // Prevent form submission
+                navigate(-1);
+              }}
+            >
+              <ArrowLeft />
+              <span>Back</span>
+            </Button>
+          </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <Label>Company Name</Label>
             <Input
@@ -107,6 +129,7 @@ function CompanySetup() {
               value={input.name}
               onChange={changeEventHandler}
               required
+              className="border-gray-300 rounded-md focus:ring focus:ring-blue-300"
             />
           </div>
           <div>
@@ -117,6 +140,7 @@ function CompanySetup() {
               value={input.description}
               onChange={changeEventHandler}
               required
+              className="border-gray-300 rounded-md focus:ring focus:ring-blue-300"
             />
           </div>
           <div>
@@ -127,6 +151,7 @@ function CompanySetup() {
               value={input.website}
               onChange={changeEventHandler}
               required
+              className="border-gray-300 rounded-md focus:ring focus:ring-blue-300"
             />
           </div>
           <div>
@@ -137,20 +162,29 @@ function CompanySetup() {
               value={input.location}
               onChange={changeEventHandler}
               required
+              className="border-gray-300 rounded-md focus:ring focus:ring-blue-300"
             />
           </div>
           <div>
             <Label>Logo</Label>
-            <Input type="file" accept="image/*" onChange={changeFileHandler} />
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={changeFileHandler}
+              className="border-gray-300 rounded-md focus:ring focus:ring-blue-300"
+            />
           </div>
         </div>
-        {error && <p className="text-red-500">{error}</p>}
-        <Button type="submit" className="w-full my-8">
+        {error && <p className="mt-4 text-red-500">{error}</p>}
+        <Button
+          type="submit"
+          className="w-full my-8 bg-blue-600 text-white hover:bg-blue-700"
+        >
           {loading ? (
-            <>
+            <div className="flex items-center">
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               Please Wait
-            </>
+            </div>
           ) : (
             <>Submit</>
           )}

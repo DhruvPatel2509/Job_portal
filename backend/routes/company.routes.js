@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  deleteCompany,
   getCompany,
   getCompanyById,
   registerCompany,
@@ -20,5 +21,6 @@ companyRouter.put(
   upload.single("file"),
   updateCompany
 );
+companyRouter.delete("/deleteCompany/:id", auth, deleteCompany);
 
 export default companyRouter;

@@ -101,3 +101,26 @@ export const updateCompany = async (req, res) => {
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
+
+export const deleteCompany = async (req, res) => {
+  try {
+    const { id: companyId } = req.params;
+
+    if (!companyId) {
+      return sendResponse(res, 400, null, "Company ID is required");
+    }
+
+    const company = await Company.findById(companyId);
+    if (!company) {
+      return sendResponse(res, 404, null, "Company Not Found");
+    }
+
+    // Delete the company
+    await Company.findByIdAndDelete(companyId);
+
+    return sendResponse(res, 200, null, "Company deleted successfully");
+  } catch (error) {
+    console.log(error);
+    return sendResponse(res, 500, null, "Internal Server Error");
+  }
+};
