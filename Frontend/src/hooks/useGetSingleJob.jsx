@@ -1,17 +1,17 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { JOB_API_END_POINT } from "../utils/constant";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSingleJob } from "../redux/jobSlice";
+import apiRequest from "../utils/axiosUtility";
 
 function useGetSingleJob(jobId) {
   const dispatch = useDispatch();
+  const { token } = useSelector((store) => store.auth);
   useEffect(() => {
     const fetchSingleJob = async () => {
       try {
-        const res = await axios.get(`${JOB_API_END_POINT}/getJob/${jobId}`, {
-          withCredentials: true,
-        });
+        const endpoint = `${JOB_API_END_POINT}/getJob/${jobId}`;
+        const res = await apiRequest("GET", endpoint, {}, token);
 
         if (res.status === 200) {
           dispatch(setSingleJob(res.data.data)); // Corrected spelling
@@ -24,7 +24,7 @@ function useGetSingleJob(jobId) {
       }
     };
     fetchSingleJob();
-  }, [jobId]);
+  }, [jobId, token, dispatch]);
 }
 
 export default useGetSingleJob;

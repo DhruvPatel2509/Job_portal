@@ -1,21 +1,19 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { COMPANY_API_END_POINT } from "../utils/constant";
 import { setSingleComapny } from "../redux/companySlice"; // Corrected spelling
+import apiRequest from "../utils/axiosUtility";
 
 function useGetSingleCompany(companyId) {
   const dispatch = useDispatch();
-
+  const { token } = useSelector((store) => store.auth); // Get token from auth state
   useEffect(() => {
     const fetchSingleCompany = async () => {
       try {
-        const res = await axios.get(
-          `${COMPANY_API_END_POINT}/getCompany/${companyId}`, 
-          {
-            withCredentials: true,
-          }
-        );
+        const endpoint = `${COMPANY_API_END_POINT}/getCompany/${companyId}`;
+
+        const res = await apiRequest("GET", endpoint, {}, token);
 
         if (res.status === 200) {
           dispatch(setSingleComapny(res.data.data)); // Corrected spelling
@@ -29,7 +27,7 @@ function useGetSingleCompany(companyId) {
     };
 
     fetchSingleCompany();
-  }, [companyId, dispatch]);
+  }, [companyId, dispatch, token]);
 }
 
 export default useGetSingleCompany;

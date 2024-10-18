@@ -10,8 +10,6 @@ const useGetAppliedJobs = () => {
 
   useEffect(() => {
     const fetchAppliedJobs = async () => {
-      const { token } = useSelector((store) => store.auth); // Get token from auth state
-
       try {
         const endpoint = `${APPLICATION_API_END_POINT}/getAppliedJob`;
         const res = await apiRequest("GET", endpoint, {}, token); // Use the apiRequest utility
