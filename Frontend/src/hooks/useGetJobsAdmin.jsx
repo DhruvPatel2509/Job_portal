@@ -18,6 +18,7 @@ function useGetJobsAdmin() {
           dispatch(setAllJobsAdmin(res.data.data));
         }
       } catch (error) {
+        dispatch(setAllJobsAdmin(null));
         console.log(error);
       }
     };

@@ -9,10 +9,15 @@ import useGetSingleCompany from "../../hooks/useGetSingleCompany";
 import { toast } from "sonner";
 import apiRequest from "../../utils/axiosUtility";
 import { COMPANY_API_END_POINT } from "../../utils/constant";
+import Modal from "react-modal";
+
+// Set the app element for accessibility
+Modal.setAppElement("#root");
 
 function CompanySetup() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
   const companyId = params.id;
@@ -64,7 +69,6 @@ function CompanySetup() {
 
     try {
       setLoading(true);
-
       const endpoint = `${COMPANY_API_END_POINT}/updateCompany/${params.id}`;
       const res = await apiRequest("PUT", endpoint, formData, token);
 
@@ -82,6 +86,7 @@ function CompanySetup() {
 
   const deleteCompany = async () => {
     try {
+      setLoading(true);
       const endpoint = `${COMPANY_API_END_POINT}/deleteCompany/${params.id}`;
       const res = await apiRequest("DELETE", endpoint, {}, token);
 
@@ -91,7 +96,19 @@ function CompanySetup() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
+      setIsDeleteModalOpen(false);
     }
+  };
+
+  const openDeleteModal = (e) => {
+    e.preventDefault();
+    setIsDeleteModalOpen(true);
+  };
+  const closeDeleteModal = (e) => {
+    e.preventDefault();
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -103,7 +120,7 @@ function CompanySetup() {
             <Button
               variant="outline"
               className="text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
-              onClick={deleteCompany}
+              onClick={openDeleteModal}
             >
               DELETE
             </Button>
@@ -190,6 +207,36 @@ function CompanySetup() {
           )}
         </Button>
       </form>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onRequestClose={closeDeleteModal}
+        contentLabel="Confirm Delete"
+        style={{
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+          },
+        }}
+      >
+        <h2>
+          Are you sure you want to delete this company? <br /> This action will
+          also permanently remove all associated jobs and applications.
+        </h2>
+        <div className="flex justify-end gap-4 mt-4">
+          <Button onClick={closeDeleteModal} className="bg-gray-300">
+            Cancel
+          </Button>
+          <Button onClick={deleteCompany} className="bg-red-600 text-white">
+            Delete
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -1,65 +1,42 @@
-import React, { useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import {
-  APPLICATION_API_END_POINT,
-  JOB_API_END_POINT,
-} from "../../utils/constant";
-import { useDispatch, useSelector } from "react-redux";
-import { setSingleJob } from "../../redux/jobSlice";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
+import useGetSingleJob from "../../hooks/useGetSingleJob";
+import apiRequest from "../../utils/axiosUtility";
+import { APPLICATION_API_END_POINT } from "../../utils/constant";
 
 function JobDetails() {
   const params = useParams();
   const jobId = params.id;
-  const dispatch = useDispatch();
-  const fetchSingleJob = async () => {
-    try {
-      const res = await axios.get(`${JOB_API_END_POINT}/getJob/${jobId}`, {
-        withCredentials: true,
-      });
-
-      if (res.data.success) {
-        dispatch(setSingleJob(res.data.data));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  const { token } = useSelector((store) => store.auth);
   const { authUser } = useSelector((state) => state.auth);
   const { singleJob } = useSelector((state) => state.job);
 
+  // Refetch job details when component mounts or jobId changes
+  const { fetchSingleJob } = useGetSingleJob(jobId);
+
   const checkIfApplied = () => {
-    if (singleJob && singleJob.application) {
-      return singleJob.application.some(
-        (application) => application.applicant._id === authUser._id
-      );
-    }
-    return false;
+    return singleJob?.application?.some(
+      (application) => application.applicant._id === authUser._id
+    );
   };
   const isApplied = checkIfApplied();
 
-  useEffect(() => {
-    fetchSingleJob();
-  }, [jobId, isApplied]);
-
   const applyJob = async () => {
     try {
-      const res = await axios.post(
-        `${APPLICATION_API_END_POINT}/applyJob/${jobId}`,
-        {},
-        {
-          withCredentials: true,
-        }
-      );
+      const endpoint = `${APPLICATION_API_END_POINT}/applyJob/${jobId}`;
+      await apiRequest("POST", endpoint, {}, token);
+
+      // Refetch job details after a successful application
       fetchSingleJob();
 
-      toast.success(res.data.message);
+      // Show success notification
+      toast.success("Successfully applied for the job!");
     } catch (error) {
       console.error("Error applying for the job:", error);
+      toast.error("Failed to apply for the job.");
     }
   };
 
@@ -91,56 +68,50 @@ function JobDetails() {
         </Button>
       </div>
       <div>
-        <h1 className=" border-b-2 border-b-gray-200 font-medium py-4 ">
+        <h1 className="border-b-2 border-b-gray-200 font-medium py-4">
           {singleJob?.description}
         </h1>
-        <div className="my-4 ">
+        <div className="my-4">
           <h1 className="font-bold my-1">
-            Role :
+            Role:
             <span className="pl-4 font-normal text-gray-800">
               {singleJob?.title}
             </span>
           </h1>
-
           <h1 className="font-bold my-1">
-            Location :
+            Location:
             <span className="pl-4 font-normal text-gray-800">
               {singleJob?.location}
             </span>
           </h1>
-
           <h1 className="font-bold my-1">
-            Description :
+            Description:
             <span className="pl-4 font-normal text-gray-800">
               {singleJob?.description}
             </span>
           </h1>
-
           <h1 className="font-bold my-1">
-            Experience :
+            Experience:
             <span className="pl-4 font-normal text-gray-800">
               {singleJob?.experience} years
             </span>
           </h1>
-
           <h1 className="font-bold my-1">
-            Salary :
+            Salary:
             <span className="pl-4 font-normal text-gray-800">
               {singleJob?.salary} LPA
             </span>
           </h1>
-
           <h1 className="font-bold my-1">
-            Total Applicant
+            Total Applicants:
             <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.application.length}
+              {singleJob?.application?.length}
             </span>
           </h1>
-
           <h1 className="font-bold my-1">
-            Posted Date
+            Posted Date:
             <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.createdAt.split("T")[0]}
+              {singleJob?.createdAt?.split("T")[0]}
             </span>
           </h1>
         </div>

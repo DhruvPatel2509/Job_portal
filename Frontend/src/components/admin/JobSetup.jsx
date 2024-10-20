@@ -5,10 +5,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Modal from "react-modal";
+
 import { toast } from "sonner";
 import useGetSingleJob from "../../hooks/useGetSingleJob";
 import { JOB_API_END_POINT } from "../../utils/constant";
 import { ArrowLeft } from "lucide-react"; // Import the back arrow icon
+import apiRequest from "../../utils/axiosUtility";
 
 function JobSetup() {
   const [loading, setLoading] = useState(false);
@@ -16,10 +19,12 @@ function JobSetup() {
   const params = useParams();
   const navigate = useNavigate();
   const jobId = params.id;
+  const { token } = useSelector((store) => store.auth);
 
   // Custom hook to fetch single job
   useGetSingleJob(jobId);
   const { singleJob } = useSelector((state) => state.job);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [input, setInput] = useState({
     title: "",
@@ -50,7 +55,14 @@ function JobSetup() {
   const changeEventHandler = ({ target: { name, value } }) => {
     setInput((prev) => ({ ...prev, [name]: value }));
   };
-
+  const openDeleteModal = (e) => {
+    e.preventDefault();
+    setIsDeleteModalOpen(true);
+  };
+  const closeDeleteModal = (e) => {
+    e.preventDefault();
+    setIsDeleteModalOpen(false);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -78,6 +90,25 @@ function JobSetup() {
     }
   };
 
+  const deleteJob = async () => {
+    try {
+      setLoading(true);
+      const endpoint = `${JOB_API_END_POINT}/deleteJob/${params.id}`;
+
+      const res = await apiRequest("DELETE", endpoint, {}, token);
+
+      if (res.status === 200) {
+        toast.success("Job Deleted Successfully");
+        navigate("/admin/jobs");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setIsDeleteModalOpen(false);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center w-screen my-5">
       <form
@@ -96,7 +127,15 @@ function JobSetup() {
             <ArrowLeft />
             <span>Back</span>
           </Button>
+
           <h1 className="text-xl font-bold">Job Setup</h1>
+          <Button
+            variant="outline"
+            className="text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
+            onClick={openDeleteModal}
+          >
+            DELETE
+          </Button>
         </div>
 
         {error && <p className="text-red-700">{error}</p>}
@@ -124,6 +163,36 @@ function JobSetup() {
           {loading ? "Updating..." : "Update"}
         </Button>
       </form>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onRequestClose={closeDeleteModal}
+        contentLabel="Confirm Delete"
+        style={{
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+          },
+        }}
+      >
+        <h2>
+          Are you sure you want to delete this company? <br /> This action will
+          also permanently remove all associated jobs and applications.
+        </h2>
+        <div className="flex justify-end gap-4 mt-4">
+          <Button onClick={closeDeleteModal} className="bg-gray-300">
+            Cancel
+          </Button>
+          <Button onClick={deleteJob} className="bg-red-600 text-white">
+            Delete
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

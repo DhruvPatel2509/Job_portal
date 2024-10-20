@@ -110,3 +110,20 @@ export const updateStatus = async (req, res) => {
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
+
+export const deleteApplicant = async (req, res) => {
+  try {
+    const { id: applicantId } = req.params;
+    const applicant = await Application.findById(applicantId);
+
+    if (!applicant) {
+      return sendResponse(res, 404, null, "No applicant found");
+    }
+
+    await Application.findByIdAndDelete(applicantId);
+    return sendResponse(res, 200, null, "Applicant deleted successfully");
+  } catch (error) {
+    console.error(error); // Better error logging
+    return sendResponse(res, 500, null, "Internal Server Error");
+  }
+};

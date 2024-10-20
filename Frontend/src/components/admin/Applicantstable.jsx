@@ -7,6 +7,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Modal from "react-modal";
+
+import { Button } from "@/components/ui/button"; // Adjust import based on your structure
+
 import { useSelector } from "react-redux";
 import { APPLICATION_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
@@ -18,16 +22,24 @@ import {
 } from "@/components/ui/popover";
 import { useEffect, useState } from "react";
 import apiRequest from "../../utils/axiosUtility";
+import { useNavigate } from "react-router-dom";
 
 function Applicantstable() {
   const shortListingStatus = ["accepted", "rejected"];
   const { applicants } = useSelector((store) => store.application);
   const { token } = useSelector((store) => store.auth);
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const navigate = useNavigate();
   // Local state to manage applicants
   const [localApplicants, setLocalApplicants] = useState(applicants);
   const [loading, setLoading] = useState(false);
-
+  const openDeleteModal = (e) => {
+    e.preventDefault();
+    setIsDeleteModalOpen(true);
+  };
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
   useEffect(() => {
     setLocalApplicants(applicants); // Sync with Redux store
   }, [applicants]);
@@ -50,6 +62,26 @@ function Applicantstable() {
     } catch (error) {
       toast.error(error.message);
       setLoading(false);
+    }
+  };
+
+  const deleteApplicant = async (id) => {
+    try {
+      setLoading(true);
+      const endpoint = `${APPLICATION_API_END_POINT}/deleteApplicant/${id}`;
+
+      const res = await apiRequest("DELETE", endpoint, {}, token);
+      console.log(res);
+
+      if (res.status === 200) {
+        toast.success("Job Deleted Successfully");
+        navigate("/admin/jobs");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setIsDeleteModalOpen(false);
     }
   };
 
@@ -128,12 +160,50 @@ function Applicantstable() {
                       )}
                     </PopoverContent>
                   </Popover>
+
+                  <Button
+                    variant="outline"
+                    className="text-red-600 border-red-600 hover:bg-red-600 hover:text-white"
+                    onClick={openDeleteModal}
+                  >
+                    DELETE
+                  </Button>
                 </div>
-              </TableCell>
+              </TableCell>{" "}
+              <Modal
+                isOpen={isDeleteModalOpen}
+                onRequestClose={closeDeleteModal}
+                contentLabel="Confirm Delete"
+                style={{
+                  content: {
+                    top: "50%",
+                    left: "50%",
+                    right: "auto",
+                    bottom: "auto",
+                    marginRight: "-50%",
+                    transform: "translate(-50%, -50%)",
+                  },
+                }}
+              >
+                <h2>
+                  Are you sure you want to delete this ? <br /> This
+                </h2>
+                <div className="flex justify-end gap-4 mt-4">
+                  <Button onClick={closeDeleteModal} className="bg-gray-300">
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => deleteApplicant(a._id)}
+                    className="bg-red-600 text-white"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </Modal>
             </tr>
           ))}
         </TableBody>
-      </Table>
+      </Table>{" "}
     </>
   );
 }

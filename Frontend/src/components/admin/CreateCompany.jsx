@@ -7,25 +7,20 @@ import axios from "axios";
 import { COMPANY_API_END_POINT } from "../../utils/constant";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import apiRequest from "../../utils/axiosUtility";
 
 function CreateCompany() {
   const navigate = useNavigate();
   const [companyName, setCompanyName] = useState("");
   const dispatch = useDispatch();
+  const { token } = useSelector((store) => store.auth);
 
   const registerNewCompany = async () => {
     try {
-      const res = await axios.post(
-        `${COMPANY_API_END_POINT}/registerCompany`,
-        { companyName },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+      const endpoint = `${COMPANY_API_END_POINT}/registerCompany`;
+
+      const res = await apiRequest("POST", endpoint, { companyName }, token);
 
       if (res.data.success) {
         toast.success(res.data.message);

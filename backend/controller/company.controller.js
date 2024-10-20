@@ -1,6 +1,9 @@
 import sendResponse from "../utils/response.util.js";
 import { Company } from "../models/company.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
+import mongoose from "mongoose";
+import { Job } from "../models/job.model.js";
+import { Application } from "../models/application.model.js";
 
 export const registerCompany = async (req, res) => {
   try {
@@ -103,24 +106,55 @@ export const updateCompany = async (req, res) => {
 };
 
 export const deleteCompany = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
     const { id: companyId } = req.params;
 
     if (!companyId) {
+      await session.abortTransaction();
+      session.endSession();
       return sendResponse(res, 400, null, "Company ID is required");
     }
 
-    const company = await Company.findById(companyId);
+    // Find the company
+    const company = await Company.findOne({ _id: companyId }).session(session);
     if (!company) {
+      await session.abortTransaction();
+      session.endSession();
       return sendResponse(res, 404, null, "Company Not Found");
     }
 
-    // Delete the company
-    await Company.findByIdAndDelete(companyId);
+    // Find related jobs
+    const jobs = await Job.find({ company: companyId }).session(session);
 
-    return sendResponse(res, 200, null, "Company deleted successfully");
+    // Delete related applications for each job
+    for (const job of jobs) {
+      await Application.deleteMany({ _id: { $in: job.application } }).session(
+        session
+      );
+    }
+
+    // Delete the jobs associated with the company
+    await Job.deleteMany({ company: companyId }).session(session);
+
+    // Delete the company
+    await Company.deleteOne({ _id: companyId }).session(session);
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return sendResponse(
+      res,
+      200,
+      null,
+      "Company, related jobs, and applications deleted successfully"
+    );
   } catch (error) {
     console.log(error);
+    await session.abortTransaction();
+    session.endSession();
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
