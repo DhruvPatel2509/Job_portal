@@ -3,10 +3,11 @@ import { JOB_API_END_POINT } from "../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllJobsAdmin } from "../redux/jobSlice";
 import apiRequest from "../utils/axiosUtility";
+import { setLoading } from "../redux/authSlice";
 
 function useGetJobsAdmin() {
   const dispatch = useDispatch();
-  const { token } = useSelector((store) => store.auth); // Get token from auth state
+  const { authUser, token } = useSelector((store) => store.auth); // Get token from auth state
 
   useEffect(() => {
     const fetchJobsAdmin = async () => {
@@ -22,8 +23,10 @@ function useGetJobsAdmin() {
         console.log(error);
       }
     };
-    fetchJobsAdmin();
-  }, [dispatch, token]);
+    if (authUser) {
+      fetchJobsAdmin();
+    }
+  }, [dispatch, token, authUser]);
 }
 
 export default useGetJobsAdmin;

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllJobs } from "../redux/jobSlice";
 import apiRequest from "../utils/axiosUtility.js";
+import { setLoading } from "../redux/authSlice.js";
 
 function useGetAllJobs() {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ function useGetAllJobs() {
           }
         } catch (error) {
           console.log(error);
-        }
+        } 
       }
     };
 

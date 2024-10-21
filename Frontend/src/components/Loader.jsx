@@ -1,11 +1,16 @@
 // Loader.js
 
-const Loader = ({ size = "w-10 h-10", color = "border-blue-500" }) => {
+const Loader = ({ color = "border-blue-500" }) => {
   return (
-    <div className={`flex justify-center items-center ${size}`}>
+    <div className="flex justify-center items-center">
       <div
-        className={`border-4 border-gray-200 rounded-full animate-spin ${color}`}
-        style={{ borderTopColor: color.split("-")[1] }}
+        className={`border-[6px] border-t-transparent border-b-transparent border-solid rounded-full animate-spin ${color}`}
+        style={{
+          width: "80px", // Use size directly for width
+          height: "80px", // Use size directly for height
+          borderTopColor: color.split("-")[1],
+          animationDuration: "0.8s",
+        }}
       ></div>
     </div>
   );

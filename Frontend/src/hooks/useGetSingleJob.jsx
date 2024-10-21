@@ -29,7 +29,7 @@ function useGetSingleJob(jobId) {
   }, [fetchSingleJob]);
 
   // Return the refetch function for manual refresh
-  return {  fetchSingleJob };
+  return { fetchSingleJob };
 }
 
 export default useGetSingleJob;
