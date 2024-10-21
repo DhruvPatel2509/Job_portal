@@ -9,7 +9,6 @@ function useCheckAuth() {
   const { token, authUser } = useSelector((store) => store.auth);
   useEffect(() => {
     const checkAuth = async () => {
-
       try {
         const endpoint = `${USER_API_END_POINT}/me`;
         const res = await apiRequest("GET", endpoint, {}, token);
@@ -22,7 +21,7 @@ function useCheckAuth() {
       } catch (error) {
         console.error("Authentication check failed:", error);
         dispatch(clearAuthUser());
-      } 
+      }
     };
 
     if (authUser) {

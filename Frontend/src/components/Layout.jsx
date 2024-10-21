@@ -1,26 +1,20 @@
-import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Navbar } from "./shared/Navbar";
-import Loader from "./Loader";
 import useCheckAuth from "../hooks/useCheckAuth";
+import { Home } from "./pages/Home";
+import { Outlet } from "react-router-dom";
+import Loader from "./Loader";
 
 function Layout() {
-  const { loading } = useSelector((store) => store.auth);
   useCheckAuth();
-  console.log(loading);
+  const { apiLoading } = useSelector((store) => store.auth);
+  console.log(apiLoading);
 
   return (
     <>
-      {loading ? (
-        <div className="flex justify-center items-center h-screen">
-          <Loader color="border-red-700" />
-        </div>
-      ) : (
-        <>
-          <Navbar />
-          <Outlet />
-        </>
-      )}
+      <Navbar />
+      <Outlet />
+      {apiLoading ? <Loader /> : ""}
     </>
   );
 }

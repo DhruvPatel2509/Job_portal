@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllJobs } from "../redux/jobSlice";
 import apiRequest from "../utils/axiosUtility.js";
-import { setLoading } from "../redux/authSlice.js";
+import { setApiLoading } from "../redux/authSlice.js";
 
 function useGetAllJobs() {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ function useGetAllJobs() {
           : "job/getAllJob";
 
         try {
+          dispatch(setApiLoading(true));
           const res = await apiRequest("GET", endpoint, {}, token);
 
           if (res.status === 200) {
@@ -24,7 +25,9 @@ function useGetAllJobs() {
           }
         } catch (error) {
           console.log(error);
-        } 
+        } finally {
+          dispatch(setApiLoading(false));
+        }
       }
     };
 

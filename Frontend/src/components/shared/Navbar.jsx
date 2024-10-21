@@ -35,7 +35,6 @@ export const Navbar = () => {
         dispatch(setAllCompanies(null));
         dispatch(setToken(""));
         dispatch(setAllJobsAdmin(null));
-        
 
         navigate("/login");
       }
