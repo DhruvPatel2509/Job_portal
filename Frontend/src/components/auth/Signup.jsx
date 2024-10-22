@@ -11,6 +11,7 @@ import { setLoading } from "../../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import * as Yup from "yup";
+import apiRequest from "../../utils/axiosUtility";
 
 export const Signup = () => {
   const [input, setInput] = useState({
@@ -49,6 +50,7 @@ export const Signup = () => {
       navigate("/");
     }
   }, [authUser, navigate]);
+  const { token } = useSelector((store) => store.auth);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,12 +72,8 @@ export const Signup = () => {
       });
 
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
+      const endpoint = `${USER_API_END_POINT}/register`;
+      const res = await apiRequest("POST", endpoint, formData, token);
 
       toast.success(res.data.message);
       navigate("/login");

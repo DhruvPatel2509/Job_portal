@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAuthUser, setLoading, setToken } from "../../redux/authSlice";
 import { Loader2 } from "lucide-react";
 import Cookies from "js-cookie";
+import apiRequest from "../../utils/axiosUtility";
 
 export const Login = () => {
   const [input, setInput] = useState({
@@ -22,6 +23,7 @@ export const Login = () => {
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
+  const { token } = useSelector((store) => store.auth);
 
   const { loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
@@ -44,9 +46,8 @@ export const Login = () => {
 
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
-        withCredentials: true, // Allow cookies to be sent with requests
-      });
+      const endpoint = `${USER_API_END_POINT}/login`;
+      const res = await apiRequest("POST", endpoint, input, token);
 
       // Set the token in a cookie
       Cookies.set("token", res.data.token, {

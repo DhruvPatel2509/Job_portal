@@ -16,6 +16,7 @@ import { JOB_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import apiRequest from "../../utils/axiosUtility";
 
 function CreateAdminJob() {
   const { allCompanies } = useSelector((store) => store.company);
@@ -31,6 +32,8 @@ function CreateAdminJob() {
     position: 0,
     company: "",
   });
+  const { token } = useSelector((store) => store.auth);
+
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const changeEventHandler = (e) => {
@@ -57,9 +60,10 @@ function CreateAdminJob() {
     setError("");
 
     try {
-      const res = await axios.post(`${JOB_API_END_POINT}/postjob`, input, {
-        withCredentials: true,
-      });
+      const endpoint = `${JOB_API_END_POINT}/postjob`;
+
+      const res = await apiRequest("POST", endpoint, input, token);
+
       if (res.data.success) {
         toast.success(res.data.message);
         navigate("/admin/jobs");

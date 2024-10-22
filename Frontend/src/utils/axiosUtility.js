@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useEffect } from "react";
 
 const BASEURI = "http://localhost:8000/api/v1/";
 

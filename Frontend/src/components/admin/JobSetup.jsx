@@ -19,7 +19,6 @@ function JobSetup() {
   const params = useParams();
   const navigate = useNavigate();
   const jobId = params.id;
-  const { token } = useSelector((store) => store.auth);
 
   // Custom hook to fetch single job
   useGetSingleJob(jobId);
@@ -51,6 +50,7 @@ function JobSetup() {
       });
     }
   }, [singleJob]);
+  const { token } = useSelector((store) => store.auth);
 
   const changeEventHandler = ({ target: { name, value } }) => {
     setInput((prev) => ({ ...prev, [name]: value }));
@@ -69,11 +69,8 @@ function JobSetup() {
 
     try {
       setLoading(true);
-      const res = await axios.put(
-        `${JOB_API_END_POINT}/updateJob/${jobId}`,
-        input,
-        { withCredentials: true }
-      );
+      const endpoint = `${JOB_API_END_POINT}/updateJob/${jobId}`;
+      const res = await apiRequest("PUT", endpoint, input, token);
 
       if (res.data.success) {
         toast.success(res.data.message);

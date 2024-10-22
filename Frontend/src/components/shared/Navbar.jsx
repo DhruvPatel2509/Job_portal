@@ -17,17 +17,19 @@ import {
   setSingleJob,
 } from "../../redux/jobSlice";
 import { setAllCompanies } from "../../redux/companySlice";
+import apiRequest from "../../utils/axiosUtility";
 export const Navbar = () => {
   const { authUser } = useSelector((store) => store.auth);
   const role = authUser?.role;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { token } = useSelector((store) => store.auth);
 
   const logOutHandler = async () => {
     try {
-      const res = await axios.get(`${USER_API_END_POINT}/logOut`, {
-        withCredentials: true,
-      });
+      const endpoint = `${USER_API_END_POINT}/logOut`;
+      const res = await apiRequest("GET", endpoint, {}, token);
+
       if (res.data.success) {
         dispatch(setAuthUser(null));
         dispatch(setSingleJob(null));

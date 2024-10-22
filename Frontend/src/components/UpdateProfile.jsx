@@ -13,6 +13,7 @@ import axios from "axios";
 import { USER_API_END_POINT } from "../utils/constant";
 import { setAuthUser } from "../redux/authSlice";
 import { toast } from "sonner";
+import apiRequest from "../utils/axiosUtility";
 
 function UpdateProfile({ open, setOpen }) {
   const [loading, setLoading] = useState(false);
@@ -27,6 +28,7 @@ function UpdateProfile({ open, setOpen }) {
     file: authUser?.profile?.resume,
     profilePhoto: authUser?.profile?.profilePhoto,
   });
+  const { token } = useSelector((store) => store.auth);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -57,16 +59,10 @@ function UpdateProfile({ open, setOpen }) {
 
     try {
       setLoading(true);
-      const res = await axios.put(
-        `${USER_API_END_POINT}/profile/update`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      );
+
+      const endpoint = `${USER_API_END_POINT}/profile/update`;
+      const res = await apiRequest("PUT", endpoint, formData, token);
+
       dispatch(setAuthUser(res.data.data));
       toast.success(res.data.message);
       setOpen(false);
