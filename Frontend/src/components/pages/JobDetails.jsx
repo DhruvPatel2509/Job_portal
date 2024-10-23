@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
+
 import useGetSingleJob from "../../hooks/useGetSingleJob";
 import apiRequest from "../../utils/axiosUtility";
 import { APPLICATION_API_END_POINT } from "../../utils/constant";
@@ -14,7 +15,6 @@ function JobDetails() {
   const { authUser } = useSelector((state) => state.auth);
   const { singleJob } = useSelector((state) => state.job);
 
-  // Refetch job details when component mounts or jobId changes
   const { fetchSingleJob } = useGetSingleJob(jobId);
 
   const checkIfApplied = () => {
@@ -22,17 +22,14 @@ function JobDetails() {
       (application) => application.applicant._id === authUser._id
     );
   };
+
   const isApplied = checkIfApplied();
 
   const applyJob = async () => {
     try {
       const endpoint = `${APPLICATION_API_END_POINT}/applyJob/${jobId}`;
       await apiRequest("POST", endpoint, {}, token);
-
-      // Refetch job details after a successful application
       fetchSingleJob();
-
-      // Show success notification
       toast.success("Successfully applied for the job!");
     } catch (error) {
       console.error("Error applying for the job:", error);
@@ -41,11 +38,11 @@ function JobDetails() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto my-10">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="font-bold text-xl">{singleJob?.title} </h1>
-          <div className="flex items-center gap-2 mt-4">
+    <div className="max-w-7xl mx-auto my-10 p-6 bg-white shadow-lg rounded-lg">
+      <div className="flex  sm:flex-row justify-between items-start">
+        <div className="flex-1">
+          <h1 className="font-bold text-2xl">{singleJob?.title}</h1>
+          <div className="flex flex-wrap items-center gap-2 mt-4">
             <Badge variant="ghost" className="text-blue-700 font-bold">
               {singleJob?.position} Position
             </Badge>
@@ -57,63 +54,43 @@ function JobDetails() {
             </Badge>
           </div>
         </div>
-        <Button
-          disabled={isApplied}
-          onClick={!isApplied ? applyJob : undefined}
-          className={`rounded-lg ${
-            isApplied ? "bg-gray-600 cursor-not-allowed" : "bg-red-600"
-          }`}
-        >
-          {isApplied ? "Applied" : "Apply Now"}
-        </Button>
+        <div className="mt-4 md:mt-0 md:flex md:justify-end">
+          <Button
+            disabled={isApplied}
+            onClick={!isApplied ? applyJob : undefined}
+            className={`rounded-lg ${
+              isApplied ? "bg-gray-600 cursor-not-allowed" : "bg-red-600"
+            }`}
+          >
+            {isApplied ? "Applied" : "Apply Now"}
+          </Button>
+        </div>
       </div>
-      <div>
-        <h1 className="border-b-2 border-b-gray-200 font-medium py-4">
-          {singleJob?.description}
+      <div className="mt-6">
+        <h1 className="border-b-2 border-b-gray-200 font-medium py-4 text-lg">
+          Job Description
         </h1>
-        <div className="my-4">
-          <h1 className="font-bold my-1">
-            Role:
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.title}
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Location:
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.location}
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Description:
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.description}
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Experience:
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.experience} years
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Salary:
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.salary} LPA
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Total Applicants:
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.application?.length}
-            </span>
-          </h1>
-          <h1 className="font-bold my-1">
-            Posted Date:
-            <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.createdAt?.split("T")[0]}
-            </span>
-          </h1>
+        <p className="mt-2 text-gray-700">{singleJob?.description}</p>
+        <div className="my-4 space-y-2">
+          {[
+            { label: "Role", value: singleJob?.title },
+            { label: "Location", value: singleJob?.location },
+            { label: "Experience", value: `${singleJob?.experience} years` },
+            { label: "Salary", value: `${singleJob?.salary} LPA` },
+            {
+              label: "Total Applicants",
+              value: singleJob?.application?.length,
+            },
+            {
+              label: "Posted Date",
+              value: singleJob?.createdAt?.split("T")[0],
+            },
+          ].map(({ label, value }) => (
+            <h1 className="font-bold" key={label}>
+              {label}:{" "}
+              <span className="pl-4 font-normal text-gray-800">{value}</span>
+            </h1>
+          ))}
         </div>
       </div>
     </div>

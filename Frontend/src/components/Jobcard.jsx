@@ -22,7 +22,8 @@ function Jobcard({ job }) {
   const navigate = useNavigate();
 
   return (
-    <div className="rounded-md p-5 shadow-xl border-gray-100">
+    <div className="rounded-md p-5 shadow-xl border border-gray-100">
+      {/* Top Section: Job Date and Bookmark */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-600">{daysAgo(job?.createdAt)}</p>
         <Button
@@ -34,8 +35,10 @@ function Jobcard({ job }) {
           <Bookmark />
         </Button>
       </div>
-      <div className="flex items-center gap-2 my-2">
-        <Button variant="outline" className="p-6" size="icon">
+
+      {/* Middle Section: Company Info */}
+      <div className="flex flex-col md:flex-row items-center gap-2 my-2">
+        <Button variant="outline" className="p-2 md:p-6" size="icon">
           <Avatar>
             <AvatarImage
               src={job?.company?.logo || "default-logo.png"}
@@ -43,18 +46,22 @@ function Jobcard({ job }) {
             />
           </Avatar>
         </Button>
-        <div>
-          <h1 className="font-bold">
+        <div className="text-center md:text-left">
+          <h1 className="font-bold text-lg md:text-xl">
             {job?.company?.name || "Unknown Company"}
           </h1>
           <p className="text-sm text-gray-600"> {job?.location} </p>
         </div>
       </div>
+
+      {/* Job Title and Description */}
       <div>
-        <h1 className="font-bold text-lg my-2">{job?.title}</h1>
-        <p className="text-sm text-gray-600">{job?.description}</p>
+        <h1 className="font-bold text-lg md:text-xl my-2">{job?.title}</h1>
+        <p className="text-sm text-gray-600 line-clamp-3">{job?.description}</p>
       </div>
-      <div className="flex items-center gap-2 mt-4">
+
+      {/* Badges Section */}
+      <div className="flex flex-wrap items-center gap-2 mt-4">
         <Badge variant="ghost" className="text-blue-700 font-bold">
           {job?.position} Position
         </Badge>
@@ -65,14 +72,19 @@ function Jobcard({ job }) {
           {job?.jobType}
         </Badge>
       </div>
-      <div className="flex items-center gap-4 mt-4">
+
+      {/* Action Buttons */}
+      <div className="flex flex-col md:flex-row items-center gap-4 mt-4">
         <Button
           onClick={() => navigate(`/jobs/jobDetails/${job._id}`)}
           variant="outline"
+          className="w-full md:w-auto"
         >
           Details
         </Button>
-        <Button className="bg-purple-800">Save For Later</Button>
+        <Button className="bg-purple-800 text-white w-full md:w-auto">
+          Save For Later
+        </Button>
       </div>
     </div>
   );

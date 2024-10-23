@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { USER_API_END_POINT } from "../utils/constant";
 import { setAuthUser } from "../redux/authSlice";
 import { toast } from "sonner";
@@ -77,7 +76,7 @@ function UpdateProfile({ open, setOpen }) {
 
   return (
     <div>
-      <Dialog open={open}>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
           className="sm:max-w-[550px]"
           onInteractOutside={() => setOpen(false)}
