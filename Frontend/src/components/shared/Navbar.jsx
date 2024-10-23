@@ -8,7 +8,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { LogOut, User2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { setAuthUser, setToken } from "../../redux/authSlice";
 import {
@@ -19,6 +18,8 @@ import {
 import { setAllCompanies } from "../../redux/companySlice";
 import apiRequest from "../../utils/axiosUtility";
 import { useState } from "react";
+import "../../CSS/Navbar.css";
+
 export const Navbar = () => {
   const { authUser } = useSelector((store) => store.auth);
   const role = authUser?.role;

@@ -93,12 +93,12 @@ export const Signup = () => {
   };
 
   return (
-    <div className="flex items-center justify-center mx-auto max-w-7xl">
+    <div className="flex items-center justify-center px-4 mx-auto max-w-7xl">
       <form
         onSubmit={handleSubmit}
-        className="w-1/2 p-4 my-10 border border-gray-400 rounded-md"
+        className="w-full p-4 my-10 border border-gray-400 rounded-md md:w-3/4 lg:w-1/2"
       >
-        <h1 className="mb-5 text-xl font-bold">Sign Up</h1>
+        <h1 className="mb-5 text-xl font-bold text-center">Sign Up</h1>
 
         {["fullname", "email", "phoneNumber", "password"].map((field) => (
           <div key={field} className="flex flex-col gap-2 my-3">
@@ -126,7 +126,7 @@ export const Signup = () => {
           </div>
         ))}
 
-        <div className="flex items-center justify-between my-3">
+        <div className="flex flex-col gap-4 my-3 md:flex-row md:items-center md:justify-between">
           <div>
             <Label>
               Choose Your Role:{" "}
@@ -175,7 +175,7 @@ export const Signup = () => {
           )}
         </Button>
 
-        <span className="text-[0.9rem]">
+        <span className="text-[0.9rem] block text-center">
           Already have an account?{" "}
           <Link to="/login" className="text-blue-600">
             Login

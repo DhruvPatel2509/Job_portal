@@ -17,34 +17,33 @@ export const Herosection = () => {
     }
   };
   return (
-    <>
-      <div className="text-center flex flex-col gap-5">
-        <span className="mx-auto px-4 py-2 rounded-full bg-gray-100 text-[#F83002] font-medium ">
-          No.1 Job Hunt Website
-        </span>
+    <div className="flex flex-col items-center gap-6 px-4 text-center">
+      <span className="px-5 py-2 mx-auto font-medium tracking-wide text-[#F83002] bg-gray-100 rounded-full">
+        No.1 Job Hunt Website
+      </span>
 
-        <h1 className="text-5xl font-bold">
-          Search , Apply & <br />
-          Get Your <span className="text-[#6A38C2] ">Dream Jobs</span>
-        </h1>
-        <p>
-          Discover your next career opportunity with ease; explore a wide range
-          of job listings tailored to your skills.
-        </p>
-        <div className="flex w-[40%] shadow-lg border border-gray-200 pl-2 rounded-full items-center gap-4 mx-auto ">
-          <input
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Find Your Dream Job"
-            className="outline-none border-none w-full p-2"
-          />
-          <Button
-            className="rounded-r-full bg-[#6A38C2]"
-            onClick={searchJobHandler}
-          >
-            <Search className="w-5 h-5" />
-          </Button>
-        </div>
+      <h1 className="text-3xl font-bold leading-snug sm:text-4xl lg:text-5xl">
+        Search, Apply & <br className="hidden sm:block" />
+        Get Your <span className="text-[#6A38C2]">Dream Job</span>
+      </h1>
+      <p className="max-w-xl mx-auto text-base text-gray-600 sm:text-lg lg:text-xl">
+        Discover your next career opportunity with ease. Explore a curated list
+        of job openings tailored just for you.
+      </p>
+
+      <div className="flex items-center w-full gap-2 px-4 py-2 mx-auto mt-6 border border-gray-300 rounded-full shadow-md focus-within:ring-2 focus-within:ring-[#6A38C2] sm:w-[70%] md:w-[60%] lg:w-[40%]">
+        <input
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Find Your Dream Job"
+          className="w-full p-2 text-sm text-gray-700 placeholder-gray-500 bg-transparent border-none outline-none sm:text-base"
+        />
+        <Button
+          className="p-3 text-white transition-transform duration-200 ease-in-out transform rounded-full bg-[#6A38C2] hover:bg-[#5a2ca2] hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6A38C2]"
+          onClick={searchJobHandler}
+        >
+          <Search className="w-5 h-5" />
+        </Button>
       </div>
-    </>
+    </div>
   );
 };

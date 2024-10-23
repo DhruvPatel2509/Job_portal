@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -23,7 +22,6 @@ function CategoryCarousal() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const searchJobHandler = (query) => {
-    
     dispatch(setSearchedQuery(query));
     if (query) {
       navigate("/browse");
@@ -35,10 +33,13 @@ function CategoryCarousal() {
         <Carousel className="w-full max-w-xl mx-auto my-20">
           <CarouselContent>
             {category.map((cat, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+              <CarouselItem
+                key={index}
+                className="flex justify-center md:basis-1/2 lg:basis-1/3 px-2"
+              >
                 <Button
                   variant="outline"
-                  className="rounded-full "
+                  className="rounded-full w-full text-center"
                   onClick={() => searchJobHandler(cat)}
                 >
                   {cat}
