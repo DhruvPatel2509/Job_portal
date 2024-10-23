@@ -67,3 +67,36 @@
     @apply bg-background text-foreground;
   }
 }
+
+.menu-button {
+  display: block;
+}
+
+@media (min-width: 425px) {
+  .menu-button {
+    display: none;
+  }
+
+  .navbar .unorder {
+    display: flex;
+    position: static;
+    background-color: transparent;
+    z-index: auto;
+  }
+}
+@media (max-width: 425px) {
+  .menu {
+    position: relative;
+  }
+  .menu .unorder {
+    top: 100%;
+    width: 100%;
+    left: 0%;
+    position: absolute;
+    flex-direction: column;
+  }
+
+  .menu2 button{
+    order: 1;
+  }
+}

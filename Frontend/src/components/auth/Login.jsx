@@ -83,7 +83,7 @@ export const Login = () => {
     <div className="flex items-center justify-center max-w-7xl mx-auto min-h-[77.2vh]">
       <form
         onSubmit={submitHandler}
-        className="w-[40%] border border-gray-400 rounded-md p-4 my-10"
+        className="sm:w-[400px] w-[300px] border border-gray-400 rounded-md p-4 my-10"
       >
         <h1 className="font-bold text-xl mb-5">Login</h1>
 
