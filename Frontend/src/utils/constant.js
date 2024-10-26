@@ -1,4 +1,5 @@
-const BASEURI = import.meta.env.VITE_BASEURI;
+const BASEURI = "http://localhost:8000/api/v1/";
+// const BASEURI = "https://job-portal-olive-gamma.vercel.app/api/v1/";
 
 export const USER_API_END_POINT = `${BASEURI}user`;
 export const JOB_API_END_POINT = `${BASEURI}job`;
