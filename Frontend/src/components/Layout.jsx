@@ -8,7 +8,6 @@ import Loader from "./Loader";
 function Layout() {
   useCheckAuth();
   const { apiLoading } = useSelector((store) => store.auth);
-  console.log(window.location.hostname);
 
   return (
     <>
