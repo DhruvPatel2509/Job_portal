@@ -1,4 +1,5 @@
 const BASEURI = import.meta.env.VITE_BASEURI;
+console.log(BASEURI);
 
 export const USER_API_END_POINT = `${BASEURI}user`;
 export const JOB_API_END_POINT = `${BASEURI}job`;

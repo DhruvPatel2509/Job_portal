@@ -18,9 +18,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+const originPoint = process.env.ORIGIN_POINT;
+
 const corsOptions = {
-  // origin: "http://localhost:5173",
-  origin: "https://job-portal-ofw5.vercel.app",
+  origin: originPoint,
 
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization",
