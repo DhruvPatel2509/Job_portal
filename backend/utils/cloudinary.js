@@ -24,8 +24,7 @@ const uploadOnCloudinary = async (localFilePath, folder) => {
 
     return res;
   } catch (error) {
-    console.error("Failed to upload on Cloudinary:", error.message); // Log the error message
-    // Ensure file exists before attempting to delete it
+    console.error("Failed to upload on Cloudinary:", error.message);
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }

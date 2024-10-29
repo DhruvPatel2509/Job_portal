@@ -81,6 +81,8 @@ export const updateCompany = async (req, res) => {
 
     // Handle file upload if provided
     if (file) {
+      console.log("File Clodinary");
+
       const uploadResult = await uploadOnCloudinary(file.path);
       if (uploadResult) {
         company.logo = uploadResult.secure_url;
@@ -101,7 +103,7 @@ export const updateCompany = async (req, res) => {
     return sendResponse(res, 200, company, "Company Updated Successfully");
   } catch (error) {
     console.error("Error updating company:", error);
-    return sendResponse(res, 500, null, "Internal Server Error");
+    return sendResponse(res, 500, null, "Internal Server Error Update Company");
   }
 };
 
