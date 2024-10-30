@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAllJobs } from "../redux/jobSlice";
 import apiRequest from "../utils/axiosUtility.js";
 import { setApiLoading } from "../redux/authSlice.js";
+import { JOB_API_END_POINT } from "../utils/constant.js";
 
 function useGetAllJobs() {
   const dispatch = useDispatch();
@@ -13,8 +14,8 @@ function useGetAllJobs() {
     const getJobs = async () => {
       if (authUser) {
         const endpoint = searchedQuery
-          ? `job/getAllJob/?keyword=${searchedQuery}`
-          : "job/getAllJob";
+          ? `${JOB_API_END_POINT}/getAllJob/?keyword=${searchedQuery}`
+          : "${JOB_API_END_POINT}/getAllJob";
 
         try {
           dispatch(setApiLoading(true));
