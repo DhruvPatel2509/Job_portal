@@ -174,8 +174,6 @@ export const updateProfile = async (req, res) => {
         "Resume"
       );
       if (uploadResult) {
-        console.log(resumeFile[0].originalname);
-
         user.profile.resume = uploadResult.secure_url;
         user.profile.resumeOrignalName = resumeFile[0].originalname;
       }
