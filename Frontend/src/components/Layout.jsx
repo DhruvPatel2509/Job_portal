@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navbar } from "./shared/Navbar";
 import useCheckAuth from "../hooks/useCheckAuth";
-import { Home } from "./pages/Home";
 import { Outlet } from "react-router-dom";
 import Loader from "./Loader";
 import Footer from "./Footer";
@@ -13,8 +12,10 @@ function Layout() {
   return (
     <>
       <Navbar />
-      <Outlet />
-      {apiLoading ? <Loader /> : ""}
+      <main className="min-h-[567px]">
+        <Outlet />
+        {apiLoading && <Loader />}
+      </main>
       <Footer />
     </>
   );

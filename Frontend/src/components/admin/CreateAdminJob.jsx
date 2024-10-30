@@ -11,7 +11,6 @@ import {
   SelectValue,
   SelectGroup,
 } from "@/components/ui/select";
-import axios from "axios";
 import { JOB_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -89,7 +88,7 @@ function CreateAdminJob() {
   };
 
   return (
-    <div className="flex items-center justify-center w-screen my-5">
+    <div className="flex items-center justify-center w-screen my-5 min-h-[568px]">
       <form
         onSubmit={submitHandler}
         className="p-8 max-w-4xl border-gray-400 shadow-lg rounded-md"

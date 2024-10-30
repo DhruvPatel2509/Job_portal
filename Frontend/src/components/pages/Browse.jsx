@@ -2,7 +2,7 @@ import Jobcard from "../Jobcard";
 import useGetAllJobs from "../../hooks/useGetAllJobs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { setSearchedQuery, setSearchJobByText } from "../../redux/jobSlice";
+import { setSearchedQuery } from "../../redux/jobSlice";
 
 function Browse() {
   const { allJobs } = useSelector((store) => store.job);

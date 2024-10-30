@@ -107,7 +107,7 @@ function JobSetup() {
   };
 
   return (
-    <div className="flex items-center justify-center w-screen my-5">
+    <div className="flex items-center justify-center w-screen my-5 ">
       <form
         onSubmit={handleSubmit}
         className="p-8 max-w-4xl border-gray-400 shadow-lg rounded-md"
