@@ -71,7 +71,7 @@ function Applicantstable() {
       const endpoint = `${APPLICATION_API_END_POINT}/deleteApplicant/${id}`;
 
       const res = await apiRequest("DELETE", endpoint, {}, token);
-      console.log(res);
+      
 
       if (res.status === 200) {
         toast.success("Job Deleted Successfully");
