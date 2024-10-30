@@ -80,7 +80,7 @@ export const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center max-w-7xl mx-auto min-h-[601px]">
+    <div className="flex items-center justify-center max-w-7xl mx-auto ">
       <form
         onSubmit={submitHandler}
         className="sm:w-[400px] w-[300px] border border-gray-400 rounded-md p-4 my-10"

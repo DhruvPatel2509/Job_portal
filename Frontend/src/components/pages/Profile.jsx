@@ -20,15 +20,16 @@ function Profile() {
 
   return (
     <>
-      <div className="max-w-4xl p-8 mx-auto my-5 bg-white border border-gray-200 rounded-2xl">
-        <div className="flex justify-between">
-          <div className="flex items-center gap-4">
-            <Avatar className="w-[100px] h-[120px]">
+      <div className="max-w-4xl p-6 mx-auto my-5 bg-white border border-gray-200 rounded-2xl shadow-md ">
+        <div className="flex flex-col sm:flex-row sm:justify-between">
+          <div className="flex items-center gap-4 mb-4 sm:mb-0">
+            <Avatar className="w-24 h-24 sm:w-28 sm:h-28 ">
               <AvatarImage src={authUser?.profile?.profilePhoto} />
             </Avatar>
+
             <div>
-              <h1 className="text-xl font-medium">{authUser?.fullname}</h1>
-              <p>{authUser?.profile?.bio}</p>
+              <h1 className="text-xl font-semibold">{authUser?.fullname}</h1>
+              <p className="text-gray-600">{authUser?.profile?.bio}</p>
             </div>
           </div>
           <Button
@@ -39,40 +40,47 @@ function Profile() {
             <Pen />
           </Button>
         </div>
+
         <div className="my-5">
           <div className="flex items-center gap-3 my-2">
-            <Mail />
+            <Mail className="text-gray-600" />
             <span>{authUser?.email}</span>
           </div>
           <div className="flex items-center gap-3 my-2">
-            <Contact />
-            <span> {authUser?.phoneNumber} </span>
+            <Contact className="text-gray-600" />
+            <span>{authUser?.phoneNumber}</span>
           </div>
         </div>
+
         <div>
-          <h1>Skills</h1>
-          <div className="flex items-center gap-2 mt-2">
-            {skills.length >= 0
-              ? skills.map((item, index) => <Badge key={index}>{item} </Badge>)
-              : "NA"}
+          <h2 className="font-bold text-lg">Skills</h2>
+          <div className="flex flex-wrap items-center gap-2 mt-2">
+            {skills.length > 0 ? (
+              skills.map((item, index) => <Badge key={index}>{item}</Badge>)
+            ) : (
+              <span className="text-gray-500">NA</span>
+            )}
           </div>
         </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
+
+        <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
           <Label className="font-bold text-md">Resume</Label>
           {isResume ? (
             <a
               target="_blank"
+              rel="noopener noreferrer"
               href={authUser?.profile?.resume}
-              className="w-full text-blue-500 cursor-pointer hover:underline"
+              className="text-blue-500 cursor-pointer hover:underline"
             >
-              {authUser?.profile?.resumeOrignalName}
+              {authUser?.profile?.resumeOriginalName}
             </a>
           ) : (
-            <span>NA</span>
+            <span className="text-gray-500">NA</span>
           )}
         </div>
       </div>
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl">
+
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md">
         <h1 className="my-5 text-lg font-bold">Applied Jobs</h1>
         <AppliedJobTable />
       </div>

@@ -10,14 +10,14 @@ function Layout() {
   const { apiLoading } = useSelector((store) => store.auth);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="min-h-[567px]">
+      <main className="flex-grow min-h-[567px]">
         <Outlet />
         {apiLoading && <Loader />}
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 
