@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { Button } from "@/components/ui/button";
-import { Bookmark } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -31,9 +30,7 @@ function Jobcard({ job }) {
           className="rounded-full"
           size="icon"
           aria-label="Bookmark Job"
-        >
-          
-        </Button>
+        ></Button>
       </div>
 
       {/* Middle Section: Company Info */}

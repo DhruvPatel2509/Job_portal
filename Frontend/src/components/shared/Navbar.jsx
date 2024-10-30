@@ -27,6 +27,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const { token } = useSelector((store) => store.auth);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const logOutHandler = async () => {
     try {
@@ -57,7 +58,7 @@ export const Navbar = () => {
   };
 
   return (
-    <div className="bg-[#ffffff] mb-3 navbar">
+    <div className="bg-[#ffffff] mb-3 navbar z-50">
       <div className="flex items-center justify-between  sm:justify-between px-4  mx-auto mt-4 menu ">
         <h1
           className="text-lg md:text-2xl font-bold cursor-pointer"
@@ -96,12 +97,12 @@ export const Navbar = () => {
             >
               {role === "student" ? (
                 <>
-                  <li>
+                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
                     <Link to="/" className="block px-4 py-2 hover:bg-gray-100">
                       Home
                     </Link>
                   </li>
-                  <li>
+                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
                     <Link
                       to="/jobs"
                       className="block px-4 py-2 hover:bg-gray-100"
@@ -109,7 +110,7 @@ export const Navbar = () => {
                       Jobs
                     </Link>
                   </li>
-                  <li>
+                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
                     <Link
                       to="/browse"
                       className="block px-4 py-2 hover:bg-gray-100"
@@ -120,7 +121,7 @@ export const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <li>
+                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
                     <Link
                       to="/admin/companies"
                       className="block  py-2 hover:bg-gray-100"
@@ -128,7 +129,7 @@ export const Navbar = () => {
                       Companies
                     </Link>
                   </li>
-                  <li>
+                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
                     <Link
                       to="/admin/jobs"
                       className="block  py-2 hover:bg-gray-100"
@@ -141,8 +142,8 @@ export const Navbar = () => {
             </ul>
             <ul className="flex items-center  gap-3">
               {authUser ? (
-                <li className="relative">
-                  <Popover>
+                <li className="relative" onClick={() => setIsMenuOpen(false)}>
+                  <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                     <PopoverTrigger>
                       <Avatar className="cursor-pointer">
                         <AvatarImage
@@ -170,9 +171,14 @@ export const Navbar = () => {
                           <p>{authUser?.profile?.bio}</p>
                         </div>
                       </div>
-                      <div className="flex flex-col items-start p-4">
+                      <div className="flex flex-col items-start p-4 ">
                         {role === "student" && (
-                          <Link to="/profile">
+                          <Link
+                            to="/profile"
+                            onClick={() => {
+                              setIsPopoverOpen(false);
+                            }}
+                          >
                             <Button variant="link">
                               <User2 /> &nbsp; View Profile
                             </Button>
@@ -187,7 +193,7 @@ export const Navbar = () => {
                 </li>
               ) : (
                 <>
-                  <li>
+                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
                     <Link to="/login">
                       <Button
                         variant="outline"
@@ -197,7 +203,7 @@ export const Navbar = () => {
                       </Button>
                     </Link>
                   </li>
-                  <li>
+                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
                     <Link to="/signup">
                       <Button
                         variant="outline"
