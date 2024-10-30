@@ -32,7 +32,7 @@ function Jobcard({ job }) {
           size="icon"
           aria-label="Bookmark Job"
         >
-          <Bookmark />
+          
         </Button>
       </div>
 

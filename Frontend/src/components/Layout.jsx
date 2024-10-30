@@ -4,6 +4,7 @@ import useCheckAuth from "../hooks/useCheckAuth";
 import { Home } from "./pages/Home";
 import { Outlet } from "react-router-dom";
 import Loader from "./Loader";
+import Footer from "./Footer";
 
 function Layout() {
   useCheckAuth();
@@ -14,6 +15,7 @@ function Layout() {
       <Navbar />
       <Outlet />
       {apiLoading ? <Loader /> : ""}
+      <Footer />
     </>
   );
 }
