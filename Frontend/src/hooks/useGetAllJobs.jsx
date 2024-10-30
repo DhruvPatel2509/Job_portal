@@ -15,7 +15,7 @@ function useGetAllJobs() {
       if (authUser) {
         const endpoint = searchedQuery
           ? `${JOB_API_END_POINT}/getAllJob/?keyword=${searchedQuery}`
-          : "${JOB_API_END_POINT}/getAllJob";
+          : `${JOB_API_END_POINT}/getAllJob`;
 
         try {
           dispatch(setApiLoading(true));
