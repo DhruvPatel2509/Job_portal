@@ -66,7 +66,7 @@ export const updateCompany = async (req, res) => {
   try {
     const { id: companyId } = req.params;
     const { name, description, website, location } = req.body;
-    const file = req.file;
+    const file = req.file; // File uploaded from the request
 
     // Validate the companyId
     if (!companyId) {
@@ -81,12 +81,16 @@ export const updateCompany = async (req, res) => {
 
     // Handle file upload if provided
     if (file) {
-      console.log("File Clodinary");
-
-      const uploadResult = await uploadOnCloudinary(file.path);
+      const uploadResult = await uploadOnCloudinary(
+        file.buffer,
+        file.originalname,
+        "CompanyLogo"
+      );
       if (uploadResult) {
         company.logo = uploadResult.secure_url;
         company.logoOriginalName = file.originalname;
+      } else {
+        return sendResponse(res, 500, null, "Failed to upload logo");
       }
     }
 
@@ -103,7 +107,12 @@ export const updateCompany = async (req, res) => {
     return sendResponse(res, 200, company, "Company Updated Successfully");
   } catch (error) {
     console.error("Error updating company:", error);
-    return sendResponse(res, 500, null, "Internal Server Error Update Company");
+    return sendResponse(
+      res,
+      500,
+      null,
+      "Internal Server Error - Update Company"
+    );
   }
 };
 

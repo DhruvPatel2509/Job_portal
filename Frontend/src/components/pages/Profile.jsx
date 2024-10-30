@@ -23,7 +23,7 @@ function Profile() {
       <div className="max-w-4xl p-8 mx-auto my-5 bg-white border border-gray-200 rounded-2xl">
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
-            <Avatar className="w-24 h-24">
+            <Avatar className="w-[100px] h-[120px]">
               <AvatarImage src={authUser?.profile?.profilePhoto} />
             </Avatar>
             <div>

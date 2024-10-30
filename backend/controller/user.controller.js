@@ -27,10 +27,12 @@ export const register = async (req, res) => {
     let profilePhotoUrl = null;
 
     if (file) {
-      console.log(file);
-
-      // Upload the file to Cloudinary
-      const uploadResult = await uploadOnCloudinary(file.path, "ProfilePhoto");
+      // Upload the file to Cloudinary using the buffer
+      const uploadResult = await uploadOnCloudinary(
+        file.buffer,
+        file.originalname,
+        "ProfilePhoto"
+      );
 
       if (uploadResult) {
         profilePhotoUrl = uploadResult.secure_url;
@@ -50,7 +52,7 @@ export const register = async (req, res) => {
         bio: "",
         skills: [],
         resume: null,
-        resumeOrignalName: "",
+        resumeOriginalName: "",
         profilePhoto: profilePhotoUrl,
       },
     });
@@ -62,7 +64,7 @@ export const register = async (req, res) => {
       `Welcome, ${user.fullname}! Your account has been successfully created.`
     );
   } catch (error) {
-    console.error(error);
+    console.error("Registration error:", error);
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
@@ -150,10 +152,12 @@ export const updateProfile = async (req, res) => {
       return sendResponse(res, 404, null, "User Not Found");
     }
 
+    // Update user details
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;
 
+    // Update profile details
     if (bio) user.profile.bio = bio;
     if (skills) {
       user.profile.skills = skills
@@ -162,22 +166,28 @@ export const updateProfile = async (req, res) => {
         .filter((skill) => skill.length > 0);
     }
 
-    if (resumeFile) {
+    // Handle resume file upload if provided
+    if (resumeFile && resumeFile.length > 0) {
       const uploadResult = await uploadOnCloudinary(
-        resumeFile[0].path,
+        resumeFile[0].buffer,
+        resumeFile[0].originalname,
         "Resume"
       );
       if (uploadResult) {
+        console.log(resumeFile[0].originalname);
+
         user.profile.resume = uploadResult.secure_url;
-        user.profile.resumeOrignalName = resumeFile[0].filename;
+        user.profile.resumeOrignalName = resumeFile[0].originalname;
       }
     }
 
-    if (profilePhoto) {
+    // Handle profile photo upload if provided
+    if (profilePhoto && profilePhoto.length > 0) {
       const uploadResult = await uploadOnCloudinary(
-        profilePhoto[0].path,
+        profilePhoto[0].buffer,
+        profilePhoto[0].originalname,
         "ProfilePhoto"
-      ); // Upload profile photo
+      );
       if (uploadResult) {
         user.profile.profilePhoto = uploadResult.secure_url; // Save photo URL
       }
@@ -196,7 +206,7 @@ export const updateProfile = async (req, res) => {
 
     return sendResponse(res, 200, userResponse, "Profile Updated Successfully");
   } catch (error) {
-    console.error(error);
+    console.error("Error updating profile:", error);
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
@@ -213,56 +223,3 @@ export const retriveUser = async (req, res) => {
     return res.status(500).send("Internal server error");
   }
 };
-
-// export const updateProfile = async (req, res) => {
-//   try {
-//     const { fullname, email, phoneNumber, bio, skills } = req.body;
-//     const userId = req.userId; // Assuming req.userId is where the user ID is stored
-//     const file = req.file;
-
-//     let user = await User.findById(userId);
-
-//     if (!user) {
-//       return sendResponse(res, 404, null, "User Not Found");
-//     }
-
-//     if (fullname) user.fullname = fullname;
-//     if (email) user.email = email;
-//     if (phoneNumber) user.phoneNumber = phoneNumber;
-
-//     if (bio) user.profile.bio = bio;
-//     if (skills) {
-//       user.profile.skills = skills
-//         .split(",")
-//         .map((skill) => skill.trim()) // Trim whitespace from each skill
-//         .filter((skill) => skill.length > 0); // Filter out empty skills
-//     }
-
-//     if (file) {
-//       console.log(file);
-
-//       const uploadResult = await uploadOnCloudinary(file.path);
-
-//       if (uploadResult) {
-//         user.profile.resume = uploadResult.secure_url;
-//         user.profile.resumeOrignalName = file.originalname;
-//       }
-//     }
-
-//     await user.save();
-
-//     const userResponse = {
-//       _id: user._id,
-//       fullname: user.fullname,
-//       email: user.email,
-//       phoneNumber: user.phoneNumber,
-//       role: user.role,
-//       profile: user.profile,
-//     };
-
-//     return sendResponse(res, 200, userResponse, "Profile Updated Successfully");
-//   } catch (error) {
-//     console.error(error);
-//     return sendResponse(res, 500, null, "Internal Server Error");
-//   }
-// };
