@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,7 +36,6 @@ export const Login = () => {
       return;
     }
 
-    // Basic email validation
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(input.email)) {
       toast.error("Please enter a valid email address.");
@@ -49,17 +47,25 @@ export const Login = () => {
       const endpoint = `${USER_API_END_POINT}/login`;
       const res = await apiRequest("POST", endpoint, input, token);
 
-      // Set the token in a cookie
       Cookies.set("token", res.data.token, {
-        expires: 1, // Optional: cookie expires in 7 days
-        path: "", // Optional: cookie is available in all paths
-        secure: true, // Set to true if using HTTPS
-        sameSite: "None", // Necessary for cross-site requests
+        expires: 1,
+        path: "",
+        secure: true,
+        sameSite: "None",
       });
 
       dispatch(setAuthUser(res.data.user));
       dispatch(setToken(res.data.token));
-      toast.success(res.data.message);
+      // toast.success(res.data.message);
+      toast.success(`${res.data.message}`, {
+        duration: 1500,
+        position: "top-center",
+        style: {
+          backgroundColor: "green",
+          color: "white",
+          borderRadius: "8px",
+        },
+      });
 
       setTimeout(
         () =>
@@ -69,11 +75,19 @@ export const Login = () => {
         1000
       );
     } catch (error) {
-      console.error(error);
       const errorMessage =
-        error.response?.data?.message ||
+        error?.response?.data?.message ||
         "Login failed. Please check your credentials and try again.";
-      toast.error(errorMessage);
+
+      toast.error(errorMessage, {
+        duration: 2000, // Duration for the toast
+        position: "top-center", // Position of the toast
+        style: {
+          backgroundColor: "red", // Background color for error
+          color: "white", // Text color
+          borderRadius: "8px", // Rounded corners
+        },
+      });
     } finally {
       dispatch(setLoading(false));
     }

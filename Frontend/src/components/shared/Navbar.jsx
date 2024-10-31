@@ -5,6 +5,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { toast } from "sonner";
+
 import { Button } from "@/components/ui/button";
 import { LogOut, User2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,19 +35,36 @@ export const Navbar = () => {
     try {
       const endpoint = `${USER_API_END_POINT}/logOut`;
       const res = await apiRequest("GET", endpoint, {}, token);
-
+      setIsPopoverOpen(false);
       if (res.data.success) {
+        toast.success(`${res.data.message}`, {
+          duration: 1500,
+          position: "top-center",
+          style: {
+            backgroundColor: "green",
+            color: "white",
+            borderRadius: "8px",
+          },
+        });
         dispatch(setAuthUser(null));
         dispatch(setSingleJob(null));
         dispatch(setAllJobs(null));
         dispatch(setAllCompanies(null));
         dispatch(setToken(""));
         dispatch(setAllJobsAdmin(null));
-
         navigate("/login");
       }
     } catch (error) {
       console.error("Logout failed:", error);
+      toast.error("Logout failed.", {
+        duration: 2000,
+        position: "top-center",
+        style: {
+          backgroundColor: "red",
+          color: "white",
+          borderRadius: "8px",
+        },
+      });
     }
   };
 
@@ -97,12 +116,12 @@ export const Navbar = () => {
             >
               {role === "student" ? (
                 <>
-                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                  <li onClick={() => setIsMenuOpen(false)}>
                     <Link to="/" className="block px-4 py-2 hover:bg-gray-100">
                       Home
                     </Link>
                   </li>
-                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                  <li onClick={() => setIsMenuOpen(false)}>
                     <Link
                       to="/jobs"
                       className="block px-4 py-2 hover:bg-gray-100"
@@ -110,7 +129,7 @@ export const Navbar = () => {
                       Jobs
                     </Link>
                   </li>
-                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                  <li onClick={() => setIsMenuOpen(false)}>
                     <Link
                       to="/browse"
                       className="block px-4 py-2 hover:bg-gray-100"
@@ -121,7 +140,7 @@ export const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                  <li onClick={() => setIsMenuOpen(false)}>
                     <Link
                       to="/admin/companies"
                       className="block  py-2 hover:bg-gray-100"
@@ -129,7 +148,7 @@ export const Navbar = () => {
                       Companies
                     </Link>
                   </li>
-                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                  <li onClick={() => setIsMenuOpen(false)}>
                     <Link
                       to="/admin/jobs"
                       className="block  py-2 hover:bg-gray-100"
@@ -193,7 +212,7 @@ export const Navbar = () => {
                 </li>
               ) : (
                 <>
-                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                  <li onClick={() => setIsMenuOpen(false)}>
                     <Link to="/login">
                       <Button
                         variant="outline"
@@ -203,7 +222,7 @@ export const Navbar = () => {
                       </Button>
                     </Link>
                   </li>
-                  <li onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                  <li onClick={() => setIsMenuOpen(false)}>
                     <Link to="/signup">
                       <Button
                         variant="outline"

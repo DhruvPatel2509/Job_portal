@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -19,7 +18,7 @@ export const Signup = () => {
     email: "",
     phoneNumber: "",
     password: "",
-    role: "",
+    role: "student", // Default role
     file: null,
   });
   const [errors, setErrors] = useState({});
@@ -50,7 +49,6 @@ export const Signup = () => {
       navigate("/");
     }
   }, [authUser, navigate]);
-  const { token } = useSelector((store) => store.auth);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,7 +56,13 @@ export const Signup = () => {
   };
 
   const handleFileChange = (e) => {
-    setInput((prev) => ({ ...prev, file: e.target.files[0] }));
+    const file = e.target.files[0];
+    if (file && file.size > 2 * 1024 * 1024) {
+      // Limit to 2MB
+      toast.error("File size must be less than 2MB.");
+    } else {
+      setInput((prev) => ({ ...prev, file }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -73,9 +77,17 @@ export const Signup = () => {
 
       dispatch(setLoading(true));
       const endpoint = `${USER_API_END_POINT}/register`;
-      const res = await apiRequest("POST", endpoint, formData, token);
+      const res = await apiRequest("POST", endpoint, formData);
 
-      toast.success(res.data.message);
+      toast.success(`${res.data.message}`, {
+        duration: 1500,
+        position: "top-center",
+        style: {
+          backgroundColor: "green",
+          color: "white",
+          borderRadius: "8px",
+        },
+      });
       navigate("/login");
     } catch (error) {
       if (error.name === "ValidationError") {
@@ -85,7 +97,9 @@ export const Signup = () => {
         }, {});
         setErrors(newErrors);
       } else {
-        toast.error(error.response?.data?.message || "An error occurred");
+        toast.error(
+          error?.response?.data?.message || "An error occurred during signup"
+        );
       }
     } finally {
       dispatch(setLoading(false));
