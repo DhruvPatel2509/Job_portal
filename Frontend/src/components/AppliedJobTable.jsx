@@ -16,7 +16,11 @@ function AppliedJobTable() {
   return (
     <>
       <Table>
-        <TableCaption>A List Of Your Applied Jobs</TableCaption>
+        <TableCaption className="font-bold">
+          {allAppliedJobs
+            ? "A List Of Your Applied Jobs"
+            : "You Haven't Applied For The Jobs Yet"}
+        </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Job Role</TableHead>

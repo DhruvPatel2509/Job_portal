@@ -40,7 +40,11 @@ function CompaniesTable() {
 
   return (
     <Table>
-      <TableCaption>A List Of Your Recent Registered Companies</TableCaption>
+      <TableCaption className="font-bold">
+        {allCompanies
+          ? "A List Of Your Recent Registered Companies"
+          : "Create A New Company"}
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Logo</TableHead>

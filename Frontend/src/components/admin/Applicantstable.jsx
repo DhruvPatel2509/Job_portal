@@ -71,7 +71,6 @@ function Applicantstable() {
       const endpoint = `${APPLICATION_API_END_POINT}/deleteApplicant/${id}`;
 
       const res = await apiRequest("DELETE", endpoint, {}, token);
-      
 
       if (res.status === 200) {
         toast.success("Job Deleted Successfully");
@@ -88,7 +87,9 @@ function Applicantstable() {
   return (
     <>
       <Table>
-        <TableCaption>A List Of Applicants</TableCaption>
+        <TableCaption className="font-bold">
+          {localApplicants ? "A List Of Applicants" : "No Applicant Yet"}
+        </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Fullname</TableHead>

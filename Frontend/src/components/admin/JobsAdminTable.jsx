@@ -49,7 +49,11 @@ function JobsAdminTable() {
   return (
     <>
       <Table>
-        <TableCaption>A List Of Your Recent Posted Jobs</TableCaption>
+        <TableCaption className="font-bold">
+          {filterJobs
+            ? " A List Of Your Recent Posted Jobs"
+            : "Post A Job First"}
+        </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>CompanyName</TableHead>
