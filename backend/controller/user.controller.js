@@ -109,11 +109,6 @@ export const login = async (req, res) => {
       profile: user.profile,
       token: token,
     };
-    // res.cookie("token", token, {
-    //   // httpOnly: true, // Prevents JavaScript access
-    //   sameSite: "Strict", // Helps prevent CSRF
-    //   expires: new Date(Date.now() + 86400000),
-    // });
 
     // Send response with token as a cookie
     return res.status(200).json({

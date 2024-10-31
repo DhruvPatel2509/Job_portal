@@ -12,9 +12,9 @@ import useGetAppliedJobs from "../../hooks/useGetAppliedJobs";
 function Profile() {
   const isResume = true;
   const { authUser } = useSelector((store) => store.auth);
-
   const [open, setOpen] = useState(false);
   const skills = authUser?.profile?.skills || [];
+  console.log(authUser);
 
   useGetAppliedJobs();
 
@@ -65,6 +65,7 @@ function Profile() {
 
         <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
           <Label className="font-bold text-md">Resume</Label>
+
           {isResume ? (
             <a
               target="_blank"
@@ -72,7 +73,7 @@ function Profile() {
               href={authUser?.profile?.resume}
               className="text-blue-500 cursor-pointer hover:underline"
             >
-              {authUser?.profile?.resumeOriginalName}
+              {authUser?.profile?.resumeOrignalName}
             </a>
           ) : (
             <span className="text-gray-500">NA</span>
