@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllJobs } from "../redux/jobSlice";
+import { setAllJobs , setSearchJobs} from "../redux/jobSlice";
 import apiRequest from "../utils/axiosUtility.js";
 import { setApiLoading } from "../redux/authSlice.js";
 import { JOB_API_END_POINT } from "../utils/constant.js";
@@ -22,10 +22,14 @@ function useGetAllJobs() {
           const res = await apiRequest("GET", endpoint, {}, token);
 
           if (res.status === 200) {
-            dispatch(setAllJobs(res.data.data));
+            if (searchedQuery) {
+              dispatch(setSearchJobs(res.data.data));
+            } else {
+              dispatch(setAllJobs(res.data.data));
+            }
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         } finally {
           dispatch(setApiLoading(false));
         }
