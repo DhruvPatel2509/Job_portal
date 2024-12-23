@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
@@ -9,6 +9,7 @@ import apiRequest from "../../utils/axiosUtility";
 import { APPLICATION_API_END_POINT } from "../../utils/constant";
 
 function JobDetails() {
+  const navigate = useNavigate();
   const params = useParams();
   const jobId = params.id;
   const { token } = useSelector((store) => store.auth);
@@ -39,8 +40,14 @@ function JobDetails() {
 
   return (
     <div className="max-w-7xl mx-auto my-10 p-6 bg-white shadow-lg rounded-lg">
-      <div className="flex  sm:flex-row justify-between items-start">
+      <div className="flex sm:flex-row justify-between items-start">
         <div className="flex-1">
+          <Button
+            onClick={() => navigate(-1)}
+            className="mb-4 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg"
+          >
+            Back
+          </Button>
           <h1 className="font-bold text-2xl">{singleJob?.title}</h1>
           <div className="flex flex-wrap items-center gap-2 mt-4">
             <Badge variant="ghost" className="text-blue-700 font-bold">
