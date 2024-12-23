@@ -75,12 +75,9 @@ function Jobcard({ job }) {
         <Button
           onClick={() => navigate(`/jobs/jobDetails/${job._id}`)}
           variant="outline"
-          className="w-full md:w-auto"
+          className="bg-purple-800 text-white w-full md:w-auto"
         >
           Details
-        </Button>
-        <Button className="bg-purple-800 text-white w-full md:w-auto">
-          Save For Later
         </Button>
       </div>
     </div>
