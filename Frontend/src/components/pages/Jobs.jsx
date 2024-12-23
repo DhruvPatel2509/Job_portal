@@ -49,7 +49,7 @@ function Jobs() {
 
         {/* Filter Sidebar */}
         <div
-          className={`fixed inset-0 bg-white z-50 p-4 w-[80%]  transition-transform transform ${
+          className={`fixed inset-0 bg-white z-50 p-4 w-[40%]  transition-transform transform ${
             showFilter ? "translate-x-0" : "-translate-x-full"
           } md:relative md:translate-x-0 md:w-[22%] md:block`}
         >
