@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,9 +22,9 @@ export const Login = () => {
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
-  const { token } = useSelector((store) => store.auth);
 
-  const { loading } = useSelector((store) => store.auth);
+  // Fetching token and loading state from Redux store
+  const { token, loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -56,7 +56,6 @@ export const Login = () => {
 
       dispatch(setAuthUser(res.data.user));
       dispatch(setToken(res.data.token));
-      // toast.success(res.data.message);
       toast.success(`${res.data.message}`, {
         duration: 1500,
         position: "top-center",
@@ -94,44 +93,83 @@ export const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center max-w-7xl mx-auto ">
-      <form
-        onSubmit={submitHandler}
-        className="sm:w-[400px] w-[300px] border border-gray-400 rounded-md p-4 my-10"
-      >
-        <h1 className="font-bold text-xl mb-5">Login</h1>
+    <div className="flex h-screen">
+      {/* Left Section */}
+      <div className="w-full sm:w-1/2 p-8 bg-gradient-to-b from-purple-600 to-blue-600 text-white flex flex-col items-center justify-center relative overflow-hidden">
+        {/* Background Circle Decorations */}
+        <div className="absolute top-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full transform -translate-x-10 -translate-y-10 animate-pulse"></div>
+        <div className="absolute bottom-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full transform translate-x-10 translate-y-10 animate-pulse"></div>
 
-        <div className="my-3 flex flex-col gap-2">
-          <Label htmlFor="email">Email:</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="you@example.com"
-            name="email"
-            value={input.email}
-            onChange={changeEventHandler}
-            required
-          />
-        </div>
+        {/* Welcome Text */}
+        <h1 className="text-4xl font-extrabold mb-4 text-center drop-shadow-lg">
+          Welcome to Our Website
+        </h1>
 
-        <div className="my-3 flex flex-col gap-2">
-          <Label htmlFor="password">Password:</Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder="minimum 6 characters"
-            name="password"
-            value={input.password}
-            onChange={changeEventHandler}
-            required
-          />
-        </div>
+        {/* Subheading */}
+        <p className="text-lg leading-relaxed text-center max-w-md drop-shadow-md">
+          Discover new opportunities, connect with like-minded individuals, and
+          unlock your potential. Let’s make your journey memorable and
+          impactful.
+        </p>
 
-        <div className="flex items-center justify-between my-3">
-          <div>
-            <Label>Choose Your Role</Label>
-            <RadioGroup className="flex items-center gap-4">
-              <div className="flex items-center space-x-2">
+        {/* Decorative Divider */}
+        <div className="mt-6 w-24 h-1 bg-white rounded-full"></div>
+      </div>
+
+      {/* Right Section - Login Form */}
+      <div className="w-full sm:w-1/2 flex items-center justify-center bg-white shadow-lg rounded-lg">
+        <form
+          onSubmit={submitHandler}
+          className="sm:w-[400px] w-[300px] p-8 space-y-6 mt-10 mb-10 transform transition-all duration-300 ease-in-out "
+        >
+          <h1 className="font-extrabold text-3xl text-gray-800 mb-4 text-center tracking-wide">
+            Login to Your Account
+          </h1>
+
+          <div className="my-3 flex flex-col gap-3">
+            <Label
+              htmlFor="email"
+              className="text-lg text-gray-800 font-medium"
+            >
+              Email:
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              name="email"
+              value={input.email}
+              onChange={changeEventHandler}
+              required
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
+            />
+          </div>
+
+          <div className="my-3 flex flex-col gap-3">
+            <Label
+              htmlFor="password"
+              className="text-lg text-gray-800 font-medium"
+            >
+              Password:
+            </Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="minimum 6 characters"
+              name="password"
+              value={input.password}
+              onChange={changeEventHandler}
+              required
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300"
+            />
+          </div>
+
+          <div className="my-3">
+            <Label className="text-lg text-gray-800 font-medium">
+              Choose Your Role
+            </Label>
+            <div className="flex gap-6 mt-2">
+              <div className="flex items-center">
                 <Input
                   id="student"
                   type="radio"
@@ -141,11 +179,11 @@ export const Login = () => {
                   value="student"
                   className="cursor-pointer"
                 />
-                <Label htmlFor="student" className="cursor-pointer">
+                <Label htmlFor="student" className="ml-2 text-gray-800">
                   Student
                 </Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center">
                 <Input
                   id="recruiter"
                   type="radio"
@@ -155,32 +193,36 @@ export const Login = () => {
                   value="recruiter"
                   className="cursor-pointer"
                 />
-                <Label htmlFor="recruiter" className="cursor-pointer">
+                <Label htmlFor="recruiter" className="ml-2 text-gray-800">
                   Recruiter
                 </Label>
               </div>
-            </RadioGroup>
+            </div>
           </div>
-        </div>
 
-        <Button type="submit" className="w-full my-4" disabled={loading}>
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Please Wait
-            </>
-          ) : (
-            "Login"
-          )}
-        </Button>
+          <Button
+            type="submit"
+            className="w-full py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please Wait
+              </>
+            ) : (
+              "Login"
+            )}
+          </Button>
 
-        <span className="text-[0.9rem]">
-          Don't have an account?
-          <Link to={"/signup"} className="text-blue-600">
-            Signup
-          </Link>
-        </span>
-      </form>
+          <p className="text-sm text-gray-800 mt-4 text-center">
+            Don't have an account?{" "}
+            <Link to="/signup" className="text-indigo-600 hover:underline">
+              Signup
+            </Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };

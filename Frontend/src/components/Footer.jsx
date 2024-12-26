@@ -1,57 +1,61 @@
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
+
 function Footer() {
   return (
-    <>
-      <footer className="bg-gray-800 text-white py-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-4">
-          <div className="flex items-center justify-center mb-4 md:mb-0">
-            <a
-              href="#"
-              className="text-gray-400 hover:text-white mx-3 transition duration-300 ease-in-out"
-            >
-              <FaFacebook size={24} />
-            </a>
-            <a
-              href="#"
-              className="text-gray-400 hover:text-white mx-3 transition duration-300 ease-in-out"
-            >
-              <FaTwitter size={24} />
-            </a>
-            <a
-              href="#"
-              className="text-gray-400 hover:text-white mx-3 transition duration-300 ease-in-out"
-            >
-              <FaLinkedin size={24} />
-            </a>
-            <a
-              href="#"
-              className="text-gray-400 hover:text-white mx-3 transition duration-300 ease-in-out"
-            >
-              <FaInstagram size={24} />
-            </a>
-          </div>
-          <p className="text-sm text-center mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()}{" "}
-            <span className="font-semibold">Your Company Name</span>. All rights
-            reserved.
-          </p>
-          <div className="flex flex-col md:flex-row items-center justify-center space-x-0 md:space-x-4">
-            <a
-              href="#"
-              className="text-gray-400 hover:text-white mx-2 transition duration-300 ease-in-out"
-            >
-              Privacy Policy
-            </a>
-            <a
-              href="#"
-              className="text-gray-400 hover:text-white mx-2 transition duration-300 ease-in-out"
-            >
-              Terms of Service
-            </a>
-          </div>
+    <footer className="bg-gray-800 text-white py-8">
+      <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+        {/* Social Icons Section */}
+        <div className="flex justify-center space-x-6 md:space-x-8">
+          <a
+            href="#"
+            className="text-gray-300 hover:text-blue-500 transition duration-300 ease-in-out transform hover:scale-110"
+          >
+            <FaFacebook size={28} />
+          </a>
+          <a
+            href="#"
+            className="text-gray-300 hover:text-blue-500 transition duration-300 ease-in-out transform hover:scale-110"
+          >
+            <FaTwitter size={28} />
+          </a>
+          <a
+            href="#"
+            className="text-gray-300 hover:text-blue-500 transition duration-300 ease-in-out transform hover:scale-110"
+          >
+            <FaLinkedin size={28} />
+          </a>
+          <a
+            href="#"
+            className="text-gray-300 hover:text-pink-500 transition duration-300 ease-in-out transform hover:scale-110"
+          >
+            <FaInstagram size={28} />
+          </a>
         </div>
-      </footer>
-    </>
+
+        {/* Copyright Section */}
+        <p className="text-sm text-center md:text-left mb-4 md:mb-0">
+          &copy; {new Date().getFullYear()}{" "}
+          <span className="font-semibold">Your Company Name</span>. All rights
+          reserved.
+        </p>
+
+        {/* Links Section */}
+        <div className="flex flex-col md:flex-row items-center justify-center md:space-x-8">
+          <a
+            href="#"
+            className="text-gray-300 hover:text-white transition duration-300 ease-in-out transform hover:underline"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="#"
+            className="text-gray-300 hover:text-white transition duration-300 ease-in-out transform hover:underline"
+          >
+            Terms of Service
+          </a>
+        </div>
+      </div>
+    </footer>
   );
 }
 

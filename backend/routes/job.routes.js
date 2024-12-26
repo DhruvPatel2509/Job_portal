@@ -12,7 +12,7 @@ import { auth } from "../middleware/auth.middleware.js";
 const jobRouter = express.Router();
 
 jobRouter.post("/postjob", auth, postJob);
-jobRouter.get("/getAllJob", auth, getAllJobs);
+jobRouter.get("/getAllJob", getAllJobs);
 jobRouter.get("/adminPostedJob", auth, adminPostedJob);
 jobRouter.get("/getJob/:id", auth, getJobById);
 jobRouter.put("/updateJob/:id", auth, updateJobById);

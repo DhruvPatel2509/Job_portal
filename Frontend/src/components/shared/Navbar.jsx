@@ -77,21 +77,20 @@ export const Navbar = () => {
   };
 
   return (
-    <div className="bg-[#ffffff] mb-3 navbar z-50">
-      <div className="flex items-center justify-between  sm:justify-between px-4  mx-auto mt-4 menu ">
-        <h1
-          className="text-lg md:text-2xl font-bold cursor-pointer"
-          onClick={handleLogo}
-        >
+    <nav className="bg-gradient-to-r from-[#674e92] to-[#431692] text-white shadow-md">
+      <div className="container mx-auto flex items-center justify-between p-4">
+        {/* Logo */}
+        <h1 className="text-2xl font-bold cursor-pointer" onClick={handleLogo}>
           Job<span className="text-[#F83002]">Portal</span>
         </h1>
 
-        <div className="flex items-center gap-3 menu2">
+        {/* Menu and Buttons */}
+        <div className="flex items-center">
+          {/* Toggle Button */}
           <button
-            className="text-gray-700 focus:outline-none menu-button"
+            className="text-white focus:outline-none menu-button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {/* Mobile menu button icon */}
             <svg
               className="w-6 h-6"
               fill="none"
@@ -108,137 +107,115 @@ export const Navbar = () => {
             </svg>
           </button>
 
-          <div className="flex items-center gap-4">
-            <ul
-              className={`${
-                isMenuOpen ? "flex" : "hidden"
-              }  items-center  gap-3 font-medium  bg-white unorder `}
-            >
-              {role === "student" ? (
-                <>
-                  <li onClick={() => setIsMenuOpen(false)}>
-                    <Link to="/" className="block px-4 py-2 hover:bg-gray-100">
-                      Home
-                    </Link>
-                  </li>
-                  <li onClick={() => setIsMenuOpen(false)}>
-                    <Link
-                      to="/jobs"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      Jobs
-                    </Link>
-                  </li>
-                  <li onClick={() => setIsMenuOpen(false)}>
-                    <Link
-                      to="/browse"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      Browse
-                    </Link>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li onClick={() => setIsMenuOpen(false)}>
-                    <Link
-                      to="/admin/companies"
-                      className="block  py-2 hover:bg-gray-100"
-                    >
-                      Companies
-                    </Link>
-                  </li>
-                  <li onClick={() => setIsMenuOpen(false)}>
-                    <Link
-                      to="/admin/jobs"
-                      className="block  py-2 hover:bg-gray-100"
-                    >
-                      Jobs
-                    </Link>
-                  </li>
-                </>
-              )}
-            </ul>
-            <ul className="flex items-center  gap-3">
-              {authUser ? (
-                <li className="relative" onClick={() => setIsMenuOpen(false)}>
-                  <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-                    <PopoverTrigger>
-                      <Avatar className="cursor-pointer">
-                        <AvatarImage
-                          src={
-                            authUser?.profile?.profilePhoto ||
-                            "default-avatar.png"
-                          }
-                        />
-                        <AvatarFallback>CN</AvatarFallback>
-                      </Avatar>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80 mt-2 bg-[#fefefe]">
-                      <div className="flex items-center gap-7 p-4">
-                        <Avatar>
-                          <AvatarImage
-                            src={
-                              authUser?.profile?.profilePhoto ||
-                              "default-avatar.png"
-                            }
-                          />
-                          <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <h1 className="font-bold">{authUser?.fullname}</h1>
-                          <p>{authUser?.profile?.bio}</p>
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-start p-4 ">
-                        {role === "student" && (
-                          <Link
-                            to="/profile"
-                            onClick={() => {
-                              setIsPopoverOpen(false);
-                            }}
-                          >
-                            <Button variant="link">
-                              <User2 /> &nbsp; View Profile
-                            </Button>
-                          </Link>
-                        )}
-                        <Button variant="link" onClick={logOutHandler}>
-                          <LogOut /> &nbsp; Logout
-                        </Button>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
+          {/* Menu */}
+          <ul
+            className={`${
+              isMenuOpen ? "flex" : "hidden"
+            } flex-col lg:flex-row lg:flex items-center gap-4 ml-4`}
+          >
+            {role === "student" ? (
+              <>
+                <li>
+                  <Link to="/" className="hover:text-gray-300">
+                    Home
+                  </Link>
                 </li>
-              ) : (
-                <>
-                  <li onClick={() => setIsMenuOpen(false)}>
-                    <Link to="/login">
-                      <Button
-                        variant="outline"
-                        className="block w-full md:w-auto"
-                      >
-                        Login
+                <li>
+                  <Link to="/jobs" className="hover:text-gray-300">
+                    Jobs
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/browse" className="hover:text-gray-300">
+                    Browse
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/admin/companies" className="hover:text-gray-300">
+                    Companies
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/admin/jobs" className="hover:text-gray-300">
+                    Jobs
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+
+          {/* User Profile */}
+          {authUser ? (
+            <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+              <PopoverTrigger>
+                <Avatar className="cursor-pointer ml-4">
+                  <AvatarImage
+                    src={
+                      authUser?.profile?.profilePhoto || "default-avatar.png"
+                    }
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 mt-2 bg-white shadow-md text-black">
+                <div className="flex items-center gap-4 p-4">
+                  <Avatar>
+                    <AvatarImage
+                      src={
+                        authUser?.profile?.profilePhoto || "default-avatar.png"
+                      }
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h1 className="font-bold text-lg">{authUser?.fullname}</h1>
+                    <p className="text-sm text-gray-600">
+                      {authUser?.profile?.bio}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 p-4">
+                  {role === "student" && (
+                    <Link to="/profile">
+                      <Button variant="link" className="text-[#20B2AA]">
+                        <User2 className="inline-block mr-2" />
+                        View Profile
                       </Button>
                     </Link>
-                  </li>
-                  <li onClick={() => setIsMenuOpen(false)}>
-                    <Link to="/signup">
-                      <Button
-                        variant="outline"
-                        className="bg-[#20B2AA] text-white hover:bg-[#008080] hover:text-white block w-full md:w-auto"
-                      >
-                        Signup
-                      </Button>
-                    </Link>
-                  </li>
-                </>
-              )}
-            </ul>
-          </div>
+                  )}
+                  <Button
+                    variant="link"
+                    className="text-red-500"
+                    onClick={logOutHandler}
+                  >
+                    <LogOut className="inline-block mr-2" />
+                    Logout
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
+          ) : (
+            <div className="ml-4 flex gap-2">
+              <Link to="/login">
+                <Button
+                  variant="outline"
+                  className="border-white text-black hover:bg-white hover:text-[#20B2AA]"
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button className="bg-[#F83002] text-white hover:bg-red-600">
+                  Signup
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
-      <hr />
-    </div>
+    </nav>
   );
 };
