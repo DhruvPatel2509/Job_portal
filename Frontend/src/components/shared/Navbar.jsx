@@ -149,11 +149,7 @@ export const Navbar = () => {
 
           {/* User Profile */}
           {authUser ? (
-            <Popover
-              open={isPopoverOpen}
-              onOpenChange={setIsPopoverOpen}
-             
-            >
+            <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
               <PopoverTrigger>
                 <Avatar className="cursor-pointer ml-4 ">
                   <AvatarImage

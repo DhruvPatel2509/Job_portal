@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import * as Yup from "yup";
 import apiRequest from "../../utils/axiosUtility";
+import { Mail, Lock, User, Phone, Upload } from "lucide-react";
 
 export const Signup = () => {
   const [input, setInput] = useState({
@@ -107,95 +108,147 @@ export const Signup = () => {
   };
 
   return (
-    <div className="flex items-center justify-center px-4 mx-auto max-w-6xl ">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full p-4 my-10 border border-gray-400 rounded-md md:w-3/4 lg:w-1/2"
-      >
-        <h1 className="mb-5 text-xl font-bold text-center">Sign Up</h1>
-
-        {["fullname", "email", "phoneNumber", "password"].map((field) => (
-          <div key={field} className="flex flex-col gap-2 my-3">
-            <Label htmlFor={field}>
-              {field.charAt(0).toUpperCase() +
-                field.slice(1).replace(/([A-Z])/g, " $1")}
-              :
-              {errors[field] && (
-                <div className="text-sm font-semibold text-red-500">
-                  {errors[field]}
-                </div>
-              )}
-            </Label>
-            <Input
-              id={field}
-              type={field === "password" ? "password" : "text"}
-              placeholder={
-                field === "phoneNumber" ? "e.g. 9876543210" : `Your ${field}`
-              }
-              name={field}
-              value={input[field]}
-              onChange={handleChange}
-              className="placeholder-gray-500"
-            />
-          </div>
-        ))}
-
-        <div className="flex flex-col gap-4 my-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <Label>
-              Choose Your Role:{" "}
-              {errors.role && (
-                <div className="text-sm font-semibold text-red-500">
-                  {errors.role}
-                </div>
-              )}
-            </Label>
-            <RadioGroup className="flex items-center gap-4">
-              {["student", "recruiter"].map((role) => (
-                <div key={role} className="flex items-center space-x-2">
-                  <Input
-                    id={role}
-                    type="radio"
-                    checked={input.role === role}
-                    onChange={handleChange}
-                    name="role"
-                    value={role}
-                    className="cursor-pointer"
-                  />
-                  <Label htmlFor={role} className="cursor-pointer">
-                    {role.charAt(0).toUpperCase() + role.slice(1)}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
-          <div>
-            <Label htmlFor="file">Profile Picture</Label>
-            <Input
-              id="file"
-              type="file"
-              onChange={handleFileChange}
-              accept="image/*"
-              className="cursor-pointer"
-            />
-          </div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 herosec ">
+      <div className="grid grid-cols-1 md:grid-cols-2 w-full max-w-7xl shadow-lg rounded-xl">
+        {/* Left Section */}
+        <div className="hidden sm:flex flex-col items-center justify-center p-8 bg-transparent text-white rounded-l-xl mb-5">
+          <h1 className="text-4xl font-extrabold mb-4">
+            Welcome to Our Job Portal
+          </h1>
+          <p className="text-lg">
+            Your one-stop solution for connecting talented individuals with the
+            right opportunities. Whether you're looking to kickstart your career
+            or hire top-notch professionals, we've got you covered.
+          </p>
         </div>
 
-        <Button type="submit" className="w-full my-4" disabled={loading}>
-          {loading ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          ) : (
-            "Signup"
-          )}
-        </Button>
+        {/* Right Section */}
+        <div className="p-6 md:p-8 ">
+          <div className="text-center ">
+            <h2 className="text-3xl font-bold text-blue-600 ">
+              Create Your Account
+            </h2>
+            <p className="mt-2 text-gray-600">
+              Start exploring opportunities tailored for you.
+            </p>
+          </div>
 
-        <span className="text-[0.9rem] block text-center">
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue-600">
-            Login
-          </Link>
-        </span>
-      </form>
+          <form onSubmit={handleSubmit} className="mt-8 space-y-6 ">
+            {["fullname", "email", "phoneNumber", "password"].map(
+              (field, idx) => (
+                <div key={field} className="relative">
+                  <Label
+                    htmlFor={field}
+                    className="block mb-2 text-sm font-medium text-gray-600"
+                  >
+                    {field.charAt(0).toUpperCase() +
+                      field.slice(1).replace(/([A-Z])/g, " $1")}
+                  </Label>
+                  <div className="flex items-center">
+                    <span className="absolute left-3 text-gray-400">
+                      {idx === 0 ? (
+                        <User />
+                      ) : idx === 1 ? (
+                        <Mail />
+                      ) : idx === 2 ? (
+                        <Phone />
+                      ) : (
+                        <Lock />
+                      )}
+                    </span>
+                    <Input
+                      id={field}
+                      type={field === "password" ? "password" : "text"}
+                      placeholder={
+                        field === "phoneNumber"
+                          ? "e.g. 9876543210"
+                          : `Enter your ${field}`
+                      }
+                      name={field}
+                      value={input[field]}
+                      onChange={handleChange}
+                      className="w-full px-10 py-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  {errors[field] && (
+                    <div className="mt-1 text-sm text-red-500">
+                      {errors[field]}
+                    </div>
+                  )}
+                </div>
+              )
+            )}
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <div>
+                <Label className="block mb-2 text-sm font-medium text-gray-600">
+                  Choose Your Role:
+                </Label>
+                <RadioGroup className="flex gap-4">
+                  {["student", "recruiter"].map((role) => (
+                    <div key={role} className="flex items-center">
+                      <Input
+                        id={role}
+                        type="radio"
+                        checked={input.role === role}
+                        onChange={handleChange}
+                        name="role"
+                        value={role}
+                        className="focus:ring-blue-500"
+                      />
+                      <Label
+                        htmlFor={role}
+                        className="ml-2 text-sm text-gray-700"
+                      >
+                        {role.charAt(0).toUpperCase() + role.slice(1)}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </div>
+              <div>
+                <Label
+                  htmlFor="file"
+                  className="block mb-2 text-sm font-medium text-gray-600"
+                >
+                  Upload Profile Picture
+                </Label>
+                <div className="relative flex items-center">
+                  <span className="absolute left-3 text-gray-400">
+                    <Upload />
+                  </span>
+                  <Input
+                    id="file"
+                    type="file"
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    className="w-full px-10 py-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full px-4 py-3 font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
+              disabled={loading}
+            >
+              {loading ? (
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              ) : (
+                "Sign Up"
+              )}
+            </Button>
+
+            <p className="mt-4 text-center text-sm text-gray-600">
+              Already have an account?{" "}
+              <Link to="/login" className="text-blue-500 hover:underline">
+                Login
+              </Link>
+            </p>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
