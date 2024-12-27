@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { RadioGroup } from "@/components/ui/radio-group";
 import { Link, useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
@@ -95,7 +94,7 @@ export const Login = () => {
   return (
     <div className="flex h-screen">
       {/* Left Section */}
-      <div className="w-full sm:w-1/2 p-8 bg-gradient-to-b from-purple-600 to-blue-600 text-white flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="w-full hidden sm:flex sm:w-1/2 p-8 bg-gradient-to-b from-purple-600 to-blue-600 text-white flex flex-col items-center justify-center relative overflow-hidden">
         {/* Background Circle Decorations */}
         <div className="absolute top-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full transform -translate-x-10 -translate-y-10 animate-pulse"></div>
         <div className="absolute bottom-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full transform translate-x-10 translate-y-10 animate-pulse"></div>
@@ -216,7 +215,7 @@ export const Login = () => {
           </Button>
 
           <p className="text-sm text-gray-800 mt-4 text-center">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link to="/signup" className="text-indigo-600 hover:underline">
               Signup
             </Link>
