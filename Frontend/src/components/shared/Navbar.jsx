@@ -111,7 +111,7 @@ export const Navbar = () => {
           <ul
             className={`${
               isMenuOpen ? "flex" : "hidden"
-            }  flex-col lg:flex-row lg:flex items-center gap-4 ml-4 absolute top-[55px] bg-transparent text-white`}
+            }  flex-col lg:flex-row lg:flex items-center gap-4 ml-4 sm:static  absolute top-[55px] right-[90%] bg-gradient-to-r from-[#674e92] to-[#431692] text-white shadow-md px-8 py-4  `}
           >
             {role === "student" ? (
               <>
