@@ -77,7 +77,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-[#674e92] to-[#431692] text-white shadow-md">
+    <nav className="bg-gradient-to-r from-[#674e92] to-[#431692] text-white shadow-md  z-10">
       <div className="container mx-auto flex items-center justify-between p-4">
         {/* Logo */}
         <h1 className="text-2xl font-bold cursor-pointer" onClick={handleLogo}>
@@ -85,7 +85,7 @@ export const Navbar = () => {
         </h1>
 
         {/* Menu and Buttons */}
-        <div className="flex items-center">
+        <div className="flex items-center relative">
           {/* Toggle Button */}
           <button
             className="text-white focus:outline-none menu-button"
@@ -111,7 +111,7 @@ export const Navbar = () => {
           <ul
             className={`${
               isMenuOpen ? "flex" : "hidden"
-            } flex-col lg:flex-row lg:flex items-center gap-4 ml-4`}
+            }  flex-col lg:flex-row lg:flex items-center gap-4 ml-4 absolute top-[55px] bg-transparent text-white`}
           >
             {role === "student" ? (
               <>
