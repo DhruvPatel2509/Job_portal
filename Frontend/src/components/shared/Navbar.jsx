@@ -111,7 +111,7 @@ export const Navbar = () => {
           <ul
             className={`${
               isMenuOpen ? "flex" : "hidden"
-            }  flex-col lg:flex-row lg:flex items-center gap-4 ml-4 sm:static  absolute top-[55px] right-[90%] bg-gradient-to-r from-[#674e92] to-[#431692] text-white shadow-md px-8 py-4  `}
+            }  flex-col lg:flex-row lg:flex items-center gap-4 ml-4 sm:static  absolute top-[55px] right-[90%] sm:bg-transparent bg-[#431692] text-white  px-8 py-4  `}
           >
             {role === "student" ? (
               <>
@@ -149,10 +149,15 @@ export const Navbar = () => {
 
           {/* User Profile */}
           {authUser ? (
-            <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+            <Popover
+              open={isPopoverOpen}
+              onOpenChange={setIsPopoverOpen}
+             
+            >
               <PopoverTrigger>
-                <Avatar className="cursor-pointer ml-4">
+                <Avatar className="cursor-pointer ml-4 ">
                   <AvatarImage
+                    onClick={() => setIsMenuOpen(false)}
                     src={
                       authUser?.profile?.profilePhoto || "default-avatar.png"
                     }
@@ -160,7 +165,7 @@ export const Navbar = () => {
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </PopoverTrigger>
-              <PopoverContent className="w-80 mt-2 bg-white shadow-md text-black">
+              <PopoverContent className="w-80 mt-3 bg-white shadow-md text-black">
                 <div className="flex items-center gap-4 p-4">
                   <Avatar>
                     <AvatarImage
@@ -177,23 +182,23 @@ export const Navbar = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2 p-4">
+                <hr />
+                <div className="flex flex-col gap-6 p-4 items-start ">
                   {role === "student" && (
                     <Link to="/profile">
-                      <Button variant="link" className="text-[#20B2AA]">
+                      <button
+                        onClick={() => setIsPopoverOpen(false)}
+                        className="text-[#20B2AA]  "
+                      >
                         <User2 className="inline-block mr-2" />
                         View Profile
-                      </Button>
+                      </button>
                     </Link>
                   )}
-                  <Button
-                    variant="link"
-                    className="text-red-500"
-                    onClick={logOutHandler}
-                  >
+                  <button className="text-red-500 " onClick={logOutHandler}>
                     <LogOut className="inline-block mr-2" />
                     Logout
-                  </Button>
+                  </button>
                 </div>
               </PopoverContent>
             </Popover>
