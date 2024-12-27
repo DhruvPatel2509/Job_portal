@@ -115,17 +115,17 @@ export const Navbar = () => {
           >
             {role === "student" ? (
               <>
-                <li>
-                  <Link to="/" className="hover:text-gray-300">
+                <li onClick={() => setIsMenuOpen(false)}>
+                  <Link to="/" className="hover:text-gray-300  ">
                     Home
                   </Link>
                 </li>
-                <li>
+                <li onClick={() => setIsMenuOpen(false)}>
                   <Link to="/jobs" className="hover:text-gray-300">
                     Jobs
                   </Link>
                 </li>
-                <li>
+                <li onClick={() => setIsMenuOpen(false)}>
                   <Link to="/browse" className="hover:text-gray-300">
                     Browse
                   </Link>
@@ -133,12 +133,12 @@ export const Navbar = () => {
               </>
             ) : (
               <>
-                <li>
+                <li onClick={() => setIsMenuOpen(false)}>
                   <Link to="/admin/companies" className="hover:text-gray-300">
                     Companies
                   </Link>
                 </li>
-                <li>
+                <li onClick={() => setIsMenuOpen(false)}>
                   <Link to="/admin/jobs" className="hover:text-gray-300">
                     Jobs
                   </Link>
