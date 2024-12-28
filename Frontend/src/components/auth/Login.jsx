@@ -111,17 +111,17 @@ export const Login = () => {
       </div>
 
       {/* Right Section - Login Form */}
-      <div className="w-full sm:w-1/2 flex items-center justify-center  shadow-lg rounded-lg text-white">
+      <div className="w-full sm:w-1/2 flex items-center justify-center  shadow-lg rounded-lg ">
         <form
           onSubmit={submitHandler}
           className="sm:w-[400px] w-[300px] p-8 space-y-6 mt-10 mb-10 transform transition-all duration-300 ease-in-out "
         >
-          <h1 className="font-extrabold text-3xl mb-4 text-center tracking-wide">
+          <h1 className="font-extrabold text-3xl mb-4 text-center tracking-wide text-blue-600">
             Login to Your Account
           </h1>
 
           <div className="my-3 flex flex-col gap-3">
-            <Label htmlFor="email" className="text-lg  font-medium">
+            <Label htmlFor="email" className="text-lg  font-medium text-white">
               Email:
             </Label>
             <Input
@@ -137,7 +137,10 @@ export const Login = () => {
           </div>
 
           <div className="my-3 flex flex-col gap-3">
-            <Label htmlFor="password" className="text-lg font-medium">
+            <Label
+              htmlFor="password"
+              className="text-lg font-medium text-white"
+            >
               Password:
             </Label>
             <Input
@@ -153,7 +156,9 @@ export const Login = () => {
           </div>
 
           <div className="my-3">
-            <Label className="text-lg  font-medium">Choose Your Role</Label>
+            <Label className="text-lg  font-medium text-white">
+              Choose Your Role
+            </Label>
             <div className="flex gap-6 mt-2">
               <div className="flex items-center">
                 <Input
@@ -165,7 +170,7 @@ export const Login = () => {
                   value="student"
                   className="cursor-pointer"
                 />
-                <Label htmlFor="student" className="ml-2 ">
+                <Label htmlFor="student" className="ml-2 text-white ">
                   Student
                 </Label>
               </div>
@@ -179,7 +184,7 @@ export const Login = () => {
                   value="recruiter"
                   className="cursor-pointer"
                 />
-                <Label htmlFor="recruiter" className="ml-2 ">
+                <Label htmlFor="recruiter" className="ml-2 text-white ">
                   Recruiter
                 </Label>
               </div>
@@ -201,7 +206,7 @@ export const Login = () => {
             )}
           </Button>
 
-          <p className="text-sm  mt-4 text-center">
+          <p className="text-sm  mt-4 text-center text-white">
             Don&apos;t have an account?{" "}
             <Link to="/signup" className="text-indigo-600 hover:underline">
               Signup

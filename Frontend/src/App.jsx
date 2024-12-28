@@ -17,14 +17,14 @@ import NotFound from "./components/NotFound";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import AuthRedirect from "./components/auth/AuthRedirect"; // Import the new AuthRedirect component
 import JobSetup from "./components/admin/JobSetup";
-
+import { ForAllHomePage } from "./components/pages/ForAllHomePage";
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/", element: <Home /> },
+      { path: "/", element: <ForAllHomePage /> },
       {
         path: "/login",
         element: <AuthRedirect component={<Login />} />,
@@ -130,7 +130,5 @@ const appRouter = createBrowserRouter([
 ]);
 
 export default function App() {
- 
-
   return <RouterProvider router={appRouter} />;
 }
