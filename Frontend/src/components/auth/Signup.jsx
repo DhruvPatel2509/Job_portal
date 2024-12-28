@@ -117,8 +117,8 @@ export const Signup = () => {
           </h1>
           <p className="text-lg">
             Your one-stop solution for connecting talented individuals with the
-            right opportunities. Whether you're looking to kickstart your career
-            or hire top-notch professionals, we've got you covered.
+            right opportunities. Whether you&apos;re looking to kickstart your
+            career or hire top-notch professionals, we&apos;ve got you covered.
           </p>
         </div>
 
