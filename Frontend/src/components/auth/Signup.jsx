@@ -136,7 +136,7 @@ export const Signup = () => {
         </div>
 
         {/* Right Section */}
-        <div className="p-5 sm:w-[65%] w-full">
+        <div className="p-5 sm:w-[65%] w-[80%]">
           <div className="text-center ">
             <h2 className="text-3xl font-bold text-blue-600 ">
               Create Your Account
