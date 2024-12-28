@@ -86,7 +86,7 @@ function Footer() {
           </p>
           <p className="text-center md:text-right mt-4 md:mt-0">
             Designed with ❤️ by{" "}
-            <span className="font-semibold">Dhruv Patel</span>.
+            <span className="font-bold text-white">Dhruv Patel</span>.
           </p>
         </div>
       </div>

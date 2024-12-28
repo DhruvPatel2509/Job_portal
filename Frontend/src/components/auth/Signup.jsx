@@ -108,10 +108,10 @@ export const Signup = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 herosec ">
-      <div className="grid grid-cols-1 md:grid-cols-2 w-full max-w-7xl shadow-lg rounded-xl">
+    <div className="flex items-center justify-center min-h-screen  herosec ">
+      <div className="flex gap-5 max-w-7xl items-center justify-around shadow-lg rounded-xl sm:flex-col md:flex-row">
         {/* Left Section */}
-        <div className="hidden sm:flex flex-col items-start justify-center p-8 bg-[#0000007d] text-white rounded-l-xl">
+        <div className="hidden sm:flex flex-col items-start justify-center p-5 rounded-xl text-white rounded-l-xl sm:w-[70%]">
           <h1 className="text-5xl font-bold mb-6">
             Welcome to <span className="text-yellow-300">Job Portal</span>
           </h1>
@@ -136,7 +136,7 @@ export const Signup = () => {
         </div>
 
         {/* Right Section */}
-        <div className="p-6 md:p-8 ">
+        <div className="p-5 sm:w-[65%] w-full">
           <div className="text-center ">
             <h2 className="text-3xl font-bold text-blue-600 ">
               Create Your Account
@@ -146,7 +146,7 @@ export const Signup = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="mt-8 space-y-6 ">
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5 ">
             {["fullname", "email", "phoneNumber", "password"].map(
               (field, idx) => (
                 <div key={field} className="relative">
