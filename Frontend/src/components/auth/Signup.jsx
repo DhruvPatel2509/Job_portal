@@ -111,15 +111,28 @@ export const Signup = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-50 herosec ">
       <div className="grid grid-cols-1 md:grid-cols-2 w-full max-w-7xl shadow-lg rounded-xl">
         {/* Left Section */}
-        <div className="hidden sm:flex flex-col items-center justify-center p-8 bg-transparent text-white rounded-l-xl mb-5">
-          <h1 className="text-4xl font-extrabold mb-4">
-            Welcome to Our Job Portal
+        <div className="hidden sm:flex flex-col items-start justify-center p-8 bg-[#0000007d] text-white rounded-l-xl">
+          <h1 className="text-5xl font-bold mb-6">
+            Welcome to <span className="text-yellow-300">Job Portal</span>
           </h1>
-          <p className="text-lg">
-            Your one-stop solution for connecting talented individuals with the
-            right opportunities. Whether you&apos;re looking to kickstart your
-            career or hire top-notch professionals, we&apos;ve got you covered.
+          <p className="text-lg leading-relaxed">
+            Connecting recruiters with the right talent and empowering students
+            to find their dream jobs. Our platform makes job searching and
+            posting seamless and efficient.
           </p>
+          <ul className="mt-4 text-base space-y-2 list-disc pl-5">
+            <li>Explore diverse job opportunities across industries.</li>
+            <li>Post job openings to attract top candidates.</li>
+            <li>Streamline your hiring and application process.</li>
+          </ul>
+          <div className="mt-6">
+            <p className="text-sm text-gray-200">
+              Already registered?{" "}
+              <a href="/login" className="text-yellow-300 hover:underline">
+                Login now
+              </a>
+            </p>
+          </div>
         </div>
 
         {/* Right Section */}
@@ -128,7 +141,7 @@ export const Signup = () => {
             <h2 className="text-3xl font-bold text-blue-600 ">
               Create Your Account
             </h2>
-            <p className="mt-2 text-gray-600">
+            <p className="mt-2 text-white">
               Start exploring opportunities tailored for you.
             </p>
           </div>
@@ -139,7 +152,7 @@ export const Signup = () => {
                 <div key={field} className="relative">
                   <Label
                     htmlFor={field}
-                    className="block mb-2 text-sm font-medium text-gray-600"
+                    className="block mb-2 text-sm font-medium text-white"
                   >
                     {field.charAt(0).toUpperCase() +
                       field.slice(1).replace(/([A-Z])/g, " $1")}
@@ -167,7 +180,7 @@ export const Signup = () => {
                       name={field}
                       value={input[field]}
                       onChange={handleChange}
-                      className="w-full px-10 py-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-10 py-3 text-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   {errors[field] && (
@@ -181,7 +194,7 @@ export const Signup = () => {
 
             <div className="grid gap-6 md:grid-cols-2">
               <div>
-                <Label className="block mb-2 text-sm font-medium text-gray-600">
+                <Label className="block mb-2 text-sm font-medium text-white">
                   Choose Your Role:
                 </Label>
                 <RadioGroup className="flex gap-4">
@@ -196,10 +209,7 @@ export const Signup = () => {
                         value={role}
                         className="focus:ring-blue-500"
                       />
-                      <Label
-                        htmlFor={role}
-                        className="ml-2 text-sm text-gray-700"
-                      >
+                      <Label htmlFor={role} className="ml-2 text-sm text-white">
                         {role.charAt(0).toUpperCase() + role.slice(1)}
                       </Label>
                     </div>
@@ -209,7 +219,7 @@ export const Signup = () => {
               <div>
                 <Label
                   htmlFor="file"
-                  className="block mb-2 text-sm font-medium text-gray-600"
+                  className="block mb-2 text-sm font-medium text-white cursor-pointer"
                 >
                   Upload Profile Picture
                 </Label>
@@ -222,7 +232,7 @@ export const Signup = () => {
                     type="file"
                     onChange={handleFileChange}
                     accept="image/*"
-                    className="w-full px-10 py-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full cursor-pointer px-10 py-3 text-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
@@ -240,7 +250,7 @@ export const Signup = () => {
               )}
             </Button>
 
-            <p className="mt-4 text-center text-sm text-gray-600">
+            <p className="mt-4 text-center text-sm text-white">
               Already have an account?{" "}
               <Link to="/login" className="text-blue-500 hover:underline">
                 Login

@@ -94,19 +94,16 @@ export const Login = () => {
   return (
     <div className="flex h-screen herosec ">
       {/* Left Section */}
-      <div className="w-full hidden sm:flex sm:w-1/2 p-8 bg-transparent text-white  flex-col items-center justify-center relative overflow-hidden">
-        {/* Background Circle Decorations */}
-
+      <div className="w-full hidden sm:flex sm:w-1/2 p-8 bg-transparent text-white flex-col items-center justify-center relative overflow-hidden">
         {/* Welcome Text */}
         <h1 className="text-4xl font-extrabold mb-4 text-center drop-shadow-lg">
-          Welcome to Our Website
+          Welcome Back to <span className="text-yellow-300">Job Portal</span>
         </h1>
 
         {/* Subheading */}
         <p className="text-lg leading-relaxed text-center max-w-md drop-shadow-md">
-          Discover new opportunities, connect with like-minded individuals, and
-          unlock your potential. Let’s make your journey memorable and
-          impactful.
+          Log in to explore exciting job opportunities or manage your job
+          postings. Your next career milestone is just a step away.
         </p>
 
         {/* Decorative Divider */}
