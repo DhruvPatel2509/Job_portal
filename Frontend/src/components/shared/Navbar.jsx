@@ -52,7 +52,7 @@ export const Navbar = () => {
         dispatch(setAllCompanies(null));
         dispatch(setToken(""));
         dispatch(setAllJobsAdmin(null));
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       console.error("Logout failed:", error);
@@ -71,6 +71,8 @@ export const Navbar = () => {
   const handleLogo = () => {
     if (authUser && authUser.role === "recruiter") {
       navigate("/admin/companies");
+    } else if (authUser && authUser.role === "student") {
+      navigate("/studentHome");
     } else {
       navigate("/");
     }
@@ -116,7 +118,7 @@ export const Navbar = () => {
             {role === "student" ? (
               <>
                 <li onClick={() => setIsMenuOpen(false)}>
-                  <Link to="/" className="hover:text-gray-300  ">
+                  <Link to="/studentHome" className="hover:text-gray-300  ">
                     Home
                   </Link>
                 </li>

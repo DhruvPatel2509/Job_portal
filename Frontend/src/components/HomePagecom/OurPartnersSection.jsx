@@ -1,10 +1,13 @@
-import React from "react";
+import googlelogo from "../../assets/download.png";
+import amazonlogo from "../../assets/amazon.png";
+import facebooklogo from "../../assets/facebook.png";
+import microsoftlogo from "../../assets/microsoft.png";
 
 const partners = [
-  { name: "Google", logo: "/logos/google.png" },
-  { name: "Amazon", logo: "/logos/amazon.png" },
-  { name: "Facebook", logo: "/logos/facebook.png" },
-  { name: "Microsoft", logo: "/logos/microsoft.png" },
+  { name: "Google", logo: googlelogo },
+  { name: "Amazon", logo: amazonlogo },
+  { name: "Facebook", logo: facebooklogo },
+  { name: "Microsoft", logo: microsoftlogo },
 ];
 
 const OurPartnersSection = () => {

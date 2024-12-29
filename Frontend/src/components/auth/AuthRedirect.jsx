@@ -9,7 +9,7 @@ function AuthRedirect({ component }) {
   useEffect(() => {
     if (authUser) {
       if (authUser.role === "student") {
-        navigate("/"); // Redirect student to home
+        navigate("/studenthome"); // Redirect student to home
       } else {
         navigate("/admin/companies"); // Redirect admin to companies
       }

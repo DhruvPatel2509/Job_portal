@@ -1,5 +1,3 @@
-import { Herosection } from "../Herosection";
-import BlogSection from "../HomePagecom/BlogSection";
 import FAQSection from "../HomePagecom/FAQSection";
 import FeaturedJobsSection from "../HomePagecom/FeaturedJobsSection";
 import FeaturesSection from "../HomePagecom/FeaturesSection";
@@ -13,7 +11,6 @@ import TestimonialsSection from "../HomePagecom/Testimonial";
 export const ForAllHomePage = () => {
   return (
     <>
-      <Herosection />
       <HeroSection />
       <FeaturesSection />
       <HowItWorksSection />
@@ -21,7 +18,7 @@ export const ForAllHomePage = () => {
       <FeaturedJobsSection />
       <OurPartnersSection />
       <TestimonialsSection />
-      <BlogSection />
+
       <FAQSection />
       <NewsletterSection />
     </>

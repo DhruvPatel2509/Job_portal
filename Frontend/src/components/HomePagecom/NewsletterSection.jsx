@@ -7,11 +7,11 @@ const NewsletterSection = () => {
       <p className="text-lg mb-6">
         Subscribe to our newsletter for the latest job updates and career tips.
       </p>
-      <form className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0">
+      <form className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 ">
         <input
           type="email"
           placeholder="Enter your email"
-          className="px-4 py-3 rounded-full text-gray-800 w-full md:w-auto md:flex-1"
+          className="px-4 py-3 rounded-full text-gray-800 w-full md:w-[40%]  "
         />
         <button
           type="submit"

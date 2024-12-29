@@ -25,6 +25,7 @@ const appRouter = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: "/", element: <ForAllHomePage /> },
+      { path: "/studenthome", element: <Home /> },
       {
         path: "/login",
         element: <AuthRedirect component={<Login />} />,
