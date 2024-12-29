@@ -68,9 +68,7 @@ export const Login = () => {
       setTimeout(
         () =>
           navigate(
-            res.data.user.role === "recruiter"
-              ? "/admin/companies"
-              : "/studenthome"
+            res.data.user.role === "recruiter" ? "/recHome" : "/studenthome"
           ),
         1000
       );

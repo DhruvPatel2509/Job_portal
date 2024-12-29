@@ -10,7 +10,6 @@ export const Home = () => {
     <>
       <Herosection />
       <CategoryCarousal />
-
       <LatestJob />
     </>
   );

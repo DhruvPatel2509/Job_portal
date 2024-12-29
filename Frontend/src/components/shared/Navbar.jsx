@@ -70,7 +70,7 @@ export const Navbar = () => {
 
   const handleLogo = () => {
     if (authUser && authUser.role === "recruiter") {
-      navigate("/admin/companies");
+      navigate("/recHome");
     } else if (authUser && authUser.role === "student") {
       navigate("/studentHome");
     } else {

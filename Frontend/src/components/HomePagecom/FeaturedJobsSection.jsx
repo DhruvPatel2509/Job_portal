@@ -29,7 +29,7 @@ const jobs = [
 
 const FeaturedJobsSection = () => {
   return (
-    <div className="py-16 px-6 md:px-16">
+    <div className="py-16 px-6 md:px-16 bg-[#ffffff]">
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
         Featured <span className="text-[#F83002]">Jobs</span>
       </h2>

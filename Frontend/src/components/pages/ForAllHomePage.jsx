@@ -19,8 +19,8 @@ export const ForAllHomePage = () => {
       <OurPartnersSection />
       <TestimonialsSection />
 
-      <FAQSection />
       <NewsletterSection />
+      <FAQSection />
     </>
   );
 };

@@ -1,5 +1,3 @@
-import React from "react";
-
 const NewsletterSection = () => {
   return (
     <div className="bg-[#431692] text-white py-16 px-6 md:px-16 text-center">
@@ -15,7 +13,7 @@ const NewsletterSection = () => {
         />
         <button
           type="submit"
-          className="bg-[#F83002] px-8 py-3 rounded-full text-lg font-semibold hover:bg-red-600 transition"
+          className="bg-[#F83002] ml-3 px-8 py-3 rounded-full text-lg font-semibold hover:bg-red-600 transition"
         >
           Subscribe
         </button>
