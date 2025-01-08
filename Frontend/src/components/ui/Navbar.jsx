@@ -137,7 +137,7 @@ export const Navbar = () => {
               <>
                 <li onClick={() => setIsMenuOpen(false)}>
                   <Link to="/admin/companies" className="hover:text-gray-300">
-                    Companies
+                    Company
                   </Link>
                 </li>
                 <li onClick={() => setIsMenuOpen(false)}>

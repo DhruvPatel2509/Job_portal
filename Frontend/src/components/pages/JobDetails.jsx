@@ -73,11 +73,23 @@ function JobDetails() {
           </Button>
         </div>
       </div>
+
       <div className="mt-6">
         <h1 className="border-b-2 border-b-gray-200 font-medium py-4 text-lg">
           Job Description
         </h1>
         <p className="mt-2 text-gray-700">{singleJob?.description}</p>
+
+        {/* Job Requirements Section */}
+        <div className="my-6">
+          <h1 className="font-bold text-lg">Job Requirements</h1>
+          <ul className="list-disc pl-5 mt-2 text-gray-700">
+            {singleJob?.requirements?.map((requirement, index) => (
+              <li key={index}>{requirement}</li>
+            ))}
+          </ul>
+        </div>
+
         <div className="my-4 space-y-2">
           {[
             { label: "Role", value: singleJob?.title },
