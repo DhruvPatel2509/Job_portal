@@ -211,6 +211,10 @@ export const Login = () => {
             <Link to="/signup" className="text-indigo-600 hover:underline">
               Signup
             </Link>
+            <br />
+            <Link to="/forgotPass" className="text-[red] hover:underline">
+              Forgot Password
+            </Link>
           </p>
         </form>
       </div>

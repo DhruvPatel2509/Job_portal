@@ -1,9 +1,10 @@
 import { useSelector } from "react-redux";
-import { Navbar } from "./shared/Navbar";
+
 import useCheckAuth from "../hooks/useCheckAuth";
 import { Outlet } from "react-router-dom";
 import Loader from "./Loader";
 import Footer from "./Footer";
+import { Navbar } from "./ui/Navbar";
 
 function Layout() {
   useCheckAuth();

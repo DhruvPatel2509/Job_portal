@@ -23,11 +23,10 @@ import { useState } from "react";
 import "../../CSS/Navbar.css";
 
 export const Navbar = () => {
-  const { authUser } = useSelector((store) => store.auth);
+  const { authUser, token } = useSelector((store) => store.auth);
   const role = authUser?.role;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { token } = useSelector((store) => store.auth);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
@@ -69,17 +68,17 @@ export const Navbar = () => {
   };
 
   const handleLogo = () => {
-    if (authUser && authUser.role === "recruiter") {
+    if (authUser && role === "recruiter") {
       navigate("/recHome");
-    } else if (authUser && authUser.role === "student") {
-      navigate("/studentHome");
+    } else if (authUser && role === "student") {
+      navigate("/studenthome");
     } else {
       navigate("/");
     }
   };
 
   return (
-    <nav className="bg-gradient-to-r from-[#674e92] to-[#431692] text-white shadow-md  z-10">
+    <nav className="bg-gradient-to-r from-[#674e92] to-[#431692] text-white shadow-md z-10">
       <div className="container mx-auto flex items-center justify-between p-4">
         {/* Logo */}
         <h1 className="text-2xl font-bold cursor-pointer" onClick={handleLogo}>
@@ -113,12 +112,12 @@ export const Navbar = () => {
           <ul
             className={`${
               isMenuOpen ? "flex" : "hidden"
-            }  flex-col lg:flex-row lg:flex items-center gap-4 ml-4 sm:static  absolute top-[55px] right-[90%] sm:bg-transparent bg-[#431692] text-white  px-8 py-4  `}
+            } flex-col lg:flex-row lg:flex items-center gap-4 ml-4 sm:static absolute top-[55px] right-[90%] sm:bg-transparent bg-[#431692] text-white px-8 py-4`}
           >
-            {role === "student" ? (
+            {role === "student" && (
               <>
                 <li onClick={() => setIsMenuOpen(false)}>
-                  <Link to="/studentHome" className="hover:text-gray-300  ">
+                  <Link to="/studentHome" className="hover:text-gray-300">
                     Home
                   </Link>
                 </li>
@@ -133,7 +132,8 @@ export const Navbar = () => {
                   </Link>
                 </li>
               </>
-            ) : (
+            )}
+            {role === "recruiter" && (
               <>
                 <li onClick={() => setIsMenuOpen(false)}>
                   <Link to="/admin/companies" className="hover:text-gray-300">
@@ -153,12 +153,13 @@ export const Navbar = () => {
           {authUser ? (
             <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
               <PopoverTrigger>
-                <Avatar className="cursor-pointer ml-4 ">
+                <Avatar className="cursor-pointer ml-4">
                   <AvatarImage
-                    onClick={() => setIsMenuOpen(false)}
                     src={
-                      authUser?.profile?.profilePhoto || "default-avatar.png"
+                      authUser?.profile?.profilePhoto ||
+                      "/images/default-avatar.png"
                     }
+                    alt="User Avatar"
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
@@ -168,32 +169,34 @@ export const Navbar = () => {
                   <Avatar>
                     <AvatarImage
                       src={
-                        authUser?.profile?.profilePhoto || "default-avatar.png"
+                        authUser?.profile?.profilePhoto ||
+                        "/images/default-avatar.png"
                       }
+                      alt="User Avatar"
                     />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <div>
                     <h1 className="font-bold text-lg">{authUser?.fullname}</h1>
                     <p className="text-sm text-gray-600">
-                      {authUser?.profile?.bio}
+                      {authUser?.profile?.bio || "No bio available"}
                     </p>
                   </div>
                 </div>
                 <hr />
-                <div className="flex flex-col gap-6 p-4 items-start ">
+                <div className="flex flex-col gap-6 p-4 items-start">
                   {role === "student" && (
                     <Link to="/profile">
                       <button
                         onClick={() => setIsPopoverOpen(false)}
-                        className="text-[#20B2AA]  "
+                        className="text-[#20B2AA]"
                       >
                         <User2 className="inline-block mr-2" />
                         View Profile
                       </button>
                     </Link>
                   )}
-                  <button className="text-red-500 " onClick={logOutHandler}>
+                  <button className="text-red-500" onClick={logOutHandler}>
                     <LogOut className="inline-block mr-2" />
                     Logout
                   </button>

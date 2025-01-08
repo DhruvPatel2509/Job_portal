@@ -19,6 +19,7 @@ import AuthRedirect from "./components/auth/AuthRedirect"; // Import the new Aut
 import JobSetup from "./components/admin/JobSetup";
 import { ForAllHomePage } from "./components/pages/ForAllHomePage";
 import HomeRecruiter from "./components/admin/RecHome";
+import ForgotPassword from "./components/auth/ForgotPass";
 
 const appRouter = createBrowserRouter([
   {
@@ -27,7 +28,14 @@ const appRouter = createBrowserRouter([
     children: [
       { path: "/", element: <ForAllHomePage /> },
       { path: "/studenthome", element: <Home /> },
-      { path: "/recHome", element: <HomeRecruiter /> },
+      {
+        path: "/recHome",
+        element: <HomeRecruiter />,
+      },
+      {
+        path: "/forgotPass",
+        element: <ForgotPassword />,
+      },
       {
         path: "/login",
         element: <AuthRedirect component={<Login />} />,

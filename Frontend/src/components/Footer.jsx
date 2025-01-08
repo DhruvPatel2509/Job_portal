@@ -85,7 +85,7 @@ function Footer() {
             All rights reserved.
           </p>
           <p className="text-center md:text-right mt-4 md:mt-0">
-            Designed with ❤️ by{" "}
+            Designed by{" "}
             <span className="font-bold text-white">Dhruv Patel</span>.
           </p>
         </div>

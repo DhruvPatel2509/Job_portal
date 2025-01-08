@@ -33,7 +33,10 @@ const HeroSection = () => {
 
           {/* Recruiter CTA */}
           <div className="flex flex-col items-center">
-            <button className="bg-white text-[#431692] px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-200 transition shadow-lg">
+            <button
+              onClick={() => navigate("/login")}
+              className="bg-white text-[#431692] px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-200 transition shadow-lg"
+            >
               Post a Job
             </button>
             <p className="mt-5 text-sm text-gray-300">
