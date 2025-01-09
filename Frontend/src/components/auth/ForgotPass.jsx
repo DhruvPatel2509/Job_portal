@@ -41,7 +41,6 @@ const ForgotPassword = () => {
     if (timer === 0) {
       setTimer(30); // Reset timer
       console.log("Resending OTP...");
-      // Add your resend OTP logic here
     }
   };
 
@@ -53,7 +52,7 @@ const ForgotPassword = () => {
 
   const handleSubmit = () => {
     console.log("Entered OTP: ", otp.join(""));
-    // Add OTP verification logic here
+    navigate("/forgotPass/NewPassword");
   };
 
   return (

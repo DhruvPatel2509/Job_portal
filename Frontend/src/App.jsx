@@ -20,6 +20,7 @@ import JobSetup from "./components/admin/JobSetup";
 import { ForAllHomePage } from "./components/pages/ForAllHomePage";
 import HomeRecruiter from "./components/admin/RecHome";
 import ForgotPassword from "./components/auth/ForgotPass";
+import { NewPassword } from "./components/auth/NewPassword";
 
 const appRouter = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/forgotPass",
         element: <ForgotPassword />,
+      },
+      {
+        path: "/forgotPass/NewPassword",
+        element: <NewPassword />,
       },
       {
         path: "/login",
