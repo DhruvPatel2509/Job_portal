@@ -3,6 +3,8 @@ import { User } from "../models/user.model.js";
 import sendResponse from "../utils/response.util.js";
 import jwt from "jsonwebtoken";
 import uploadOnCloudinary from "../utils/cloudinary.js";
+import { sendResetOtp } from "../utils/mailSend.js";
+import crypto from "crypto";
 
 export const register = async (req, res) => {
   try {
@@ -214,5 +216,107 @@ export const retriveUser = async (req, res) => {
   } catch (error) {
     console.error("Error retrieving user:", error);
     return res.status(500).send("Internal server error");
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) return sendResponse(res, 404, null, "User not found");
+
+    // Check OTP resend cooldown
+    if (user.otp && user.otp.sendTime > Date.now()) {
+      const waitTime = new Date(user.otp.sendTime).toLocaleTimeString();
+      return sendResponse(res, 429, null, `Please wait until ${waitTime}`);
+    }
+
+    // Generate OTP and token
+    const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+    const token = crypto.randomBytes(32).toString("hex");
+
+    // Set OTP and expiry in user object
+    user.otp = {
+      otp,
+      sendTime: Date.now() + 60 * 1000,
+      token,
+    };
+
+    await user.save();
+
+    const emailResponse = await sendResetOtp(otp, email);
+
+    // Check if email sending succeeded
+    if (!emailResponse.success) {
+      return sendResponse(
+        res,
+        500,
+        null,
+        "Failed to send OTP email. Please try again later."
+      );
+    }
+
+    return sendResponse(res, 200, token, `OTP sent to ${email}`);
+  } catch (error) {
+    console.error("Forgot Password Error:", error);
+    return sendResponse(res, 500, null, "Internal server error");
+  }
+};
+
+export const verifyOtp = async (req, res, next) => {
+  const { sotp } = req.body;
+  console.log(sotp);
+
+  try {
+    const user = await User.findOne({ "otp.otp": sotp });
+
+    if (!user) return sendResponse(res, 404, null, "INVALID OTP");
+
+    if (new Date(user.otp.sendTime).getTime() < new Date().getTime()) {
+      return sendResponse(res, 404, null, "OTP Expire");
+    }
+    user.otp.otp = null;
+    await user.save();
+    return sendResponse(res, 200, null, "Otp Verified");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  const { password, confirmPassword, token } = req.body;
+  console.log(password);
+  console.log(confirmPassword);
+  console.log(token);
+
+  try {
+    const user = await User.findOne({ "otp.token": token });
+    if (!user) {
+      return sendResponse(res, 404, null, "Something Went Wrong");
+    }
+
+    if (
+      new Date(user.otp.sendTime).getTime() + 5 * 60 * 1000 <
+      new Date().getTime()
+    ) {
+      return sendResponse(res, 404, null, "Something Went Wrong");
+    }
+
+    if (password !== confirmPassword) {
+      return sendResponse(res, 404, null, "Password does Not Match");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    user.password = hashedPassword;
+    user.otp.sendTime = null;
+    user.otp.token = null;
+    await user.save();
+
+    return sendResponse(res, 200, null, "Password Updated Successfully");
+  } catch (error) {
+    console.log(error);
   }
 };

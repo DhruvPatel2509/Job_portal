@@ -1,10 +1,13 @@
 import express from "express";
 import {
+  forgotPassword,
   login,
   logOut,
   register,
+  resetPassword,
   retriveUser,
   updateProfile,
+  verifyOtp,
 } from "../controller/user.controller.js";
 import { auth } from "../middleware/auth.middleware.js";
 import { upload } from "../middleware/multer.js";
@@ -24,5 +27,8 @@ userRouter.put(
   updateProfile
 );
 userRouter.get("/me", auth, retriveUser);
+userRouter.post("/forgotPass", forgotPassword);
+userRouter.post("/verifyOtp", verifyOtp);
+userRouter.post("/resetPassword", resetPassword);
 
 export default userRouter;

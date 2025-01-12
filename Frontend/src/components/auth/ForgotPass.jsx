@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import apiRequest from "../../utils/axiosUtility";
+import { USER_API_END_POINT } from "../../utils/constant";
+import axios from "axios";
+import { toast } from "sonner";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -18,11 +22,21 @@ const ForgotPassword = () => {
     return () => clearInterval(countdown);
   }, [timer, isOtpSent]);
 
-  const handleEmailSubmit = () => {
-    console.log("Email submitted: ", email);
-    // Add logic to send OTP to the entered email
-    setIsOtpSent(true);
-    setTimer(30); // Reset timer
+  const handleEmailSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${USER_API_END_POINT}/forgotPass`, {
+        email,
+      });
+      console.log(res);
+      if (res.status === 200) {
+        localStorage.setItem("passToken", res?.data?.data);
+        toast.success(res.data.message);
+        setIsOtpSent(true);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   const handleOtpChange = (element, index) => {
@@ -50,9 +64,19 @@ const ForgotPassword = () => {
     navigate("/login");
   };
 
-  const handleSubmit = () => {
-    console.log("Entered OTP: ", otp.join(""));
-    navigate("/forgotPass/NewPassword");
+  const handleSubmit = async (e) => {
+    const sotp = otp.join("");
+
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${USER_API_END_POINT}/verifyOtp`, { sotp });
+      console.log(res);
+      if (res.status === 200) {
+        navigate("/forgotPass/NewPassword");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
