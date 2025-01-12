@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import apiRequest from "../../utils/axiosUtility";
 import { USER_API_END_POINT } from "../../utils/constant";
 import axios from "axios";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { Loader2 } from "lucide-react";
+import { setLoading } from "../../redux/authSlice";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +13,8 @@ const ForgotPassword = () => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [timer, setTimer] = useState(30);
   const navigate = useNavigate();
+  const { loading } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let countdown;
@@ -24,7 +28,9 @@ const ForgotPassword = () => {
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
+
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/forgotPass`, {
         email,
       });
@@ -33,9 +39,12 @@ const ForgotPassword = () => {
         localStorage.setItem("passToken", res?.data?.data);
         toast.success(res.data.message);
         setIsOtpSent(true);
+        dispatch(setLoading(false));
       }
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -69,13 +78,17 @@ const ForgotPassword = () => {
 
     e.preventDefault();
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/verifyOtp`, { sotp });
       console.log(res);
       if (res.status === 200) {
         navigate("/forgotPass/NewPassword");
+        dispatch(setLoading(false));
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -101,7 +114,11 @@ const ForgotPassword = () => {
               onClick={handleEmailSubmit}
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
-              Send OTP
+              {loading ? (
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              ) : (
+                "Send OTP"
+              )}
             </button>
 
             <button
@@ -162,7 +179,11 @@ const ForgotPassword = () => {
               onClick={handleSubmit}
               className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
             >
-              Submit
+              {loading ? (
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+              ) : (
+                "Send OTP"
+              )}
             </button>
           </div>
         </>

@@ -3,7 +3,12 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { USER_API_END_POINT } from "../../utils/constant";
+import { Loader2 } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
+import { setLoading } from "../../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 
 export const NewPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,23 +16,31 @@ export const NewPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
   const navigate = useNavigate();
-
+  const { loading } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("passToken");
     console.log(token);
 
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/resetPassword`, {
         password,
         confirmPassword,
         token,
       });
-      if (res.data.status === 200) {
+      console.log(res);
+
+      if (res.status === 200) {
+        toast.success(res.data.message);
         navigate("/login");
+        dispatch(setLoading(false));
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -100,7 +113,11 @@ export const NewPassword = () => {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
           >
-            Update Password
+            {loading ? (
+              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+            ) : (
+              "Update Password"
+            )}
           </button>
         </form>
       </div>
