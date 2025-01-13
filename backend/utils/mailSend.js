@@ -28,6 +28,7 @@ export const sendResetOtp = async (otp, recipientEmail) => {
           <h3 style="color: #0056b3;">${otp}</h3>
           <p>If you did not request this, please ignore this email or contact support.</p>
           <p>Thank you,<br/>The Support Team</p>
+          <p>This OTP Will Expire In 48Seconds</p>
         </div>
       `,
     };

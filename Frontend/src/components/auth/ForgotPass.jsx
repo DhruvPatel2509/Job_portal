@@ -53,8 +53,8 @@ const ForgotPassword = () => {
         localStorage.setItem("passToken", res?.data?.data);
         toast.success(res.data.message);
         setIsOtpSent(true);
-        setTimer(120);
-        localStorage.setItem("timer", 120);
+        setTimer(30);
+        localStorage.setItem("timer", 30);
       }
     } catch (error) {
       toast.error(error.response.data.message);

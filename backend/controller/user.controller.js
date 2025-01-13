@@ -240,7 +240,7 @@ export const forgotPassword = async (req, res) => {
     // Set OTP and expiry in user object
     user.otp = {
       otp,
-      sendTime: Date.now() + 60 * 2000,
+      sendTime: Date.now() + 60 * 800,
       token,
     };
 
