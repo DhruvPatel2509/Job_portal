@@ -43,9 +43,7 @@ const ForgotPassword = () => {
     localStorage.setItem("isOtpSent", isOtpSent);
   }, [isOtpSent]);
 
-  const handleEmailSubmit = async (e) => {
-    e.preventDefault();
-
+  const otpSend = async () => {
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/forgotPass`, {
@@ -65,6 +63,16 @@ const ForgotPassword = () => {
     }
   };
 
+  const handleEmailSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(setLoading(true));
+      otpSend();
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
   const handleOtpChange = (element, index) => {
     if (isNaN(element.value)) return;
     const newOtp = [...otp];
@@ -77,6 +85,7 @@ const ForgotPassword = () => {
   };
 
   const handleResendOtp = () => {
+    otpSend();
     if (timer === 0) {
       setTimer(60);
       localStorage.setItem("timer", 60);
@@ -91,7 +100,7 @@ const ForgotPassword = () => {
     navigate("/login");
   };
 
-  const handleSubmit = async (e) => {
+  const verifyOtp = async (e) => {
     const sotp = otp.join("");
 
     e.preventDefault();
@@ -194,7 +203,7 @@ const ForgotPassword = () => {
               Back
             </button>
             <button
-              onClick={handleSubmit}
+              onClick={verifyOtp}
               className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
             >
               {loading ? (
