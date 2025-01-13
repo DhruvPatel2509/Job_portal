@@ -17,7 +17,7 @@ export const sendResetOtp = async (otp, recipientEmail) => {
 
     // Email content
     const mailOptions = {
-      from: `"Support Team" `,
+      from: "Support Team",
       to: recipientEmail,
       subject: "Password Reset OTP",
       html: `
