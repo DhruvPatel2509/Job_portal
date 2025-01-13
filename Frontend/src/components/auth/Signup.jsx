@@ -180,7 +180,7 @@ export const Signup = () => {
                       name={field}
                       value={input[field]}
                       onChange={handleChange}
-                      className="w-full px-10 py-3 text-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-10 py-3 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   {errors[field] && (

@@ -9,9 +9,13 @@ import { setLoading } from "../../redux/authSlice";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isOtpSent, setIsOtpSent] = useState(
+    JSON.parse(localStorage.getItem("isOtpSent")) || false
+  );
   const [otp, setOtp] = useState(new Array(6).fill(""));
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(
+    parseInt(localStorage.getItem("timer")) || 30
+  );
   const navigate = useNavigate();
   const { loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
@@ -20,11 +24,24 @@ const ForgotPassword = () => {
     let countdown;
     if (isOtpSent && timer > 0) {
       countdown = setInterval(() => {
-        setTimer((prev) => prev - 1);
+        setTimer((prev) => {
+          const newTimer = prev - 1;
+          localStorage.setItem("timer", newTimer); // Save the updated timer
+          return newTimer;
+        });
       }, 1000);
     }
+
+    if (timer <= 0) {
+      localStorage.removeItem("timer");
+    }
+
     return () => clearInterval(countdown);
   }, [timer, isOtpSent]);
+
+  useEffect(() => {
+    localStorage.setItem("isOtpSent", isOtpSent);
+  }, [isOtpSent]);
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
@@ -34,12 +51,12 @@ const ForgotPassword = () => {
       const res = await axios.post(`${USER_API_END_POINT}/forgotPass`, {
         email,
       });
-      console.log(res);
       if (res.status === 200) {
         localStorage.setItem("passToken", res?.data?.data);
         toast.success(res.data.message);
         setIsOtpSent(true);
-        dispatch(setLoading(false));
+        setTimer(120);
+        localStorage.setItem("timer", 120);
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -54,7 +71,6 @@ const ForgotPassword = () => {
     newOtp[index] = element.value;
     setOtp(newOtp);
 
-    // Focus next input box if current is filled
     if (element.value && index < 5) {
       document.getElementById(`otp-input-${index + 1}`).focus();
     }
@@ -62,14 +78,16 @@ const ForgotPassword = () => {
 
   const handleResendOtp = () => {
     if (timer === 0) {
-      setTimer(30); // Reset timer
-      console.log("Resending OTP...");
+      setTimer(60);
+      localStorage.setItem("timer", 60);
     }
   };
 
   const handleBack = () => {
     setIsOtpSent(false);
     setEmail("");
+    localStorage.removeItem("isOtpSent");
+    localStorage.removeItem("timer");
     navigate("/login");
   };
 
@@ -80,10 +98,10 @@ const ForgotPassword = () => {
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/verifyOtp`, { sotp });
-      console.log(res);
       if (res.status === 200) {
+        localStorage.removeItem("isOtpSent");
+        localStorage.removeItem("timer");
         navigate("/forgotPass/NewPassword");
-        dispatch(setLoading(false));
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -182,7 +200,7 @@ const ForgotPassword = () => {
               {loading ? (
                 <Loader2 className="w-5 h-5 mr-2 animate-spin" />
               ) : (
-                "Send OTP"
+                "Verify OTP"
               )}
             </button>
           </div>

@@ -7,16 +7,17 @@ export const sendResetOtp = async (otp, recipientEmail) => {
   try {
     // Create transporter
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.ethereal.email",
+      port: 587,
       auth: {
-        user: process.env.EMAIL_USER, // Your email (set in .env file)
-        pass: process.env.EMAIL_PASS, // App password (set in .env file)
+        user: "eliezer.hamill@ethereal.email",
+        pass: "9jxCYrtwKkwEYmB3tF",
       },
     });
 
     // Email content
     const mailOptions = {
-      from: `"Support Team" <${process.env.EMAIL_USER}>`,
+      from: `"Support Team" `,
       to: recipientEmail,
       subject: "Password Reset OTP",
       html: `
@@ -34,7 +35,7 @@ export const sendResetOtp = async (otp, recipientEmail) => {
     // Send the email
     const info = await transporter.sendMail(mailOptions);
 
-    console.log("Email sent successfully:", info.response);
+    console.log("Email sent successfully:", info);
     return { success: true, message: "Email sent successfully" };
   } catch (error) {
     console.error("Error sending email:", error);
