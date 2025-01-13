@@ -54,7 +54,7 @@ const ForgotPassword = () => {
         toast.success(res.data.message);
         setIsOtpSent(true);
         setTimer(30);
-        localStorage.setItem("timer", 30);
+        localStorage.setItem("timer", 35);
       }
     } catch (error) {
       toast.error(error.response.data.message);
