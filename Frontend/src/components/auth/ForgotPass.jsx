@@ -6,22 +6,15 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import { setLoading } from "../../redux/authSlice";
+import Cookies from "js-cookie";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(
-    () =>
-      (typeof window !== "undefined" &&
-        JSON.parse(localStorage.getItem("isOtpSent"))) ||
-      false
+    () => Cookies.get("isOtpSent") === "true" || false
   );
   const [otp, setOtp] = useState(new Array(6).fill(""));
-  const [timer, setTimer] = useState(
-    () =>
-      (typeof window !== "undefined" &&
-        parseInt(localStorage.getItem("timer"))) ||
-      0
-  );
+  const [timer, setTimer] = useState(() => parseInt(Cookies.get("timer")) || 0);
   const navigate = useNavigate();
   const { loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
@@ -34,9 +27,9 @@ const ForgotPassword = () => {
         setTimer((prev) => {
           const updatedTimer = prev - 1;
           if (updatedTimer >= 0) {
-            localStorage.setItem("timer", updatedTimer);
+            Cookies.set("timer", updatedTimer, { expires: 1 / 24 / 60 }); // Expires in a few minutes
           } else {
-            localStorage.removeItem("timer");
+            Cookies.remove("timer");
           }
           return updatedTimer;
         });
@@ -47,7 +40,7 @@ const ForgotPassword = () => {
   }, [timer, isOtpSent]);
 
   useEffect(() => {
-    localStorage.setItem("isOtpSent", JSON.stringify(isOtpSent));
+    Cookies.set("isOtpSent", isOtpSent, { expires: 1 / 24 / 60 }); // Expires in a few minutes
   }, [isOtpSent]);
 
   const otpSend = async () => {
@@ -57,11 +50,11 @@ const ForgotPassword = () => {
         email,
       });
       if (res.status === 200) {
-        localStorage.setItem("passToken", res?.data?.data);
+        Cookies.set("passToken", res?.data?.data, { expires: 1 / 24 }); // Expires in 1 hour
         toast.success(res.data.message);
         setIsOtpSent(true);
         setTimer(30);
-        localStorage.setItem("timer", 30);
+        Cookies.set("timer", 30, { expires: 1 / 24 / 60 }); // Expires in a few minutes
       }
     } catch (error) {
       const errorMessage =
@@ -92,15 +85,15 @@ const ForgotPassword = () => {
     if (timer === 0) {
       otpSend();
       setTimer(60);
-      localStorage.setItem("timer", 60);
+      Cookies.set("timer", 60, { expires: 1 / 24 / 60 }); // Expires in a few minutes
     }
   };
 
   const handleBack = () => {
     setIsOtpSent(false);
     setEmail("");
-    localStorage.removeItem("isOtpSent");
-    localStorage.removeItem("timer");
+    Cookies.remove("isOtpSent");
+    Cookies.remove("timer");
     navigate("/login");
   };
 
@@ -112,8 +105,8 @@ const ForgotPassword = () => {
       const res = await axios.post(`${USER_API_END_POINT}/verifyOtp`, { sotp });
       if (res.status === 200) {
         toast.success("OTP Verified!");
-        localStorage.removeItem("isOtpSent");
-        localStorage.removeItem("timer");
+        Cookies.remove("isOtpSent");
+        Cookies.remove("timer");
         navigate("/forgotPass/NewPassword");
       }
     } catch (error) {
@@ -133,7 +126,6 @@ const ForgotPassword = () => {
           <p className="text-gray-600 mb-6">
             Enter your email address to receive a 6-digit code.
           </p>
-
           <input
             type="email"
             value={email}
@@ -141,7 +133,6 @@ const ForgotPassword = () => {
             placeholder="Enter your email"
             className="w-full max-w-md p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-
           <div className="flex gap-3">
             <button
               onClick={handleEmailSubmit}
@@ -153,7 +144,6 @@ const ForgotPassword = () => {
                 "Send OTP"
               )}
             </button>
-
             <button
               onClick={handleBack}
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
@@ -168,7 +158,6 @@ const ForgotPassword = () => {
           <p className="text-gray-600 mb-6">
             Enter the 6-digit code sent to your email.
           </p>
-
           <div className="flex gap-2 mb-6">
             {otp.map((_, index) => (
               <input
@@ -188,7 +177,6 @@ const ForgotPassword = () => {
               />
             ))}
           </div>
-
           <div className="mb-6">
             {timer > 0 ? (
               <p className="text-gray-600">Resend OTP in {timer} seconds</p>
@@ -201,7 +189,6 @@ const ForgotPassword = () => {
               </button>
             )}
           </div>
-
           <div className="flex gap-4">
             <button
               onClick={handleBack}
