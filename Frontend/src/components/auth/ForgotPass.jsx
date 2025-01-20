@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "../../utils/constant";
 import axios from "axios";
@@ -10,37 +10,44 @@ import { setLoading } from "../../redux/authSlice";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(
-    JSON.parse(localStorage.getItem("isOtpSent")) || false
+    () =>
+      (typeof window !== "undefined" &&
+        JSON.parse(localStorage.getItem("isOtpSent"))) ||
+      false
   );
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [timer, setTimer] = useState(
-    parseInt(localStorage.getItem("timer")) || 30
+    () =>
+      (typeof window !== "undefined" &&
+        parseInt(localStorage.getItem("timer"))) ||
+      0
   );
   const navigate = useNavigate();
   const { loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
+  const otpRefs = useRef([]);
 
   useEffect(() => {
     let countdown;
     if (isOtpSent && timer > 0) {
       countdown = setInterval(() => {
         setTimer((prev) => {
-          const newTimer = prev - 1;
-          localStorage.setItem("timer", newTimer); // Save the updated timer
-          return newTimer;
+          const updatedTimer = prev - 1;
+          if (updatedTimer >= 0) {
+            localStorage.setItem("timer", updatedTimer);
+          } else {
+            localStorage.removeItem("timer");
+          }
+          return updatedTimer;
         });
       }, 1000);
-    }
-
-    if (timer <= 0) {
-      localStorage.removeItem("timer");
     }
 
     return () => clearInterval(countdown);
   }, [timer, isOtpSent]);
 
   useEffect(() => {
-    localStorage.setItem("isOtpSent", isOtpSent);
+    localStorage.setItem("isOtpSent", JSON.stringify(isOtpSent));
   }, [isOtpSent]);
 
   const otpSend = async () => {
@@ -54,10 +61,12 @@ const ForgotPassword = () => {
         toast.success(res.data.message);
         setIsOtpSent(true);
         setTimer(30);
-        localStorage.setItem("timer", 35);
+        localStorage.setItem("timer", 30);
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      const errorMessage =
+        error.response?.data?.message || "An error occurred. Please try again.";
+      toast.error(errorMessage);
     } finally {
       dispatch(setLoading(false));
     }
@@ -65,12 +74,7 @@ const ForgotPassword = () => {
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    try {
-      dispatch(setLoading(true));
-      otpSend();
-    } catch (error) {
-      toast.error(error);
-    }
+    await otpSend();
   };
 
   const handleOtpChange = (element, index) => {
@@ -80,13 +84,13 @@ const ForgotPassword = () => {
     setOtp(newOtp);
 
     if (element.value && index < 5) {
-      document.getElementById(`otp-input-${index + 1}`).focus();
+      otpRefs.current[index + 1]?.focus();
     }
   };
 
   const handleResendOtp = () => {
-    otpSend();
     if (timer === 0) {
+      otpSend();
       setTimer(60);
       localStorage.setItem("timer", 60);
     }
@@ -101,19 +105,21 @@ const ForgotPassword = () => {
   };
 
   const verifyOtp = async (e) => {
-    const sotp = otp.join("");
-
     e.preventDefault();
+    const sotp = otp.join("");
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/verifyOtp`, { sotp });
       if (res.status === 200) {
+        toast.success("OTP Verified!");
         localStorage.removeItem("isOtpSent");
         localStorage.removeItem("timer");
         navigate("/forgotPass/NewPassword");
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      const errorMessage =
+        error.response?.data?.message || "Invalid OTP. Please try again.";
+      toast.error(errorMessage);
     } finally {
       dispatch(setLoading(false));
     }
@@ -167,6 +173,7 @@ const ForgotPassword = () => {
             {otp.map((_, index) => (
               <input
                 key={index}
+                ref={(el) => (otpRefs.current[index] = el)}
                 id={`otp-input-${index}`}
                 type="text"
                 maxLength="1"
@@ -174,7 +181,7 @@ const ForgotPassword = () => {
                 onChange={(e) => handleOtpChange(e.target, index)}
                 onKeyDown={(e) => {
                   if (e.key === "Backspace" && !otp[index] && index > 0) {
-                    document.getElementById(`otp-input-${index - 1}`).focus();
+                    otpRefs.current[index - 1]?.focus();
                   }
                 }}
                 className="w-12 h-12 text-center text-lg border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
