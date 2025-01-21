@@ -17,17 +17,20 @@ export const sendResetOtp = async (otp, recipientEmail) => {
 
     // Email content
     const mailOptions = {
-      from: `"Support Team" <${process.env.EMAIL_USER}>`,
+      from: `"JOB PORTAL - Support Team" <${process.env.EMAIL_USER}>`,
       to: recipientEmail,
-      subject: "Password Reset Request - OTP Inside",
+      subject: "Password Reset Request ",
       html: `
         <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
-          <h2 style="color: #333;">Password Reset Request</h2>
+          <h1 style="color: #333; font-size: 2.5em;">Password Reset Request</h1>
           <p>Dear User,</p>
-          <p>We have received a request to reset the password for your account. Please use the One-Time Password (OTP) provided below to proceed with the reset process:</p>
-          <h3 style="color: #0056b3;">${otp}</h3>
+          <p>We have received a request to reset the password for your account on <strong>Job Portal</strong>. Please use the One-Time Password (OTP) provided below to proceed with the reset process:</p>
+          <div style="margin: 20px 0; padding: 20px; border: 2px dashed #0056b3; background-color: #f9f9f9; text-align: center;">
+            <h1 style="color: #0056b3; font-size: 3em;letter-spacing: 5px; margin: 0;">${otp}</h1>
+            
+          </div>
           <p><strong>Note:</strong> This OTP will expire in 48 seconds. If you did not initiate this request, please disregard this email or contact our support team immediately for assistance.</p>
-          <p>Best regards,<br>The Support Team</p>
+          <p>Best regards,<br>The Job Portal Support Team</p>
         </div>
       `,
     };
