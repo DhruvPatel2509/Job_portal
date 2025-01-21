@@ -225,7 +225,8 @@ export const forgotPassword = async (req, res) => {
   try {
     // Check if user exists
     const user = await User.findOne({ email });
-    if (!user) return sendResponse(res, 404, null, "User not found");
+    if (!user)
+      return sendResponse(res, 404, null, "This email is not registered");
 
     // Check OTP resend cooldown
     if (user.otp && user.otp.sendTime > Date.now()) {

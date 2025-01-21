@@ -49,6 +49,8 @@ const ForgotPassword = () => {
       const res = await axios.post(`${USER_API_END_POINT}/forgotPass`, {
         email,
       });
+      console.log(res);
+
       if (res.status === 200) {
         Cookies.set("passToken", res?.data?.data, { expires: 1 / 24 }); // Expires in 1 hour
         toast.success(res.data.message);
@@ -130,7 +132,7 @@ const ForgotPassword = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
+            placeholder="Enter your registered email"
             className="w-full max-w-md p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <div className="flex gap-3">
