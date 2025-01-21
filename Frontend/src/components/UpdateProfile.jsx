@@ -82,7 +82,6 @@ function UpdateProfile({ open, setOpen }) {
       toast.success(res.data.message);
       handleClose();
     } catch (error) {
-      console.log(error);
       const errorMessage = error.response
         ? error.response.data.message
         : "An error occurred. Please try again.";

@@ -12,7 +12,6 @@ function useGetAllJobs() {
 
   useEffect(() => {
     const getJobs = async () => {
-      console.log("hello");
       const endpoint = searchedQuery
         ? `${JOB_API_END_POINT}/getAllJob/?keyword=${searchedQuery}`
         : `${JOB_API_END_POINT}/getAllJob`;
@@ -21,7 +20,6 @@ function useGetAllJobs() {
         dispatch(setApiLoading(true));
 
         const res = await apiRequest("GET", endpoint, {}, token);
-        console.log(res);
 
         if (res.status === 200) {
           if (searchedQuery) {

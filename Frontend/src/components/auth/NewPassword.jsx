@@ -30,7 +30,6 @@ export const NewPassword = () => {
         confirmPassword,
         token,
       });
-      console.log(res);
 
       if (res.status === 200) {
         toast.success(res.data.message);
