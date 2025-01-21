@@ -6,15 +6,16 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import { setLoading } from "../../redux/authSlice";
-import Cookies from "js-cookie";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(
-    () => Cookies.get("isOtpSent") === "true" || false
+    () => JSON.parse(localStorage.getItem("isOtpSent")) || false
   );
   const [otp, setOtp] = useState(new Array(6).fill(""));
-  const [timer, setTimer] = useState(() => parseInt(Cookies.get("timer")) || 0);
+  const [timer, setTimer] = useState(
+    () => parseInt(localStorage.getItem("timer")) || 0
+  );
   const navigate = useNavigate();
   const { loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
@@ -27,9 +28,9 @@ const ForgotPassword = () => {
         setTimer((prev) => {
           const updatedTimer = prev - 1;
           if (updatedTimer >= 0) {
-            Cookies.set("timer", updatedTimer, { expires: 1 / 24 / 60 }); // Expires in a few minutes
+            localStorage.setItem("timer", updatedTimer);
           } else {
-            Cookies.remove("timer");
+            localStorage.removeItem("timer");
           }
           return updatedTimer;
         });
@@ -40,7 +41,7 @@ const ForgotPassword = () => {
   }, [timer, isOtpSent]);
 
   useEffect(() => {
-    Cookies.set("isOtpSent", isOtpSent, { expires: 1 / 24 / 60 }); // Expires in a few minutes
+    localStorage.setItem("isOtpSent", JSON.stringify(isOtpSent));
   }, [isOtpSent]);
 
   const otpSend = async () => {
@@ -49,14 +50,12 @@ const ForgotPassword = () => {
       const res = await axios.post(`${USER_API_END_POINT}/forgotPass`, {
         email,
       });
-      console.log(res);
-
       if (res.status === 200) {
-        Cookies.set("passToken", res?.data?.data, { expires: 1 / 24 }); // Expires in 1 hour
+        localStorage.setItem("passToken", res?.data?.data);
         toast.success(res.data.message);
         setIsOtpSent(true);
         setTimer(30);
-        Cookies.set("timer", 30, { expires: 1 / 24 / 60 }); // Expires in a few minutes
+        localStorage.setItem("timer", 30);
       }
     } catch (error) {
       const errorMessage =
@@ -87,15 +86,15 @@ const ForgotPassword = () => {
     if (timer === 0) {
       otpSend();
       setTimer(60);
-      Cookies.set("timer", 60, { expires: 1 / 24 / 60 }); // Expires in a few minutes
+      localStorage.setItem("timer", 60);
     }
   };
 
   const handleBack = () => {
     setIsOtpSent(false);
     setEmail("");
-    Cookies.remove("isOtpSent");
-    Cookies.remove("timer");
+    localStorage.removeItem("isOtpSent");
+    localStorage.removeItem("timer");
     navigate("/login");
   };
 
@@ -107,8 +106,8 @@ const ForgotPassword = () => {
       const res = await axios.post(`${USER_API_END_POINT}/verifyOtp`, { sotp });
       if (res.status === 200) {
         toast.success("OTP Verified!");
-        Cookies.remove("isOtpSent");
-        Cookies.remove("timer");
+        localStorage.removeItem("isOtpSent");
+        localStorage.removeItem("timer");
         navigate("/forgotPass/NewPassword");
       }
     } catch (error) {
