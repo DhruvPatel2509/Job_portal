@@ -19,16 +19,15 @@ export const sendResetOtp = async (otp, recipientEmail) => {
     const mailOptions = {
       from: `"Support Team" <${process.env.EMAIL_USER}>`,
       to: recipientEmail,
-      subject: "Password Reset OTP",
+      subject: "Password Reset Request - OTP Inside",
       html: `
-        <div style="font-family: Arial, sans-serif; color: #333;">
-          <h2>Password Reset Request</h2>
-          <p>Hello,</p>
-          <p>We received a request to reset your password. Use the OTP below to complete the process:</p>
+        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+          <h2 style="color: #333;">Password Reset Request</h2>
+          <p>Dear User,</p>
+          <p>We have received a request to reset the password for your account. Please use the One-Time Password (OTP) provided below to proceed with the reset process:</p>
           <h3 style="color: #0056b3;">${otp}</h3>
-          <p>If you did not request this, please ignore this email or contact support.</p>
-          <p>Thank you,<br/>The Support Team</p>
-          <p>This OTP Will Expire In 48Seconds</p>
+          <p><strong>Note:</strong> This OTP will expire in 48 seconds. If you did not initiate this request, please disregard this email or contact our support team immediately for assistance.</p>
+          <p>Best regards,<br>The Support Team</p>
         </div>
       `,
     };
