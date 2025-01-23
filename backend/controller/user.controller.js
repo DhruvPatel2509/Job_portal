@@ -75,33 +75,27 @@ export const login = async (req, res) => {
   try {
     const { email, password, role } = req.body;
 
-    // Validate request body
     if (!email || !password || !role) {
       return sendResponse(res, 400, null, "Required fields are missing");
     }
 
-    // Find user by email
     const user = await User.findOne({ email });
     if (!user) {
       return sendResponse(res, 401, null, "Invalid email or password");
     }
 
-    // Check if the provided role matches the user's role
     if (role !== user.role) {
       return sendResponse(res, 403, null, "Access denied: incorrect role");
     }
 
-    // Verify password
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return sendResponse(res, 401, null, "Invalid email or password");
     }
 
-    // Create JWT token
     const tokenData = { userId: user._id };
     const token = jwt.sign(tokenData, process.env.JWT_KEY, { expiresIn: "1d" });
 
-    // Prepare user response data
     const userResponse = {
       _id: user._id,
       fullname: user.fullname,
@@ -112,7 +106,6 @@ export const login = async (req, res) => {
       token: token,
     };
 
-    // Send response with token as a cookie
     return res.status(200).json({
       message: `Welcome back, ${user.fullname}`,
       success: true,
@@ -149,12 +142,10 @@ export const updateProfile = async (req, res) => {
       return sendResponse(res, 404, null, "User Not Found");
     }
 
-    // Update user details
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;
 
-    // Update profile details
     if (bio) user.profile.bio = bio;
     if (skills) {
       user.profile.skills = skills
@@ -163,7 +154,6 @@ export const updateProfile = async (req, res) => {
         .filter((skill) => skill.length > 0);
     }
 
-    // Handle resume file upload if provided
     if (resumeFile && resumeFile.length > 0) {
       const uploadResult = await uploadOnCloudinary(
         resumeFile[0].buffer,
@@ -176,7 +166,6 @@ export const updateProfile = async (req, res) => {
       }
     }
 
-    // Handle profile photo upload if provided
     if (profilePhoto && profilePhoto.length > 0) {
       const uploadResult = await uploadOnCloudinary(
         profilePhoto[0].buffer,
@@ -320,4 +309,18 @@ export const resetPassword = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+
+    if (!users || users.length === 0) {
+      return sendResponse(res, 404, null, "No User Found");
+    }
+
+    return sendResponse(res, 200, users, "Users Found");
+  } catch (error) {}
+  console.error("Error fetching all Users:", error); // Log the error for debugging
+  return sendResponse(res, 500, null, "Internal Server Error");
 };

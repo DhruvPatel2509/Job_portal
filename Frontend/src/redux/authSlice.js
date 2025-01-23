@@ -3,12 +3,16 @@ import { createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
+    allUsers: [],
     apiLoading: false,
     loading: false,
     authUser: null,
     token: "",
   },
   reducers: {
+    setAllUsers: (state, action) => {
+      state.allUsers = action.payload;
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -29,6 +33,7 @@ const authSlice = createSlice({
 
 // Export actions for use in components
 export const {
+  setAllUsers,
   setApiLoading,
   setLoading,
   setAuthUser,

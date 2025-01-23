@@ -25,13 +25,21 @@ function JobDetails() {
   };
 
   const isApplied = checkIfApplied();
+  console.log(authUser.profile.resume);
 
   const applyJob = async () => {
     try {
-      const endpoint = `${APPLICATION_API_END_POINT}/applyJob/${jobId}`;
-      await apiRequest("POST", endpoint, {}, token);
-      fetchSingleJob();
-      toast.success("Successfully applied for the job!");
+      if(authUser.profile.resume)
+      {
+        const endpoint = `${APPLICATION_API_END_POINT}/applyJob/${jobId}`;
+        await apiRequest("POST", endpoint, {}, token);
+        fetchSingleJob();
+        toast.success("Successfully applied for the job!");
+      }
+      else{
+        toast.error("Please upload your resume before applying for the job.");
+        navigate("/profile");
+      }
     } catch (error) {
       console.error("Error applying for the job:", error);
       toast.error("Failed to apply for the job.");

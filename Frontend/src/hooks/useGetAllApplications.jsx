@@ -1,39 +1,38 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { COMPANY_API_END_POINT } from "../utils/constant";
-import { setAllCompanies } from "../redux/companySlice";
+import { APPLICATION_API_END_POINT } from "../utils/constant";
 import apiRequest from "../utils/axiosUtility";
+import { setAllApplications } from "../redux/applications";
 import { setApiLoading } from "../redux/authSlice";
 
-function useGetAllCompanies() {
+const useGetAllApplications = () => {
   const { token, authUser } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchAllCompanies = async () => {
-      const endpoint = `${COMPANY_API_END_POINT}/getAllCompanies`;
+    const fetchAllApplication = async () => {
+      const endpoint = `${APPLICATION_API_END_POINT}/getAllApplications`;
       try {
         dispatch(setApiLoading(true));
 
         const res = await apiRequest("GET", endpoint, {}, token);
 
         if (res.status === 200) {
-          dispatch(setAllCompanies(res.data.data));
+          dispatch(setAllApplications(res.data.data));
         } else {
-          dispatch(setAllCompanies([]));
+          dispatch(setAllApplications([]));
         }
       } catch (error) {
-        dispatch(setAllCompanies([]));
+        dispatch(setAllApplications([]));
         console.error("Error fetching companies:", error);
       } finally {
         dispatch(setApiLoading(false));
       }
     };
-
     if (authUser) {
-      fetchAllCompanies();
+      fetchAllApplication();
     }
   }, [token, authUser, dispatch]);
-}
+};
 
-export default useGetAllCompanies;
+export default useGetAllApplications;

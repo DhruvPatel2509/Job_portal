@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import CompaniesTable from "./CompaniesTable";
-import useGetAllCompanies from "../../hooks/useGetAllCompanies";
 import { useSelector } from "react-redux";
+import useGetUserCompanies from "../../hooks/useGetUserCompanies";
 
 function Companies() {
   const navigate = useNavigate();
-  useGetAllCompanies();
+  useGetUserCompanies();
+
   const { allCompanies } = useSelector((state) => state.company);
 
   return (

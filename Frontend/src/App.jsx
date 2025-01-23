@@ -21,6 +21,8 @@ import { ForAllHomePage } from "./components/pages/ForAllHomePage";
 import HomeRecruiter from "./components/admin/RecHome";
 import ForgotPassword from "./components/auth/ForgotPass";
 import { NewPassword } from "./components/auth/NewPassword";
+import MeHomePage from "./components/me/MeHomePage";
+import { AdminLogin } from "./components/admin/AdminLogin";
 
 const appRouter = createBrowserRouter([
   {
@@ -28,7 +30,16 @@ const appRouter = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: "/", element: <ForAllHomePage /> },
+      {
+        path: "/me",
+        element: <MeHomePage />,
+      },
+      {
+        path: "/adminLogin",
+        element: <AdminLogin />,
+      },
       { path: "/studenthome", element: <Home /> },
+
       {
         path: "/recHome",
         element: <HomeRecruiter />,

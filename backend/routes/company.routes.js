@@ -1,6 +1,7 @@
 import express from "express";
 import {
   deleteCompany,
+  getAllCompanies,
   getCompany,
   getCompanyById,
   registerCompany,
@@ -14,6 +15,7 @@ const companyRouter = express.Router();
 
 companyRouter.post("/registerCompany", auth, registerCompany);
 companyRouter.get("/getCompany", auth, getCompany);
+companyRouter.get("/getAllCompanies", auth, getAllCompanies);
 companyRouter.get("/getCompany/:id", auth, getCompanyById);
 companyRouter.put(
   "/updateCompany/:id",
