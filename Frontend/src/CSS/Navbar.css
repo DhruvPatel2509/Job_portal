@@ -7,34 +7,33 @@ body {
 }
 
 .menu-button {
-  display: block;
+  display: none;
 }
-
-@media (min-width: 768px) {
-  .menu-button {
-    display: none;
-  }
-  .menu ul {
-    display: flex;
-  }
+.ul-menu {
+  display: flex;
+  color: white;
+  gap: 2rem;
+  transition: all 1s;
 }
-
+.menu-open {
+  display: flex;
+  background: linear-gradient(to right, #674e92, #431692);
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
 @media (max-width: 768px) {
-  .menu ul {
-    flex-direction: column;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    right: 0;
-    background-color: #ffffff;
-    z-index: 50;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-    display: none;
+  .menu-button {
+    display: block;
   }
-
-  .menu ul.flex {
-    display: flex;
+  nav ul {
+    display: none;
+    position: absolute;
+    top: 140%;
+    right: 90%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
   }
 }
 

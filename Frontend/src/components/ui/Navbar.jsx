@@ -8,7 +8,7 @@ import {
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { LogOut, User2 } from "lucide-react";
+import { LogOut, Menu, User2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { setAuthUser, setToken } from "../../redux/authSlice";
@@ -76,6 +76,7 @@ export const Navbar = () => {
       navigate("/");
     }
   };
+  console.log(isMenuOpen);
 
   return (
     <nav className="bg-gradient-to-r from-[#674e92] to-[#431692] text-white shadow-md z-10">
@@ -88,32 +89,17 @@ export const Navbar = () => {
         {/* Menu and Buttons */}
         <div className="flex items-center relative">
           {/* Toggle Button */}
-          <button
-            className="text-white focus:outline-none menu-button"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+          {authUser && (
+            <button
+              className="text-white focus:outline-none menu-button"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16m-7 6h7"
-              ></path>
-            </svg>
-          </button>
+              <Menu />
+            </button>
+          )}
 
           {/* Menu */}
-          <ul
-            className={`${
-              isMenuOpen ? "flex" : "hidden"
-            } flex-col lg:flex-row lg:flex items-center gap-4 ml-4 sm:static absolute top-[55px] right-[90%] sm:bg-transparent bg-[#431692] text-white px-8 py-4`}
-          >
+          <ul className={`${isMenuOpen ? "menu-open" : ""}`}>
             {role === "student" && (
               <>
                 <li onClick={() => setIsMenuOpen(false)}>
