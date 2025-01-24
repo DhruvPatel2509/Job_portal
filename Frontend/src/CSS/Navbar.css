@@ -15,6 +15,7 @@ nav ul {
   gap: 2rem;
   transition: all 1s;
   background-color: transparent;
+  z-index: 100;
 }
 
 @media (max-width: 768px) {
