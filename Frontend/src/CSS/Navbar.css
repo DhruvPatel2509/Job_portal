@@ -29,11 +29,11 @@ nav ul {
     padding: 1rem 0;
   }
   nav ul {
-    border-radius: 10px 0;
+    
     display: none;
     position: absolute;
     top: 140%;
-    right: 90%;
+    right: -20%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
