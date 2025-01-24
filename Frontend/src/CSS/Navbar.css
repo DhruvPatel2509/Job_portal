@@ -9,23 +9,27 @@ body {
 .menu-button {
   display: none;
 }
-.ul-menu {
+nav ul {
   display: flex;
   color: white;
   gap: 2rem;
   transition: all 1s;
+  background-color: transparent;
 }
-.menu-open {
-  display: flex;
-  background: linear-gradient(to right, #674e92, #431692);
-  gap: 1.5rem;
-  padding: 1rem 0;
-}
+
 @media (max-width: 768px) {
   .menu-button {
     display: block;
   }
+
+  .menu-open {
+    display: flex;
+    background: linear-gradient(to right, #674e92, #431692);
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
   nav ul {
+    border-radius: 10px 0;
     display: none;
     position: absolute;
     top: 140%;
