@@ -4,22 +4,29 @@ import {
   Briefcase,
   FileText,
   BarChart3,
-  Settings,
   Menu,
   X,
   Factory,
 } from "lucide-react";
 import Dashboard from "./Dashboard";
 import JobAdmin from "./JobAdmin";
+import Applicationadmin from "./Applicationadmin";
+import useGetAllCompanies from "../../hooks/useGetAllCompanies";
+import useGetAllUsers from "../../hooks/useGetAllUsers";
+import useGetAllApplications from "../../hooks/useGetAllApplications";
+import useGetAllJobs from "../../hooks/useGetAllJobs";
 
 function MeHomePage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
-
+  useGetAllCompanies();
+  useGetAllUsers();
+  useGetAllApplications();
+  useGetAllJobs();
   const tabs = {
     dashboard: <Dashboard />,
     jobs: <JobAdmin />,
-    applications: <div>Applications Content</div>,
+    applications: <Applicationadmin />,
     users: <div>Users Content</div>,
     settings: <div>Settings Content</div>,
   };

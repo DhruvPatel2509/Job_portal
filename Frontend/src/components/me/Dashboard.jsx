@@ -1,24 +1,18 @@
 import { Users, Briefcase, FileText, BarChart2 } from "lucide-react";
-import useGetAllCompanies from "../../hooks/useGetAllCompanies";
 import { useSelector } from "react-redux";
-import useGetAllUsers from "../../hooks/useGetAllUsers";
-import useGetAllApplications from "../../hooks/useGetAllApplications";
 import "../../CSS/Dashboard.css";
 
 const Dashboard = () => {
-  useGetAllCompanies();
-  useGetAllUsers();
-  useGetAllApplications();
-
   const { allCompanies } = useSelector((store) => store.company);
   const { allUsers } = useSelector((store) => store.auth);
   const { allApplications } = useSelector((store) => store.application);
+  const { allJobs } = useSelector((store) => store.job);
 
   const mockStats = {
-    totalCompanies: allCompanies.length,
-    activeListings: 89, // Replace with backend data
-    totalApplications: allApplications.length,
-    totalUsers: allUsers.length,
+    totalCompanies: allCompanies?.length,
+    activeListings: allJobs?.length, // Replace with backend data
+    totalApplications: allApplications?.length,
+    totalUsers: allUsers?.length,
   };
 
   const recentActivities = [
