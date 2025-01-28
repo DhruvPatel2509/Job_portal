@@ -7,8 +7,10 @@ import {
   Settings,
   Menu,
   X,
+  Factory,
 } from "lucide-react";
 import Dashboard from "./Dashboard";
+import JobAdmin from "./JobAdmin";
 
 function MeHomePage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -16,7 +18,7 @@ function MeHomePage() {
 
   const tabs = {
     dashboard: <Dashboard />,
-    jobs: <div>Jobs Content</div>,
+    jobs: <JobAdmin />,
     applications: <div>Applications Content</div>,
     users: <div>Users Content</div>,
     settings: <div>Settings Content</div>,
@@ -27,15 +29,15 @@ function MeHomePage() {
     { icon: Briefcase, label: "Jobs", id: "jobs" },
     { icon: FileText, label: "Applications", id: "applications" },
     { icon: Users, label: "Users", id: "users" },
-    { icon: Settings, label: "Settings", id: "settings" },
+    { icon: Factory, label: "Companies", id: "companies" },
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex w-[100%] bg-gray-50">
       {/* Sidebar */}
       <aside
         className={`${
-          isSidebarOpen ? "w-64" : "w-20"
+          isSidebarOpen ? "w-[15]" : ""
         } bg-white shadow h-screen transition-all`}
       >
         <div className="p-4 flex justify-between items-center">
@@ -51,7 +53,7 @@ function MeHomePage() {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`flex items-center p-4 w-full hover:bg-blue-50 ${
+              className={`flex items-center py-4 pl-2 pr-2 w-full hover:bg-blue-50 ${
                 activeTab === item.id ? "bg-blue-50 text-blue-600" : ""
               }`}
             >
@@ -63,7 +65,7 @@ function MeHomePage() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-4">{tabs[activeTab]}</main>
+      <main className="p-4 w-full">{tabs[activeTab]}</main>
     </div>
   );
 }
