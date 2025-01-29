@@ -180,6 +180,40 @@ export const deleteCompany = async (req, res) => {
   }
 };
 
+export const setCmpanyStatus = async (req, res) => {
+  try {
+    const { id: companyId } = req.params;
+    const { status } = req.body;
+    console.log(status);
+
+    if (!companyId) {
+      return sendResponse(res, 400, null, "Company ID is required");
+    }
+
+    if (!status) {
+      return sendResponse(res, 400, null, "Status is required");
+    }
+
+    const company = await Company.findById(companyId);
+    if (!company) {
+      return sendResponse(res, 404, null, "Company Not Found");
+    }
+
+    company.status = status;
+    await company.save();
+
+    return sendResponse(
+      res,
+      200,
+      company,
+      `Company status updated to ${status}`
+    );
+  } catch (error) {
+    console.error("Error updating company status:", error);
+    return sendResponse(res, 500, null, "Internal Server Error");
+  }
+};
+
 export const getAllCompanies = async (req, res) => {
   try {
     const companies = await Company.find();

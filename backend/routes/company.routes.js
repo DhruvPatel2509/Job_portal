@@ -5,6 +5,7 @@ import {
   getCompany,
   getCompanyById,
   registerCompany,
+  setCmpanyStatus,
   updateCompany,
 } from "../controller/company.controller.js";
 
@@ -23,6 +24,7 @@ companyRouter.put(
   upload.single("file"),
   updateCompany
 );
+companyRouter.put("/setCompanyStatus/:id", auth, setCmpanyStatus);
 
 companyRouter.delete("/deleteCompany/:id", auth, deleteCompany);
 

@@ -1,21 +1,36 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import apiRequest from "../../utils/axiosUtility";
+import { COMPANY_API_END_POINT } from "../../utils/constant";
+import { toast } from "sonner";
 
 const CompaniesAdmin = () => {
   const { allCompanies } = useSelector((store) => store.company);
-  console.log(allCompanies);
+  const { token } = useSelector((store) => store.auth);
+  const [expandedCompany, setExpandedCompany] = useState(null);
 
-  const dispatch = useDispatch();
+  const updateStatus = async (id, status) => {
+    try {
+      const endpoint = `${COMPANY_API_END_POINT}/setCompanyStatus/${id}`;
+      const res = await apiRequest("PUT", endpoint, { status: status }, token);
+      toast.success(res.data.message);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const handleAccept = (id) => {
-    // Dispatch accept action
+  const handleAccept = async (id) => {
+    updateStatus(id, "approved");
+    setExpandedCompany(null);
   };
 
   const handleDecline = (id) => {
-    // Dispatch decline action
+    updateStatus(id, "rejected");
+    setExpandedCompany(null);
   };
 
   const handleDelete = (id) => {
-    // Dispatch delete action
+    console.log(id);
   };
 
   return (
@@ -44,19 +59,49 @@ const CompaniesAdmin = () => {
               <p className="text-sm sm:text-md text-gray-500">
                 {company.description}
               </p>
+
+              {/* Company Status */}
+              <span
+                className={`mt-2 px-3 py-1 rounded-full text-sm font-semibold ${
+                  company.status === "approved"
+                    ? "bg-green-100 text-green-600"
+                    : company.status === "rejected"
+                    ? "bg-red-100 text-red-600"
+                    : "bg-yellow-100 text-yellow-600"
+                }`}
+              >
+                {company.status}
+              </span>
+
+              {/* More Button */}
               <div className="mt-3 w-full flex justify-center space-x-3">
-                <button
-                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-                  onClick={() => handleAccept(company._id)}
-                >
-                  Accept
-                </button>
-                <button
-                  className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
-                  onClick={() => handleDecline(company._id)}
-                >
-                  Decline
-                </button>
+                {expandedCompany === company._id ? (
+                  <>
+                    <button
+                      className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                      onClick={() => handleAccept(company._id)}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
+                      onClick={() => handleDecline(company._id)}
+                    >
+                      Reject
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+                    onClick={() =>
+                      setExpandedCompany(
+                        expandedCompany === company._id ? null : company._id
+                      )
+                    }
+                  >
+                    More
+                  </button>
+                )}
                 <button
                   className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
                   onClick={() => handleDelete(company._id)}
