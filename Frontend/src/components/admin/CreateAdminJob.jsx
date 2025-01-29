@@ -18,7 +18,9 @@ import { ArrowLeft } from "lucide-react";
 import apiRequest from "../../utils/axiosUtility";
 
 function CreateAdminJob() {
-  const { allCompanies } = useSelector((store) => store.company);
+  const { userCompanies } = useSelector((store) => store.company);
+  console.log(userCompanies);
+
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
     title: "",
@@ -43,7 +45,7 @@ function CreateAdminJob() {
   };
 
   const selectChangeHandler = (value) => {
-    const selectedCompany = allCompanies.find(
+    const selectedCompany = userCompanies?.find(
       (company) => company.name.toLowerCase() === value
     );
 
@@ -195,28 +197,29 @@ function CreateAdminJob() {
           </div>
 
           <div>
-            {allCompanies.length > 0 && (
-              <Select onValueChange={selectChangeHandler}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a company" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {allCompanies.map((c) => (
-                      <SelectItem key={c._id} value={c?.name?.toLowerCase()}>
-                        {c?.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            )}
+            {userCompanies?.length > 0 &&
+              userCompanies[0]?.status === "approved" && (
+                <Select onValueChange={selectChangeHandler}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a company" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {userCompanies.map((c) => (
+                        <SelectItem key={c._id} value={c?.name?.toLowerCase()}>
+                          {c?.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
           </div>
         </div>
         <Button className="w-full mt-4" disabled={loading}>
           {loading ? "Posting..." : "Post Job"}
         </Button>
-        {allCompanies.length === 0 && (
+        {userCompanies.length === 0 && (
           <p className="text-xs text-red-700 font-bold text-center my-3">
             *Please Register a Company First before Posting New Jobs
           </p>

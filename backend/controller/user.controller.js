@@ -313,7 +313,8 @@ export const resetPassword = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().populate("profile.company");
+    console.log(users);
 
     if (!users || users.length === 0) {
       return sendResponse(res, 404, null, "No User Found");

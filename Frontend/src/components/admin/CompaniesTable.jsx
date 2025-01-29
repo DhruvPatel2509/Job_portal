@@ -4,14 +4,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Edit2Icon } from "lucide-react";
 
 function CompaniesTable() {
-  const { allCompanies } = useSelector((state) => state.company);
+  const { userCompanies } = useSelector((state) => state.company);
   const navigate = useNavigate();
 
   const editHandler = (id) => {
     navigate(`/admin/companies/${id}`);
   };
 
-  const company = allCompanies?.[0]; // Show only the first company
+  const company = userCompanies?.[0]; // Show only the first company
 
   if (!company) {
     return (
@@ -19,6 +19,33 @@ function CompaniesTable() {
         <p className="text-2xl font-semibold text-gray-700">No company found</p>
         <p className="text-gray-500 mt-2">
           Create a company to view details here.
+        </p>
+      </div>
+    );
+  }
+  if (company.status === "pending") {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <p className="text-2xl font-semibold text-gray-700">
+          Company is pending approval
+        </p>
+        <p className="text-gray-500 mt-2">
+          Your company is currently pending approval. You will be able to view
+          details once it is approved.
+        </p>
+      </div>
+    );
+  }
+
+  if (company.status === "rejected") {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <p className="text-2xl font-semibold text-gray-700">
+          Company has been rejected
+        </p>
+        <p className="text-gray-500 mt-2">
+          Your company has been rejected. Please contact support for more
+          information.
         </p>
       </div>
     );

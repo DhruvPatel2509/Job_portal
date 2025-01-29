@@ -16,6 +16,12 @@ const companySchema = new mongoose.Schema(
     location: {
       type: String,
     },
+    status: {
+      type: String,
+      enum: ["approved", "rejected", "pending"],
+      default: "pending",
+    },
+
     logo: {
       type: String,
     },

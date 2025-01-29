@@ -16,6 +16,7 @@ function useGetSingleCompany(companyId) {
         const endpoint = `${COMPANY_API_END_POINT}/getCompany/${companyId}`;
 
         const res = await apiRequest("GET", endpoint, {}, token);
+        
 
         if (res.status === 200) {
           dispatch(setSingleComapny(res.data.data)); // Corrected spelling

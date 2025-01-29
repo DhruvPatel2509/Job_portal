@@ -15,6 +15,8 @@ import useGetAllCompanies from "../../hooks/useGetAllCompanies";
 import useGetAllUsers from "../../hooks/useGetAllUsers";
 import useGetAllApplications from "../../hooks/useGetAllApplications";
 import useGetAllJobs from "../../hooks/useGetAllJobs";
+import UserAdmin from "./UserAdmin";
+import CompaniesAdmin from "./CompaniesAdmin";
 
 function MeHomePage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -27,8 +29,8 @@ function MeHomePage() {
     dashboard: <Dashboard />,
     jobs: <JobAdmin />,
     applications: <Applicationadmin />,
-    users: <div>Users Content</div>,
-    settings: <div>Settings Content</div>,
+    users: <UserAdmin />,
+    company: <CompaniesAdmin />,
   };
 
   const navItems = [
@@ -36,7 +38,7 @@ function MeHomePage() {
     { icon: Briefcase, label: "Jobs", id: "jobs" },
     { icon: FileText, label: "Applications", id: "applications" },
     { icon: Users, label: "Users", id: "users" },
-    { icon: Factory, label: "Companies", id: "companies" },
+    { icon: Factory, label: "Companies", id: "company" },
   ];
 
   return (

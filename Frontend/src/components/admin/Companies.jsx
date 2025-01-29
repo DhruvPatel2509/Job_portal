@@ -8,12 +8,13 @@ function Companies() {
   const navigate = useNavigate();
   useGetUserCompanies();
 
-  const { allCompanies } = useSelector((state) => state.company);
+  const { userCompanies } = useSelector((state) => state.company);
+  console.log(userCompanies);
 
   return (
     <div className="max-w-6xl mx-auto my-10">
       <div className="flex items-center justify-between my-5">
-        {allCompanies && allCompanies.length > 0 ? (
+        {userCompanies && userCompanies.length > 0 ? (
           ""
         ) : (
           <Button onClick={() => navigate("/admin/companies/create")}>

@@ -1,5 +1,6 @@
 import sendResponse from "../utils/response.util.js";
 import { Company } from "../models/company.model.js";
+import { User } from "../models/user.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 import mongoose from "mongoose";
 import { Job } from "../models/job.model.js";
@@ -22,6 +23,12 @@ export const registerCompany = async (req, res) => {
       userId: req.userId,
     });
 
+    await User.findByIdAndUpdate(
+      req.userId,
+      { $set: { "profile.company": company._id } },
+      { new: true }
+    );
+
     return sendResponse(res, 201, company, "Company Registered Successfully");
   } catch (error) {
     console.error("Error registering company:", error); // Changed to console.error for better logging
@@ -32,7 +39,10 @@ export const registerCompany = async (req, res) => {
 export const getCompany = async (req, res) => {
   try {
     const userId = req.userId;
+    console.log(userId);
+
     const companies = await Company.find({ userId });
+    console.log(companies);
 
     if (!companies || companies.length === 0) {
       return sendResponse(res, 404, null, "Companies Not Found");
