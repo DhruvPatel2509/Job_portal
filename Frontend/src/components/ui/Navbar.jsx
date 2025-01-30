@@ -122,12 +122,12 @@ export const Navbar = () => {
             {role === "recruiter" && (
               <>
                 <li onClick={() => setIsMenuOpen(false)}>
-                  <Link to="/admin/companies" className="hover:text-gray-300">
+                  <Link to="/rec/companies" className="hover:text-gray-300">
                     Company
                   </Link>
                 </li>
                 <li onClick={() => setIsMenuOpen(false)}>
-                  <Link to="/admin/jobs" className="hover:text-gray-300">
+                  <Link to="/rec/jobs" className="hover:text-gray-300">
                     Jobs
                   </Link>
                 </li>

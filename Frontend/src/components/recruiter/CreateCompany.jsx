@@ -25,7 +25,7 @@ function CreateCompany() {
       if (res.data.success) {
         toast.success(res.data.message);
 
-        navigate(`/admin/companies/${res.data.data._id}`);
+        navigate(`/rec/companies/${res.data.data._id}`);
       }
     } catch (error) {
       if (error.response) {
@@ -55,10 +55,7 @@ function CreateCompany() {
           placeholder="JobHunt , Microsoft etc.. "
         />
         <div className="flex items-center gap-2 my-10">
-          <Button
-            variant="outlines"
-            onClick={() => navigate("/admin/companies")}
-          >
+          <Button variant="outlines" onClick={() => navigate("/rec/companies")}>
             Cancel
           </Button>
           <Button onClick={registerNewCompany}>Continue</Button>

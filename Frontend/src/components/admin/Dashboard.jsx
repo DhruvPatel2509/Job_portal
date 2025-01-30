@@ -1,8 +1,16 @@
 import { Users, Briefcase, FileText, BarChart2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import "../../CSS/Dashboard.css";
+import useGetAllCompanies from "../../hooks/useGetAllCompanies";
+import useGetAllUsers from "../../hooks/useGetAllUsers";
+import useGetAllApplications from "../../hooks/useGetAllApplications";
+import useGetAllJobs from "../../hooks/useGetAllJobs";
 
 const Dashboard = () => {
+  useGetAllCompanies();
+  useGetAllUsers();
+  useGetAllApplications();
+  useGetAllJobs();
   const { allCompanies } = useSelector((store) => store.company);
   const { allUsers } = useSelector((store) => store.auth);
   const { allApplications } = useSelector((store) => store.application);

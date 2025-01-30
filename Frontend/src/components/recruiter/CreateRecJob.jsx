@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import apiRequest from "../../utils/axiosUtility";
 
-function CreateAdminJob() {
+function CreateRecJob() {
   const { userCompanies } = useSelector((store) => store.company);
   console.log(userCompanies);
 
@@ -67,7 +67,7 @@ function CreateAdminJob() {
 
       if (res.data.success) {
         toast.success(res.data.message);
-        navigate("/admin/jobs");
+        navigate("/rec/jobs");
         setLoading(false);
       }
       setInput({
@@ -229,4 +229,4 @@ function CreateAdminJob() {
   );
 }
 
-export default CreateAdminJob;
+export default CreateRecJob;

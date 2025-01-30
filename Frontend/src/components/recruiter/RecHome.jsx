@@ -5,7 +5,7 @@ const RecruiterHeroSection = () => {
   const navigate = useNavigate();
 
   const handlePostJob = () => {
-    navigate("/admin/companies");
+    navigate("/rec/companies");
   };
 
   return (
@@ -65,7 +65,7 @@ const PostJobCTA = () => {
         needs.
       </p>
       <button
-        onClick={() => navigate("/admin/jobs")}
+        onClick={() => navigate("/rec/jobs")}
         className="bg-[#F83002] px-8 py-3 rounded-full text-lg font-semibold hover:bg-red-600 transition"
       >
         Post a Job

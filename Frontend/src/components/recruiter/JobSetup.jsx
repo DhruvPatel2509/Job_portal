@@ -74,7 +74,7 @@ function JobSetup() {
 
       if (res.data.success) {
         toast.success(res.data.message);
-        navigate("/admin/jobs");
+        navigate("/rec/jobs");
       }
     } catch (error) {
       const message =
@@ -96,7 +96,7 @@ function JobSetup() {
 
       if (res.status === 200) {
         toast.success("Job Deleted Successfully");
-        navigate("/admin/jobs");
+        navigate("/rec/jobs");
       }
     } catch (error) {
       console.log(error);

@@ -74,7 +74,7 @@ function CompanySetup() {
 
       if (res.data.success) {
         toast.success(res.data.message);
-        navigate("/admin/companies");
+        navigate("/rec/companies");
       }
     } catch (error) {
       console.error(error);
@@ -92,7 +92,7 @@ function CompanySetup() {
 
       if (res.status === 200) {
         toast.success("Company Deleted Successfully");
-        navigate("/admin/companies");
+        navigate("/rec/companies");
       }
     } catch (error) {
       console.log(error);

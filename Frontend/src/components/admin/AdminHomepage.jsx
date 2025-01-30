@@ -11,20 +11,14 @@ import {
 import Dashboard from "./Dashboard";
 import JobAdmin from "./JobAdmin";
 import Applicationadmin from "./Applicationadmin";
-import useGetAllCompanies from "../../hooks/useGetAllCompanies";
-import useGetAllUsers from "../../hooks/useGetAllUsers";
-import useGetAllApplications from "../../hooks/useGetAllApplications";
-import useGetAllJobs from "../../hooks/useGetAllJobs";
+
 import UserAdmin from "./UserAdmin";
 import CompaniesAdmin from "./CompaniesAdmin";
 
-function MeHomePage() {
+function AdminHomepage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
-  useGetAllCompanies();
-  useGetAllUsers();
-  useGetAllApplications();
-  useGetAllJobs();
+
   const tabs = {
     dashboard: <Dashboard />,
     jobs: <JobAdmin />,
@@ -79,4 +73,4 @@ function MeHomePage() {
   );
 }
 
-export default MeHomePage;
+export default AdminHomepage;

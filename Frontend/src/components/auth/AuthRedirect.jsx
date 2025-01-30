@@ -10,8 +10,10 @@ function AuthRedirect({ component }) {
     if (authUser) {
       if (authUser.role === "student") {
         navigate("/studenthome"); // Redirect student to home
-      } else {
+      } else if (authUser.role === "recruiter") {
         navigate("/recHome"); // Redirect admin to companies
+      } else {
+        navigate("/AdminHomepage"); // Redirect admin to companies
       }
     }
   }, [authUser, navigate]);

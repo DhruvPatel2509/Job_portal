@@ -17,7 +17,7 @@ function Companies() {
         {userCompanies && userCompanies.length > 0 ? (
           ""
         ) : (
-          <Button onClick={() => navigate("/admin/companies/create")}>
+          <Button onClick={() => navigate("/rec/companies/create")}>
             Add Your Company
           </Button>
         )}

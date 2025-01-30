@@ -3,11 +3,11 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import JobsAdminTable from "./JobsAdminTable";
+import JobsAdminTable from "./JobsRecTable";
 import useGetJobsAdmin from "../../hooks/useGetJobsAdmin";
 import { setSearchJobByText } from "../../redux/jobSlice";
 
-function JobsAdmin() {
+function JobsRec() {
   useGetJobsAdmin();
 
   const navigate = useNavigate();
@@ -26,9 +26,7 @@ function JobsAdmin() {
             placeholder="Filter By Name"
             onChange={(e) => setInput(e.target.value)}
           />
-          <Button onClick={() => navigate("/admin/jobs/create")}>
-            New Jobs
-          </Button>
+          <Button onClick={() => navigate("/rec/jobs/create")}>New Jobs</Button>
         </div>
         <JobsAdminTable />
       </div>
@@ -36,4 +34,4 @@ function JobsAdmin() {
   );
 }
 
-export default JobsAdmin;
+export default JobsRec;

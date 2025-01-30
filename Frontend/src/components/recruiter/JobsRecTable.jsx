@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
-function JobsAdminTable() {
+function JobsRecTable() {
   const { alljobsAdmin, searchJobByText } = useSelector((state) => state.job);
 
   const [filterJobs, setFilterJobs] = useState(alljobsAdmin);
@@ -43,7 +43,7 @@ function JobsAdminTable() {
   }, [alljobsAdmin, searchJobByText]);
 
   const editHandler = (id) => {
-    navigate(`/admin/jobs/${id}`);
+    navigate(`/rec/jobs/${id}`);
   };
 
   return (
@@ -87,7 +87,7 @@ function JobsAdminTable() {
 
                       <div
                         onClick={() =>
-                          navigate(`/admin/jobs/${c._id}/applicants`)
+                          navigate(`/rec/jobs/${c._id}/applicants`)
                         }
                         className="flex mt-3 items-center gap-2 cursor-pointer w-fit"
                       >
@@ -105,4 +105,4 @@ function JobsAdminTable() {
   );
 }
 
-export default JobsAdminTable;
+export default JobsRecTable;

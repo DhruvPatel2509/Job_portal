@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,7 +72,7 @@ export const AdminLogin = () => {
             res.data.user.role === "recruiter"
               ? "/recHome"
               : res.data.user.role === "admin"
-              ? "/me"
+              ? "/AdminHomepage"
               : "/studenthome"
           ),
         1000

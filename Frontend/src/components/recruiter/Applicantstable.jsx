@@ -74,7 +74,7 @@ function Applicantstable() {
 
       if (res.status === 200) {
         toast.success("Job Deleted Successfully");
-        navigate("/admin/jobs");
+        navigate("/rec/jobs");
       }
     } catch (error) {
       console.log(error);
