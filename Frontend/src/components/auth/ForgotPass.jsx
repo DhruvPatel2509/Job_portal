@@ -104,8 +104,7 @@ const ForgotPassword = () => {
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/verifyOtp`, { sotp });
-      console.log(res);
-      
+
       if (res.status === 200) {
         toast.success("OTP Verified!");
         localStorage.removeItem("isOtpSent");

@@ -25,7 +25,6 @@ function JobDetails() {
   };
 
   const isApplied = checkIfApplied();
-  console.log(authUser.profile.resume);
 
   const applyJob = async () => {
     try {

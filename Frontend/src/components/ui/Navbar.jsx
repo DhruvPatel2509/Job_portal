@@ -76,7 +76,6 @@ export const Navbar = () => {
       navigate("/");
     }
   };
-  console.log(isMenuOpen);
 
   return (
     <nav className="bg-gradient-to-r from-[#674e92] to-[#431692] text-white shadow-md z-10">

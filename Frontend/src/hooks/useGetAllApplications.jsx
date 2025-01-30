@@ -16,7 +16,6 @@ const useGetAllApplications = () => {
         dispatch(setApiLoading(true));
 
         const res = await apiRequest("GET", endpoint, {}, token);
-        console.log(res);
 
         if (res.status === 200) {
           dispatch(setAllApplications(res.data.data));

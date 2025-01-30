@@ -14,7 +14,6 @@ function Profile() {
   const { authUser } = useSelector((store) => store.auth);
   const [open, setOpen] = useState(false);
   const skills = authUser?.profile?.skills || [];
-  console.log(authUser);
 
   useGetAppliedJobs();
 

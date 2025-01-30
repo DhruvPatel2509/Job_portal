@@ -21,7 +21,6 @@ export const NewPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("passToken");
-    console.log(token);
 
     try {
       dispatch(setLoading(true));

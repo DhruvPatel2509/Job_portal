@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 
 const Applicationadmin = () => {
   const { allApplications } = useSelector((store) => store.application);
-  console.log(allApplications);
 
   return (
     <div className="p-4 min-h-screen bg-gray-50">

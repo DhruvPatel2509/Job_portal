@@ -19,7 +19,6 @@ import apiRequest from "../../utils/axiosUtility";
 
 function CreateRecJob() {
   const { userCompanies } = useSelector((store) => store.company);
-  console.log(userCompanies);
 
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({

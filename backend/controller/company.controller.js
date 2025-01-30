@@ -39,10 +39,8 @@ export const registerCompany = async (req, res) => {
 export const getCompany = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log(userId);
 
     const companies = await Company.find({ userId });
-    console.log(companies);
 
     if (!companies || companies.length === 0) {
       return sendResponse(res, 404, null, "Companies Not Found");
@@ -184,7 +182,6 @@ export const setCmpanyStatus = async (req, res) => {
   try {
     const { id: companyId } = req.params;
     const { status } = req.body;
-    console.log(status);
 
     if (!companyId) {
       return sendResponse(res, 400, null, "Company ID is required");

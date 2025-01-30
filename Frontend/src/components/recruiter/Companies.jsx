@@ -9,7 +9,6 @@ function Companies() {
   useGetUserCompanies();
 
   const { userCompanies } = useSelector((state) => state.company);
-  console.log(userCompanies);
 
   return (
     <div className="max-w-6xl mx-auto my-10">

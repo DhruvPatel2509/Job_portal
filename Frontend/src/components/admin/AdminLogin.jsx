@@ -40,7 +40,6 @@ export const AdminLogin = () => {
       toast.error("Please enter a valid email address.");
       return;
     }
-    console.log(input);
 
     try {
       dispatch(setLoading(true));

@@ -142,7 +142,6 @@ export const updateJobById = async (req, res) => {
       position,
       experience,
     } = req.body;
-    console.log(title);
 
     if (title) job.title = title.trim();
     if (description) job.description = description.trim();

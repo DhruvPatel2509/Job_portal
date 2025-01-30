@@ -257,7 +257,6 @@ export const forgotPassword = async (req, res) => {
 
 export const verifyOtp = async (req, res, next) => {
   const { sotp } = req.body;
-  console.log(sotp);
 
   try {
     const user = await User.findOne({ "otp.otp": sotp });
@@ -277,10 +276,7 @@ export const verifyOtp = async (req, res, next) => {
 
 export const resetPassword = async (req, res) => {
   const { password, confirmPassword, token } = req.body;
-  console.log(password);
-  console.log(confirmPassword);
-  console.log(token);
-
+ 
   try {
     const user = await User.findOne({ "otp.token": token });
     if (!user) {
@@ -314,7 +310,6 @@ export const resetPassword = async (req, res) => {
 export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().populate("profile.company");
-    console.log(users);
 
     if (!users || users.length === 0) {
       return sendResponse(res, 404, null, "No User Found");
