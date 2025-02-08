@@ -73,7 +73,7 @@ export const Navbar = () => {
     } else if (authUser && role === "student") {
       navigate("/studenthome");
     } else {
-      navigate("/");
+      navigate("/AdminHomepage");
     }
   };
 
