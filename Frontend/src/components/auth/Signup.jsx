@@ -63,6 +63,7 @@ export const Signup = () => {
       toast.error("File size must be less than 2MB.");
     } else {
       setInput((prev) => ({ ...prev, file }));
+      console.log(file.name);
     }
   };
 
@@ -217,23 +218,31 @@ export const Signup = () => {
                 </RadioGroup>
               </div>
               <div>
-                <Label
-                  htmlFor="file"
-                  className="block mb-2 text-sm font-medium text-white cursor-pointer"
-                >
-                  Upload Profile Picture
-                </Label>
+                {!input.file && (
+                  <Label
+                    htmlFor="file"
+                    className="block mb-2 text-sm font-medium text-white cursor-pointer"
+                  >
+                    Upload Profile Picture
+                  </Label>
+                )}
                 <div className="relative flex items-center">
-                  <span className="absolute left-3 text-gray-400">
-                    <Upload />
-                  </span>
-                  <Input
-                    id="file"
-                    type="file"
-                    onChange={handleFileChange}
-                    accept="image/*"
-                    className="w-full cursor-pointer px-10 py-3 text-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                  {input.file !== null ? (
+                    <p className="text-red-500">{input.file?.name}</p>
+                  ) : (
+                    <>
+                      <span className="absolute left-3 text-gray-400">
+                        <Upload />
+                      </span>
+                      <Input
+                        id="file"
+                        type="file"
+                        onChange={handleFileChange}
+                        accept="image/*"
+                        className="w-full cursor-pointer px-10 py-3 text-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </>
+                  )}
                 </div>
               </div>
             </div>

@@ -5,6 +5,10 @@ import jwt from "jsonwebtoken";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 import { sendResetOtp } from "../utils/mailSend.js";
 import crypto from "crypto";
+import { Company } from "../models/company.model.js";
+import mongoose from "mongoose";
+import { Application } from "../models/application.model.js";
+import { Job } from "../models/job.model.js";
 
 export const register = async (req, res) => {
   try {
@@ -81,7 +85,7 @@ export const login = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return sendResponse(res, 401, null, "Invalid email or password");
+      return sendResponse(res, 401, null, "email is not registered");
     }
 
     if (role !== user.role) {
@@ -276,7 +280,7 @@ export const verifyOtp = async (req, res, next) => {
 
 export const resetPassword = async (req, res) => {
   const { password, confirmPassword, token } = req.body;
- 
+
   try {
     const user = await User.findOne({ "otp.token": token });
     if (!user) {
@@ -319,4 +323,73 @@ export const getAllUsers = async (req, res) => {
   } catch (error) {}
   console.error("Error fetching all Users:", error); // Log the error for debugging
   return sendResponse(res, 500, null, "Internal Server Error");
+};
+
+export const deleteUser = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const userId = req.params.id;
+    if (!userId) {
+      await session.abortTransaction();
+      session.endSession();
+      return sendResponse(res, 400, null, "User ID is required");
+    }
+
+    // Find the user
+    const user = await User.findById(userId).session(session);
+    if (!user) {
+      await session.abortTransaction();
+      session.endSession();
+      return sendResponse(res, 404, null, "User Not Found");
+    }
+
+    if (user.role === "student") {
+      // Delete all applications related to the student
+      await Application.deleteMany({ applicant: userId }).session(session);
+      console.log(`Deleted applications of student: ${userId}`);
+    } else if (user.role === "recruiter") {
+      // Find all companies associated with the recruiter
+      const companies = await Company.find({ userId }).session(session);
+
+      for (const company of companies) {
+        // Find and delete all jobs under each company
+        const jobs = await Job.find({ company: company._id }).session(session);
+
+        for (const job of jobs) {
+          // Delete applications related to each job
+          await Application.deleteMany({ job: job._id }).session(session);
+          console.log(`Deleted applications for job: ${job._id}`);
+        }
+
+        // Delete the jobs
+        await Job.deleteMany({ company: company._id }).session(session);
+        console.log(`Deleted jobs of company: ${company._id}`);
+      }
+
+      // Delete the companies
+      await Company.deleteMany({ userId }).session(session);
+      console.log(`Deleted companies of recruiter: ${userId}`);
+    }
+
+    // Finally, delete the user
+    await User.findByIdAndDelete(userId).session(session);
+    console.log(`Deleted user: ${userId}`);
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return sendResponse(
+      res,
+      200,
+      null,
+      "User and related data deleted successfully"
+    );
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    console.error("Error deleting user:", error);
+    return sendResponse(res, 500, null, "Internal Server Error");
+  }
 };

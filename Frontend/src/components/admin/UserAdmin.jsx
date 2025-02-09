@@ -1,7 +1,64 @@
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import { FaEdit, FaTrash, FaTimes } from "react-icons/fa";
+import axios from "axios";
+import { ADMIN_API_END_POINT, USER_API_END_POINT } from "../../utils/constant";
 
 const UserAdmin = () => {
   const { allUsers } = useSelector((store) => store.auth);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    phoneNumber: "",
+    bio: "",
+    skills: "",
+    role: "",
+  });
+
+  // Open Edit Form with Selected User Data
+  const handleEditClick = (user) => {
+    setSelectedUser(user);
+    setFormData({
+      fullname: user.fullname,
+      email: user.email,
+      phoneNumber: user.phoneNumber || "",
+      bio: user.profile?.bio || "",
+      skills: user.profile?.skills?.join(", ") || "",
+      role: user.role,
+    });
+  };
+
+  // Handle Input Change
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Submit Updated User Data
+  const handleEditSubmit = async () => {
+    try {
+      const res = await axios.put(
+        `${ADMIN_API_END_POINT}/editUser/${selectedUser._id}`,
+        formData
+      );
+      console.log("Updated User:", res.data);
+      setSelectedUser(null);
+    } catch (error) {
+      console.error("Edit Error:", error);
+    }
+  };
+
+  // Delete User
+  const handleDelete = async (userId) => {
+    try {
+      const res = await axios.delete(
+        `${USER_API_END_POINT}/deleteUser/${userId}`
+      );
+      console.log(res);
+    } catch (error) {
+      console.error("Delete Error:", error);
+    }
+  };
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
@@ -14,7 +71,7 @@ const UserAdmin = () => {
           .map((user) => (
             <div
               key={user._id}
-              className="bg-white shadow-lg rounded-xl p-6 border border-gray-200 transition-transform transform hover:scale-105 hover:shadow-2xl"
+              className="bg-white shadow-lg rounded-xl p-6 border border-gray-200 transition-transform transform hover:scale-105 hover:shadow-2xl relative"
             >
               <div className="flex flex-col items-center text-center">
                 <img
@@ -44,10 +101,97 @@ const UserAdmin = () => {
                       </p>
                     )}
                 </div>
+                <div className="flex gap-4 mt-4">
+                  <button
+                    onClick={() => handleEditClick(user)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition duration-200"
+                  >
+                    <FaEdit /> Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(user._id)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition duration-200"
+                  >
+                    <FaTrash /> Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}
       </div>
+
+      {/* Edit Modal */}
+      {selectedUser && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg p-6 w-96 shadow-lg relative">
+            <button
+              onClick={() => setSelectedUser(null)}
+              className="absolute top-3 right-3 text-gray-600 hover:text-gray-900"
+            >
+              <FaTimes size={20} />
+            </button>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Edit User</h3>
+            <div className="space-y-3">
+              <input
+                type="text"
+                name="fullname"
+                value={formData.fullname}
+                onChange={handleChange}
+                placeholder="Full Name"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-blue-500"
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-blue-500"
+              />
+              <input
+                type="text"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                placeholder="Phone Number"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-blue-500"
+              />
+              <input
+                type="text"
+                name="bio"
+                value={formData.bio}
+                onChange={handleChange}
+                placeholder="Bio"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-blue-500"
+              />
+              <input
+                type="text"
+                name="skills"
+                value={formData.skills}
+                onChange={handleChange}
+                placeholder="Skills (comma-separated)"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-blue-500"
+              />
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-blue-500"
+              >
+                <option value="student">Student</option>
+                <option value="recruiter">Recruiter</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <button
+              onClick={handleEditSubmit}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg mt-4"
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearAuthUser, setAuthUser, setLoading } from "../redux/authSlice";
+import { clearAuthUser, setAuthUser } from "../redux/authSlice";
 import { USER_API_END_POINT } from "../utils/constant";
 import apiRequest from "../utils/axiosUtility";
 

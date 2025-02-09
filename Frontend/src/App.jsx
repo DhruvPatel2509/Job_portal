@@ -38,9 +38,8 @@ const appRouter = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/", element: <ForAllHomePage /> },
+      { path: "/", element: <AuthRedirect component={<ForAllHomePage />} /> },
 
-      // Authentication Routes
       { path: "/login", element: <AuthRedirect component={<Login />} /> },
       { path: "/signup", element: <AuthRedirect component={<Signup />} /> },
       {

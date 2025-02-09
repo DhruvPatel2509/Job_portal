@@ -29,7 +29,7 @@ function LatestJob() {
           </div>
         ) : (
           allJobs
-            ?.slice(0, 6)
+            ?.slice(0, 4)
             ?.map((job) => <LatestJobCards key={job._id} job={job} />)
         )}
       </div>
