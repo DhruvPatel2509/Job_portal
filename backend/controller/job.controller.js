@@ -212,4 +212,3 @@ export const deleteJob = async (req, res) => {
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
-
