@@ -8,7 +8,7 @@ function CompaniesTable() {
   const navigate = useNavigate();
 
   const editHandler = (id) => {
-    navigate(`/rec/companies${id}`);
+    navigate(`/rec/companies/${id}`);
   };
 
   const company = userCompanies?.[0]; // Show only the first company

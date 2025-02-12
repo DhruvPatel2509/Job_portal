@@ -10,17 +10,9 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { LogOut, Menu, User2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { USER_API_END_POINT } from "../../utils/constant";
-import { setAuthUser, setToken } from "../../redux/authSlice";
-import {
-  setAllJobs,
-  setAllJobsAdmin,
-  setSingleJob,
-} from "../../redux/jobSlice";
-import { setAllCompanies } from "../../redux/companySlice";
-import apiRequest from "../../utils/axiosUtility";
 import { useState } from "react";
 import "../../CSS/Navbar.css";
+import { logOutHandler } from "../../utils/logoutHandler";
 
 export const Navbar = () => {
   const { authUser, token } = useSelector((store) => store.auth);
@@ -30,43 +22,15 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-  const logOutHandler = async () => {
+  const handleLogout = () => {
     try {
-      const endpoint = `${USER_API_END_POINT}/logOut`;
-      const res = await apiRequest("GET", endpoint, {}, token);
+      logOutHandler(dispatch, navigate, token);
       setIsPopoverOpen(false);
-      if (res.data.success) {
-        toast.success(`${res.data.message}`, {
-          duration: 1500,
-          position: "top-center",
-          style: {
-            backgroundColor: "green",
-            color: "white",
-            borderRadius: "8px",
-          },
-        });
-        dispatch(setAuthUser(null));
-        dispatch(setSingleJob(null));
-        dispatch(setAllJobs(null));
-        dispatch(setAllCompanies(null));
-        dispatch(setToken(""));
-        dispatch(setAllJobsAdmin(null));
-        navigate("/");
-      }
     } catch (error) {
-      console.error("Logout failed:", error);
-      toast.error("Logout failed.", {
-        duration: 2000,
-        position: "top-center",
-        style: {
-          backgroundColor: "red",
-          color: "white",
-          borderRadius: "8px",
-        },
-      });
+      console.log(error.message);
+      toast.error("Logout failed. Please try again.");
     }
   };
-
   const handleLogo = () => {
     if (authUser && role === "recruiter") {
       navigate("/recHome");
@@ -181,7 +145,7 @@ export const Navbar = () => {
                       </button>
                     </Link>
                   )}
-                  <button className="text-red-500" onClick={logOutHandler}>
+                  <button className="text-red-500" onClick={handleLogout}>
                     <LogOut className="inline-block mr-2" />
                     Logout
                   </button>

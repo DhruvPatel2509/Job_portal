@@ -11,14 +11,32 @@ import {
 import Dashboard from "./Dashboard";
 import JobAdmin from "./JobAdmin";
 import Applicationadmin from "./Applicationadmin";
-
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import UserAdmin from "./UserAdmin";
-import CompaniesAdmin from "./CompaniesAdmin";
+import Cookies from "js-cookie";
 
+import CompaniesAdmin from "./CompaniesAdmin";
+import { logOutHandler } from "../../utils/logoutHandler.js";
 function AdminHomepage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const token = Cookies.get("token");
+    console.log(token);
 
+    if (!token) {
+      try {
+        console.log("hh");
+        logOutHandler(dispatch, navigate, token);
+      } catch (error) {
+        console.error("Error during logout:", error);
+      }
+    }
+  }, [dispatch, navigate]);
   const tabs = {
     dashboard: <Dashboard />,
     jobs: <JobAdmin />,

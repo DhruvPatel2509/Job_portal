@@ -36,6 +36,7 @@ function CreateRecJob() {
 
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
   const changeEventHandler = (e) => {
     setInput({
       ...input,
@@ -98,7 +99,7 @@ function CreateRecJob() {
           variant="outline"
           className="flex items-center gap-2 font-semibold text-gray-500"
           onClick={(e) => {
-            e.preventDefault(); // Prevent form submission
+            e.preventDefault();
             navigate(-1);
           }}
         >
@@ -128,25 +129,30 @@ function CreateRecJob() {
             />
           </div>
 
-          <div>
+          <div className="col-span-2">
             <Label>Requirements</Label>
-            <Input
-              type="text"
+            <textarea
               name="requirements"
               value={input.requirements}
               onChange={changeEventHandler}
               className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+              rows="3"
             />
+            <p className="text-sm text-gray-500">
+              * Separate requirements with commas (e.g., React.js, Node.js,
+              MongoDB)
+            </p>
           </div>
 
           <div>
-            <Label>Salary</Label>
+            <Label>Salary (LPA)</Label>
             <Input
               type="number"
               placeholder="LPA"
               name="salary"
               value={input.salary}
               onChange={changeEventHandler}
+              min="0"
               className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
             />
           </div>
@@ -180,6 +186,7 @@ function CreateRecJob() {
               name="position"
               value={input.position}
               onChange={changeEventHandler}
+              min="0"
               className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
             />
           </div>
@@ -191,6 +198,7 @@ function CreateRecJob() {
               name="experience"
               value={input.experience}
               onChange={changeEventHandler}
+              min="0"
               className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
             />
           </div>

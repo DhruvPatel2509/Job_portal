@@ -1,8 +1,25 @@
 import { useNavigate } from "react-router-dom";
 import NewsletterSection from "../HomePagecom/NewsletterSection";
-// RecruiterHeroSection Component
+import Cookies from "js-cookie";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { logOutHandler } from "../../utils/logoutHandler";
 const RecruiterHeroSection = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const token = Cookies.get("token");
+    console.log(token);
+
+    if (!token) {
+      try {
+        console.log("hh");
+        logOutHandler(dispatch, navigate, token);
+      } catch (error) {
+        console.error("Error during logout:", error);
+      }
+    }
+  }, [dispatch, navigate]);
 
   const handlePostJob = () => {
     navigate("/rec/companies");

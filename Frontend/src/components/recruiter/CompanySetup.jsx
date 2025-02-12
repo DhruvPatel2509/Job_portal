@@ -23,6 +23,7 @@ function CompanySetup() {
   const companyId = params.id;
   useGetSingleCompany(companyId);
   const { singleCompany } = useSelector((state) => state.company);
+  console.log(singleCompany);
 
   const [input, setInput] = useState({
     name: singleCompany?.name || "",
@@ -183,7 +184,18 @@ function CompanySetup() {
             />
           </div>
           <div>
-            <Label>Logo</Label>
+            <p>Your Current Logo</p>
+            {singleCompany?.logo && (
+              <div>
+                <img
+                  src={singleCompany.logo}
+                  className="w-20 h-20 object-cover"
+                />
+              </div>
+            )}
+          </div>
+          <div>
+            <Label>Choose New Logo If You Want</Label>
             <Input
               type="file"
               accept="image/*"
