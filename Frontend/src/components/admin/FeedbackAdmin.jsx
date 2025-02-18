@@ -1,20 +1,42 @@
+import { Trash2 } from "lucide-react";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
+import { FEEDBACK_API_END_POINT } from "../../utils/constant";
+import apiRequest from "../../utils/axiosUtility";
+import { useState } from "react";
 
 export const FeedbackAdmin = () => {
   const { feedbacks } = useSelector((store) => store.feedback);
-  console.log(feedbacks);
+  const { token } = useSelector((store) => store.auth);
+  const [updateFeedback, setUpdateFeedback] = useState(feedbacks);
+  // Handle delete feedback
+  const handleDelete = async (id) => {
+    try {
+      const endpoint = `${FEEDBACK_API_END_POINT}/deleteFeedback/${id}`;
+      const res = await apiRequest("DELETE", endpoint, null, token);
+      if (res.status === 200) {
+        setUpdateFeedback((prev) =>
+          prev.filter((feedback) => feedback._id !== id)
+        );
+        toast.success("Feedback deleted successfully");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete feedback");
+    }
+  };
 
   return (
     <div className="p-6 bg-gray-50 rounded-lg shadow-lg max-w-6xl mx-auto">
       <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
         Feedback from Students & Recruiters
       </h2>
-      {feedbacks.length > 0 ? (
+      {updateFeedback?.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {feedbacks.map((feedback) => (
+          {updateFeedback?.map((feedback) => (
             <div
               key={feedback._id}
-              className="p-6 bg-white shadow-md rounded-lg hover:shadow-xl transition-shadow duration-300"
+              className="p-6 bg-white shadow-md rounded-lg hover:shadow-xl transition-shadow duration-300 relative"
             >
               <div className="flex items-center space-x-4">
                 <img
@@ -33,6 +55,14 @@ export const FeedbackAdmin = () => {
               <p className="text-sm text-gray-500 mt-2">
                 {new Date(feedback.createdAt).toLocaleString()}
               </p>
+
+              {/* Delete Button */}
+              <button
+                onClick={() => handleDelete(feedback._id)}
+                className="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded transition"
+              >
+                <Trash2 size={20} className="w-4 h-4 inline-block mr-1" />
+              </button>
             </div>
           ))}
         </div>

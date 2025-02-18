@@ -1,12 +1,15 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaEdit, FaTrash, FaTimes } from "react-icons/fa";
 import axios from "axios";
+import { toast } from "sonner";
 import { ADMIN_API_END_POINT, USER_API_END_POINT } from "../../utils/constant";
 
 const UserAdmin = () => {
-  const { allUsers } = useSelector((store) => store.auth);
+  const { allUsers: initialUsers } = useSelector((store) => store.auth);
+  const [allUsers, setAllUsers] = useState(initialUsers);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isChanged, setIsChanged] = useState(false);
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -29,6 +32,20 @@ const UserAdmin = () => {
     });
   };
 
+  // Detect Changes in Form
+  useEffect(() => {
+    if (selectedUser) {
+      const isModified =
+        formData.fullname !== selectedUser.fullname ||
+        formData.email !== selectedUser.email ||
+        formData.phoneNumber !== (selectedUser.phoneNumber || "") ||
+        formData.bio !== (selectedUser.profile?.bio || "") ||
+        formData.skills !== (selectedUser.profile?.skills?.join(", ") || "");
+
+      setIsChanged(isModified);
+    }
+  }, [formData, selectedUser]);
+
   // Handle Input Change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,14 +53,26 @@ const UserAdmin = () => {
 
   // Submit Updated User Data
   const handleEditSubmit = async () => {
+    if (!isChanged) return;
+
     try {
       const res = await axios.put(
         `${ADMIN_API_END_POINT}/editUser/${selectedUser._id}`,
         formData
       );
-      console.log("Updated User:", res.data);
+      if (res.status === 200) {
+        setAllUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user._id === selectedUser._id ? { ...user, ...formData } : user
+          )
+        );
+
+        toast.success("User updated successfully!");
+      }
+
       setSelectedUser(null);
     } catch (error) {
+      toast.error("Error updating user!");
       console.error("Edit Error:", error);
     }
   };
@@ -51,11 +80,16 @@ const UserAdmin = () => {
   // Delete User
   const handleDelete = async (userId) => {
     try {
-      const res = await axios.delete(
-        `${USER_API_END_POINT}/deleteUser/${userId}`
+      await axios.delete(`${USER_API_END_POINT}/deleteUser/${userId}`);
+
+      // Remove deleted user from the UI
+      setAllUsers((prevUsers) =>
+        prevUsers.filter((user) => user._id !== userId)
       );
-      console.log(res);
+
+      toast.success("User deleted successfully!");
     } catch (error) {
+      toast.error("Error deleting user!");
       console.error("Delete Error:", error);
     }
   };
@@ -90,16 +124,6 @@ const UserAdmin = () => {
                     <span className="text-gray-900 font-semibold">Role:</span>{" "}
                     {user.role}
                   </p>
-                  {user.role === "recruiter" &&
-                    user.profile.company &&
-                    typeof user.profile.company === "object" && (
-                      <p className="text-sm sm:text-lg font-medium text-gray-700">
-                        <span className="text-gray-900 font-semibold">
-                          Company:
-                        </span>{" "}
-                        {user.profile.company.name}
-                      </p>
-                    )}
                 </div>
                 <div className="flex gap-4 mt-4">
                   <button
@@ -172,20 +196,15 @@ const UserAdmin = () => {
                 placeholder="Skills (comma-separated)"
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-blue-500"
               />
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-blue-500"
-              >
-                <option value="student">Student</option>
-                <option value="recruiter">Recruiter</option>
-                <option value="admin">Admin</option>
-              </select>
             </div>
             <button
               onClick={handleEditSubmit}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg mt-4"
+              disabled={!isChanged}
+              className={`w-full px-4 py-2 rounded-lg mt-4 font-semibold ${
+                isChanged
+                  ? "bg-blue-500 hover:bg-blue-600 text-white"
+                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
+              }`}
             >
               Save Changes
             </button>

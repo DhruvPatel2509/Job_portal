@@ -30,3 +30,17 @@ export const getAllFeedBack = async (req, res) => {
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
+
+export const deleteFeedback = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const feedBack = await FeedBack.findByIdAndDelete(id);
+    if (!feedBack) {
+      return sendResponse(res, 404, null, "Feedback Not Found");
+    }
+    return sendResponse(res, 200, feedBack, "Feedback Deleted Successfully");
+  } catch (error) {
+    console.error("deleteFeedback Error:", error);
+    return sendResponse(res, 500, null, "Internal Server Error");
+  }
+};

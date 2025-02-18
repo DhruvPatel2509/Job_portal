@@ -140,6 +140,7 @@ export const updateProfile = async (req, res) => {
     const resumeFile = req.files["file"];
     const profilePhoto = req.files["profilePhoto"];
 
+    
     let user = await User.findById(userId);
 
     if (!user) {
