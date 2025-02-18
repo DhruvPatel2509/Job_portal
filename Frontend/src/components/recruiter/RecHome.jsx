@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { logOutHandler } from "../../utils/logoutHandler";
+import FeedbackForm from "../FeedBackForm";
 const RecruiterHeroSection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -132,6 +133,7 @@ const HomeRecruiter = () => {
       <PostJobCTA />
       <FeaturedCandidates />
       <NewsletterSection />
+      <FeedbackForm />
     </>
   );
 };

@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { logOutHandler } from "../../utils/logoutHandler";
+import FeedbackForm from "../FeedBackForm";
 
 export const Home = () => {
   useGetAllJobs();
@@ -30,6 +31,7 @@ export const Home = () => {
       <Herosection />
       <CategoryCarousal />
       <LatestJob />
+      <FeedbackForm />
     </>
   );
 };

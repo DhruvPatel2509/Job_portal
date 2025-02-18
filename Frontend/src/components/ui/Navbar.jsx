@@ -36,8 +36,12 @@ export const Navbar = () => {
       navigate("/recHome");
     } else if (authUser && role === "student") {
       navigate("/studenthome");
-    } else {
+    } else if(authUser && role === "admin") {
       navigate("/AdminHomepage");
+
+    }
+    else{
+      navigate("/");
     }
   };
 
