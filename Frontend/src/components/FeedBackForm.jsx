@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function FeedbackForm() {
+  const { authUser } = useSelector((store) => store.auth);
+  console.log(authUser.email);
+
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
+    email: authUser.email,
     message: "",
   });
 
@@ -30,19 +34,19 @@ export default function FeedbackForm() {
             <input
               type="text"
               name="name"
+              placeholder="Enter your name"
               value={formData.name}
               onChange={handleChange}
               required
               className="w-full mt-1 p-3 border border-gray-300 rounded-full focus:ring focus:ring-[#6A38C2]"
             />
           </div>
-          <div>
-            <label className="block text-gray-700">Email</label>
+          <div className="hidden">
+            <label className="block text-gray-700">Email(Can not Change)</label>
             <input
               type="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
+              disabled
               required
               className="w-full mt-1 p-3 border border-gray-300 rounded-full focus:ring focus:ring-[#6A38C2]"
             />
@@ -51,6 +55,7 @@ export default function FeedbackForm() {
             <label className="block text-gray-700">Message</label>
             <textarea
               name="message"
+              placeholder="Enter your Feedback here ..."
               value={formData.message}
               onChange={handleChange}
               required
