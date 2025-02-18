@@ -81,15 +81,7 @@ export const Signup = () => {
       const endpoint = `${USER_API_END_POINT}/register`;
       const res = await apiRequest("POST", endpoint, formData);
 
-      toast.success(`${res.data.message}`, {
-        duration: 1500,
-        position: "top-center",
-        style: {
-          backgroundColor: "green",
-          color: "white",
-          borderRadius: "8px",
-        },
-      });
+      toast.success(`${res.data.message}`);
       navigate("/login");
     } catch (error) {
       if (error.name === "ValidationError") {

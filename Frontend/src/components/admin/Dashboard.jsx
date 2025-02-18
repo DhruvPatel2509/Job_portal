@@ -5,16 +5,20 @@ import useGetAllCompanies from "../../hooks/useGetAllCompanies";
 import useGetAllUsers from "../../hooks/useGetAllUsers";
 import useGetAllApplications from "../../hooks/useGetAllApplications";
 import useGetAllJobs from "../../hooks/useGetAllJobs";
+import useGetAllfeedbacks from "../../hooks/useGetAllFeedBAck";
 
 const Dashboard = () => {
   useGetAllCompanies();
   useGetAllUsers();
   useGetAllApplications();
   useGetAllJobs();
+  useGetAllfeedbacks();
   const { allCompanies } = useSelector((store) => store.company);
   const { allUsers } = useSelector((store) => store.auth);
   const { allApplications } = useSelector((store) => store.application);
   const { allJobs } = useSelector((store) => store.job);
+  const { feedbacks } = useSelector((store) => store.feedback);
+  console.log(feedbacks);
 
   const mockStats = {
     totalCompanies: allCompanies?.length,

@@ -10,7 +10,17 @@ createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
       <App />
-      <Toaster />
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 1500,
+          className: "custom-toast",
+          style: {
+            borderRadius: "8px",
+            fontWeight: "500",
+          },
+        }}
+      />
     </PersistGate>
   </Provider>
 );

@@ -38,15 +38,7 @@ function UpdateProfile({ open, setOpen }) {
   const fileChangeHandler = (e) => {
     const file = e.target.files[0];
     if (file && file.size > MAX_FILE_SIZE) {
-      toast.error(`File size exceeds 10 MB. Please choose a smaller file`, {
-        duration: 1500,
-        position: "top-center",
-        style: {
-          backgroundColor: "red",
-          color: "white",
-          borderRadius: "8px",
-        },
-      });
+      toast.error(`File size exceeds 10 MB. Please choose a smaller file`);
       e.target.value = null;
     } else {
       setInput({ ...input, file });

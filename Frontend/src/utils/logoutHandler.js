@@ -12,15 +12,7 @@ export const logOutHandler = async (dispatch, navigate, token) => {
     const res = await apiRequest("GET", endpoint, {}, token);
 
     if (res.data.success) {
-      toast.success(`${res.data.message}`, {
-        duration: 1500,
-        position: "top-center",
-        style: {
-          backgroundColor: "green",
-          color: "white",
-          borderRadius: "8px",
-        },
-      });
+      toast.success(`${res.data.message}`);
 
       dispatch(setAuthUser(null));
       dispatch(setSingleJob(null));
@@ -32,14 +24,6 @@ export const logOutHandler = async (dispatch, navigate, token) => {
     }
   } catch (error) {
     console.error("Logout failed:", error);
-    toast.error("Logout failed.", {
-      duration: 2000,
-      position: "top-center",
-      style: {
-        backgroundColor: "red",
-        color: "white",
-        borderRadius: "8px",
-      },
-    });
+    toast.error("Logout failed.");
   }
 };

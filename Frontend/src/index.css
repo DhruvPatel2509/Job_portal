@@ -70,3 +70,14 @@
 }
 
 
+/* Success Toast Styling */
+.custom-toast[data-type="success"] {
+  background-color: #6a38c2 !important;
+  color: white !important;
+}
+
+/* Error Toast Styling */
+.custom-toast[data-type="error"] {
+  background-color: red !important;
+  color: white !important;
+}

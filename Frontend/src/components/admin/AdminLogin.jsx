@@ -55,15 +55,7 @@ export const AdminLogin = () => {
 
       dispatch(setAuthUser(res.data.user));
       dispatch(setToken(res.data.token));
-      toast.success(`${res.data.message}`, {
-        duration: 1500,
-        position: "top-center",
-        style: {
-          backgroundColor: "green",
-          color: "white",
-          borderRadius: "8px",
-        },
-      });
+      toast.success(`${res.data.message}`);
 
       setTimeout(
         () =>

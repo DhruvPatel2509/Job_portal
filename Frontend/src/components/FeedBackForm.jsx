@@ -1,25 +1,41 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { FEEDBACK_API_END_POINT } from "../utils/constant";
+import apiRequest from "../utils/axiosUtility";
+import { toast } from "sonner";
 
 export default function FeedbackForm() {
-  const { authUser } = useSelector((store) => store.auth);
-  console.log(authUser.email);
+  const { authUser, token } = useSelector((store) => store.auth);
 
-  const [formData, setFormData] = useState({
+  const [input, setInput] = useState({
     name: "",
     email: authUser.email,
-    message: "",
+    feedback: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setInput((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Feedback Submitted:", formData);
-    setFormData({ name: "", email: "", message: "" });
+    try {
+      const endpoint = `${FEEDBACK_API_END_POINT}/createFeedBack`;
+      const res = await apiRequest("POST", endpoint, input, token);
+      if (res.status === 201) {
+        toast.success("Feedback submitted successfully");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to submit feedback");
+    } finally {
+      setInput({
+        name: "",
+        email: authUser.email,
+        feedback: "",
+      });
+    }
   };
 
   return (
@@ -35,7 +51,7 @@ export default function FeedbackForm() {
               type="text"
               name="name"
               placeholder="Enter your name"
-              value={formData.name}
+              value={input.name}
               onChange={handleChange}
               required
               className="w-full mt-1 p-3 border border-gray-300 rounded-full focus:ring focus:ring-[#6A38C2]"
@@ -52,11 +68,11 @@ export default function FeedbackForm() {
             />
           </div>
           <div>
-            <label className="block text-gray-700">Message</label>
+            <label className="block text-gray-700">Feedback</label>
             <textarea
-              name="message"
+              name="feedback"
               placeholder="Enter your Feedback here ..."
-              value={formData.message}
+              value={input.feedback}
               onChange={handleChange}
               required
               className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:ring focus:ring-[#6A38C2]"

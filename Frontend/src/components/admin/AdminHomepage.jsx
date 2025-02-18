@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Users,
   Briefcase,
@@ -7,42 +7,45 @@ import {
   Menu,
   X,
   Factory,
+  MessageSquare,
 } from "lucide-react";
 import Dashboard from "./Dashboard";
 import JobAdmin from "./JobAdmin";
 import Applicationadmin from "./Applicationadmin";
+import UserAdmin from "./UserAdmin";
+import CompaniesAdmin from "./CompaniesAdmin";
+
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import UserAdmin from "./UserAdmin";
 import Cookies from "js-cookie";
-
-import CompaniesAdmin from "./CompaniesAdmin";
 import { logOutHandler } from "../../utils/logoutHandler.js";
+import { FeedbackAdmin } from "./FeedbackAdmin.jsx";
+
 function AdminHomepage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(() => {
     const token = Cookies.get("token");
-    console.log(token);
 
     if (!token) {
       try {
-        console.log("hh");
         logOutHandler(dispatch, navigate, token);
       } catch (error) {
         console.error("Error during logout:", error);
       }
     }
   }, [dispatch, navigate]);
+
   const tabs = {
     dashboard: <Dashboard />,
     jobs: <JobAdmin />,
     applications: <Applicationadmin />,
     users: <UserAdmin />,
     company: <CompaniesAdmin />,
+    feedback: <FeedbackAdmin />,
   };
 
   const navItems = [
@@ -51,6 +54,7 @@ function AdminHomepage() {
     { icon: FileText, label: "Applications", id: "applications" },
     { icon: Users, label: "Users", id: "users" },
     { icon: Factory, label: "Companies", id: "company" },
+    { icon: MessageSquare, label: "Feedback", id: "feedback" },
   ];
 
   return (
