@@ -62,6 +62,8 @@ export const postJob = async (req, res) => {
 export const getAllJobs = async (req, res) => {
   try {
     const keyword = req.query.keyword || "";
+    
+
     const query = {
       $or: [
         { title: { $regex: keyword, $options: "i" } },
@@ -70,7 +72,7 @@ export const getAllJobs = async (req, res) => {
     };
 
     const jobs = await Job.find(query).populate("company");
-
+    
     return sendResponse(res, 200, jobs.length ? jobs : null, "Jobs Found");
   } catch (error) {
     console.error("Error fetching jobs:", error);
