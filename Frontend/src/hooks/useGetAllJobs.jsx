@@ -9,7 +9,6 @@ function useGetAllJobs() {
   const dispatch = useDispatch();
   const { searchedQuery } = useSelector((store) => store.job);
   const { authUser, token } = useSelector((store) => store.auth);
-  console.log(searchedQuery);
 
   useEffect(() => {
     const getJobs = async () => {
