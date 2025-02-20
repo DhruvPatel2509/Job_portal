@@ -15,7 +15,7 @@ function ProtectedRoute({ role, children }) {
     // Define role-based redirection paths
     const rolePaths = {
       student: "/studenthome",
-      recruiter: "/rec/companies",
+      recruiter: "/recHome",
       admin: "/AdminHomepage",
     };
 

@@ -1,11 +1,3 @@
-/* eslint-disable no-unused-vars */
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
 import {
   Table,
   TableBody,
@@ -15,93 +7,89 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Edit2Icon, Eye, MoreHorizontalIcon } from "lucide-react";
+import { Edit2Icon, Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
 
 function JobsRecTable() {
   const { alljobsAdmin, searchJobByText } = useSelector((state) => state.job);
-
-  const [filterJobs, setFilterJobs] = useState(alljobsAdmin);
+  const [filterJobs, setFilterJobs] = useState([]);
 
   const navigate = useNavigate();
-  useEffect(() => {
-    const filteredJobs =
-      alljobsAdmin?.length > 0 &&
-      alljobsAdmin?.filter((job) => {
-        if (!searchJobByText) {
-          return true;
-        }
-        return job?.title
-          ?.toLowerCase()
-          .includes(searchJobByText.toLowerCase());
-      });
 
-    setFilterJobs(filteredJobs);
+  useEffect(() => {
+    if (alljobsAdmin?.length) {
+      setFilterJobs(
+        alljobsAdmin.filter((job) =>
+          searchJobByText
+            ? job?.title?.toLowerCase().includes(searchJobByText.toLowerCase())
+            : true
+        )
+      );
+    }
   }, [alljobsAdmin, searchJobByText]);
 
-  const editHandler = (id) => {
-    navigate(`/rec/jobs/${id}`);
-  };
-
   return (
-    <>
-      <Table>
-        <TableCaption className="font-bold">
-          {filterJobs
-            ? " A List Of Your Recent Posted Jobs"
-            : "Post A Job First"}
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>CompanyName</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead className="text-right">Action</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filterJobs &&
-            filterJobs.map((c) => (
-              <TableRow key={c._id}>
-                <TableCell>{c?.company?.name}</TableCell>
-                <TableCell>{c.title}</TableCell>
-                <TableCell>
-                  {new Date(c.createdAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell className="text-right cursor-pointer">
-                  <Popover>
-                    <PopoverTrigger>
-                      <MoreHorizontalIcon />
-                    </PopoverTrigger>
-                    <PopoverContent className="w-32">
-                      <div
-                        onClick={() => editHandler(c._id)}
-                        className="flex items-center gap-2 cursor-pointer w-fit"
-                      >
-                        <Edit2Icon className="w-4" />
-                        <span>Edit</span>
-                      </div>
+    <Table>
+      <TableCaption className="font-bold">
+        {filterJobs.length > 0
+          ? "A List of Your Recent Posted Jobs"
+          : "Post a Job First"}
+      </TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Company Name</TableHead>
+          <TableHead>Role</TableHead>
+          <TableHead>Date</TableHead>
+          <TableHead className="text-right">Action</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {filterJobs.map((job) => (
+          <TableRow key={job._id}>
+            <TableCell>{job?.company?.name || "N/A"}</TableCell>
+            <TableCell>{job.title}</TableCell>
+            <TableCell>
+              {new Date(job.createdAt).toLocaleDateString()}
+            </TableCell>
+            <TableCell className="text-right">
+              <div className="flex justify-end items-center gap-4">
+                <button
+                  onClick={() => navigate(`/rec/jobs/${job._id}`)}
+                  className="flex items-center gap-2 border border-black px-3 py-2 rounded-md cursor-pointer transition-all relative group 
+                  hover:bg-gray-200 hover:scale-105"
+                >
+                  <Edit2Icon className="w-4" />
+                  <span>Edit</span>
+                  <span
+                    className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:flex 
+                  bg-black text-white text-xs rounded-md px-2 py-1 whitespace-nowrap"
+                  >
+                    Edit Job Details
+                  </span>
+                </button>
 
-                      <div
-                        onClick={() =>
-                          navigate(`/rec/jobs/${c._id}/applicants`)
-                        }
-                        className="flex mt-3 items-center gap-2 cursor-pointer w-fit"
-                      >
-                        <Eye className="w-4" />
-                        <span>Applicants</span>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </>
+                <button
+                  onClick={() => navigate(`/rec/jobs/${job._id}/applicants`)}
+                  className="flex items-center gap-2 border border-black px-3 py-2 rounded-md cursor-pointer transition-all relative group 
+                  hover:bg-gray-200 hover:scale-105"
+                >
+                  <Eye className="w-4" />
+                  <span>Applicants</span>
+                  <span
+                    className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:flex 
+                  bg-black text-white text-xs rounded-md px-2 py-1 whitespace-nowrap"
+                  >
+                    View Job Applicants
+                  </span>
+                </button>
+              </div>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
 

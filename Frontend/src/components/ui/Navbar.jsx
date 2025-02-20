@@ -36,12 +36,21 @@ export const Navbar = () => {
       navigate("/recHome");
     } else if (authUser && role === "student") {
       navigate("/studenthome");
-    } else if(authUser && role === "admin") {
+    } else if (authUser && role === "admin") {
       navigate("/AdminHomepage");
-
-    }
-    else{
+    } else {
       navigate("/");
+    }
+  };
+
+  const viewProfileHandler = () => {
+    setIsPopoverOpen(false);
+    console.log(authUser.role);
+    
+    if (authUser.role === "student") {
+      navigate("/profile");
+    } else if (authUser.role === "recruiter") {
+      navigate("/recProfile");
     }
   };
 
@@ -138,17 +147,16 @@ export const Navbar = () => {
                 </div>
                 <hr />
                 <div className="flex flex-col gap-6 p-4 items-start">
-                  {role === "student" && (
-                    <Link to="/profile">
-                      <button
-                        onClick={() => setIsPopoverOpen(false)}
-                        className="text-[#20B2AA]"
-                      >
-                        <User2 className="inline-block mr-2" />
-                        View Profile
-                      </button>
-                    </Link>
-                  )}
+                  
+                    <button
+                      onClick={viewProfileHandler}
+                      className="text-[#20B2AA]"
+                    >
+                      <User2 className="inline-block mr-2" />
+                      View Profile
+                    </button>
+                  
+
                   <button className="text-red-500" onClick={handleLogout}>
                     <LogOut className="inline-block mr-2" />
                     Logout

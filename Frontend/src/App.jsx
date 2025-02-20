@@ -32,6 +32,7 @@ import Applicants from "./components/recruiter/Applicants";
 import AdminHomepage from "./components/admin/AdminHomepage";
 import { AdminLogin } from "./components/admin/AdminLogin";
 import AdminJobDetails from "./components/admin/AdminJobDetails";
+import RecProfile from "./components/recruiter/RecProfile";
 
 const appRouter = createBrowserRouter([
   {
@@ -121,6 +122,14 @@ const appRouter = createBrowserRouter([
         element: (
           <ProtectedRoute role="recruiter">
             <HomeRecruiter />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/recProfile",
+        element: (
+          <ProtectedRoute role="recruiter">
+            <RecProfile />
           </ProtectedRoute>
         ),
       },
