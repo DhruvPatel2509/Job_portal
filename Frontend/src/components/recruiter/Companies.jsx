@@ -13,14 +13,12 @@ function Companies() {
   return (
     <div className="max-w-6xl mx-auto my-10">
       <div className="flex items-center justify-between my-5">
-        {userCompanies ? (
-          userCompanies.length > 0 ? null : (
-            <Button onClick={() => navigate("/rec/companies/create")}>
-              Add Your Company
-            </Button>
-          )
+        {userCompanies && userCompanies.length > 0 ? (
+          ``
         ) : (
-          <p>Loading...</p>
+          <Button onClick={() => navigate("/rec/companies/create")}>
+            Add Your Company
+          </Button>
         )}
       </div>
       <CompaniesTable />

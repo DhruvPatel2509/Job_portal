@@ -11,7 +11,7 @@ function CompaniesTable() {
     navigate(`/rec/companies/${id}`);
   };
 
-  const company = userCompanies?.[0]; // Show only the first company
+  const company = userCompanies?.[0];
 
   if (!company) {
     return (
