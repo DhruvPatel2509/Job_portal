@@ -14,9 +14,8 @@ const useGetAllFeedBack = () => {
 
     const endpoint = `${FEEDBACK_API_END_POINT}/getAllFeedBack`;
     try {
-      dispatch(setApiLoading(true));
 
-      const res = await apiRequest("GET", endpoint, {}, token);
+      const res = await apiRequest("GET", endpoint, {}, token, dispatch);
      
 
       if (res.status === 200) {
@@ -27,9 +26,7 @@ const useGetAllFeedBack = () => {
     } catch (error) {
       dispatch(setAllFeedbacks([]));
       console.error("Error fetching feedback:", error);
-    } finally {
-      dispatch(setApiLoading(false));
-    }
+    } 
   }, [token, dispatch]);
 
   useEffect(() => {

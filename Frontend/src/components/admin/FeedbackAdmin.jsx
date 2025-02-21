@@ -1,5 +1,5 @@
 import { Trash2 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { FEEDBACK_API_END_POINT } from "../../utils/constant";
 import apiRequest from "../../utils/axiosUtility";
@@ -9,11 +9,12 @@ export const FeedbackAdmin = () => {
   const { feedbacks } = useSelector((store) => store.feedback);
   const { token } = useSelector((store) => store.auth);
   const [updateFeedback, setUpdateFeedback] = useState(feedbacks);
+  const dispatch = useDispatch();
   // Handle delete feedback
   const handleDelete = async (id) => {
     try {
       const endpoint = `${FEEDBACK_API_END_POINT}/deleteFeedback/${id}`;
-      const res = await apiRequest("DELETE", endpoint, null, token);
+      const res = await apiRequest("DELETE", endpoint, null, token, dispatch);
       if (res.status === 200) {
         setUpdateFeedback((prev) =>
           prev.filter((feedback) => feedback._id !== id)
@@ -23,7 +24,7 @@ export const FeedbackAdmin = () => {
     } catch (error) {
       console.error(error);
       toast.error("Failed to delete feedback");
-    }
+    } 
   };
 
   return (

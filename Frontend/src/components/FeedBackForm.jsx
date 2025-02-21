@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FEEDBACK_API_END_POINT } from "../utils/constant";
 import apiRequest from "../utils/axiosUtility";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+import { setLoading } from "../redux/authSlice";
+import { Button } from "@/components/ui/button";
 
 export default function FeedbackForm() {
-  const { authUser, token } = useSelector((store) => store.auth);
-
+  const { authUser, token, loading } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
   const [input, setInput] = useState({
     name: "",
     email: authUser.email,
@@ -21,8 +24,9 @@ export default function FeedbackForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      dispatch(setLoading(true));
       const endpoint = `${FEEDBACK_API_END_POINT}/createFeedBack`;
-      const res = await apiRequest("POST", endpoint, input, token);
+      const res = await apiRequest("POST", endpoint, input, token,dispatch);
       if (res.status === 201) {
         toast.success("Feedback submitted successfully");
       }
@@ -30,6 +34,7 @@ export default function FeedbackForm() {
       console.error(error);
       toast.error("Failed to submit feedback");
     } finally {
+      dispatch(setLoading(false));
       setInput({
         name: "",
         email: authUser.email,
@@ -78,12 +83,21 @@ export default function FeedbackForm() {
               className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:ring focus:ring-[#6A38C2]"
             />
           </div>
-          <button
+
+          <Button
             type="submit"
-            className="w-full bg-[#6A38C2] text-white py-3 rounded-full text-lg font-semibold hover:bg-[#2a174b] transition"
+            className="w-full  bg-[#6A38C2] text-white rounded-lg font-semibold hover:bg-[#2a174b] focus:ring-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out"
+            disabled={loading}
           >
-            Submit
-          </button>
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please Wait
+              </>
+            ) : (
+              "Submit"
+            )}
+          </Button>
         </form>
       </div>
     </div>

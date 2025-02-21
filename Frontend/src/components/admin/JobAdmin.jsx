@@ -1,16 +1,18 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import JobCardForAdmin from "./JobCardForAdmin";
 import { useNavigate } from "react-router-dom";
 import { JOB_API_END_POINT } from "../../utils/constant";
 import apiRequest from "../../utils/axiosUtility";
 import { toast } from "sonner";
 import { useState } from "react";
+import { setApiLoading } from "../../redux/authSlice";
 
 const JobAdmin = () => {
   const { allJobs } = useSelector((store) => store.job);
   const navigate = useNavigate();
   const { token } = useSelector((store) => store.auth);
   const [jobs, setJobs] = useState(allJobs);
+  const dispatch = useDispatch();
 
   const handleDetails = (id) => {
     navigate(`/admin/jobdetails/${id}`);
@@ -20,7 +22,7 @@ const JobAdmin = () => {
     try {
       const endpoint = `${JOB_API_END_POINT}/deleteJob/${id}`;
 
-      const res = await apiRequest("DELETE", endpoint, {}, token);
+      const res = await apiRequest("DELETE", endpoint, {}, token,dispatch);
 
       if (res.status === 200) {
         toast.success("Job Deleted Successfully");
@@ -28,7 +30,7 @@ const JobAdmin = () => {
       }
     } catch (error) {
       console.log(error);
-    }
+    } 
   };
 
   return (

@@ -1,10 +1,11 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import Modal from "react-modal";
 import apiRequest from "../../utils/axiosUtility";
 import { APPLICATION_API_END_POINT } from "../../utils/constant";
+import { setApiLoading } from "../../redux/authSlice";
 
 function Applicantstable() {
   const shortListingStatus = ["accepted", "rejected"];
@@ -13,7 +14,8 @@ function Applicantstable() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [localApplicants, setLocalApplicants] = useState(applicants);
-  const [loading, setLoading] = useState(false);
+  const [setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setLocalApplicants(applicants);
@@ -28,10 +30,15 @@ function Applicantstable() {
   };
 
   const statusHandler = async (status, id) => {
-    setLoading(true);
     try {
       const endpoint = `${APPLICATION_API_END_POINT}/updateStatus/${id}`;
-      const res = await apiRequest("PUT", endpoint, { status }, token);
+      const res = await apiRequest(
+        "PUT",
+        endpoint,
+        { status },
+        token,
+        dispatch
+      );
       toast.success(`${res.data.message} to ${status}`);
       setLocalApplicants((prev) =>
         prev.map((applicant) =>
@@ -40,9 +47,7 @@ function Applicantstable() {
       );
     } catch (error) {
       toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
 
   const deleteApplicant = async () => {
@@ -50,7 +55,7 @@ function Applicantstable() {
     setLoading(true);
     try {
       const endpoint = `${APPLICATION_API_END_POINT}/deleteApplicant/${selectedApplicant}`;
-      const res = await apiRequest("DELETE", endpoint, {}, token);
+      const res = await apiRequest("DELETE", endpoint, {}, token, dispatch);
       if (res.status === 200) {
         toast.success("Applicant Deleted Successfully");
         setLocalApplicants(
@@ -73,6 +78,7 @@ function Applicantstable() {
             key={a._id}
             className="bg-white shadow-md p-6 rounded-lg flex flex-col gap-3 relative"
           >
+            {/* Status Label */}
             <span
               className={`absolute top-4 right-4 px-4 py-1 rounded-md text-white font-medium ${
                 a.status === "accepted"
@@ -85,39 +91,31 @@ function Applicantstable() {
               {a.status.charAt(0).toUpperCase() + a.status.slice(1)}
             </span>
 
-            <div className="flex items-center gap-4">
+            {/* Profile Section */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
               <img
                 src={a.applicant.profile.profilePhoto}
                 alt="Profile"
-                className="w-14 h-14 rounded-full object-cover"
+                className="w-16 h-16 rounded-full object-cover"
               />
               <div>
-                <p className="text-sm font-semibold text-gray-500">Full Name</p>
                 <h3 className="font-bold text-lg">{a.applicant.fullname}</h3>
-
-                <p className="text-sm font-semibold text-gray-500 mt-2">
-                  Email
-                </p>
-                <p className="text-gray-600 font-bold">{a.applicant.email}</p>
-
-                <p className="text-sm font-semibold text-gray-500 mt-2">
-                  Phone Number
-                </p>
-                <p className="text-gray-600 font-bold">
+                <p className="text-sm text-gray-500">{a.applicant.email}</p>
+                <p className="text-sm text-gray-500">
                   {a.applicant.phoneNumber}
                 </p>
-
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-sm text-gray-500">
                   Applied on: {formatDate(a.createdAt)}
                 </p>
               </div>
             </div>
 
+            {/* Resume */}
             <div className="mt-3">
               <p className="text-sm font-semibold text-gray-500">Resume</p>
               {a.applicant.profile.resumeOrignalName ? (
                 <a
-                  className="text-blue-600 underline"
+                  className="text-blue-600 underline break-words"
                   href={a.applicant.profile.resume}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -129,13 +127,14 @@ function Applicantstable() {
               )}
             </div>
 
-            <div className="flex justify-between items-center mt-4 relative">
-              <div className="flex gap-2">
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-2 justify-between items-center mt-4">
+              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                 {shortListingStatus.map((s, index) => (
                   <button
                     key={index}
                     onClick={() => statusHandler(s, a._id)}
-                    className="border capitalize border-gray-300 p-2 rounded-md hover:bg-gray-200 transition duration-200"
+                    className="border capitalize border-gray-300 px-3 py-2 rounded-md text-sm hover:bg-gray-200 transition duration-200 w-full sm:w-auto"
                   >
                     {s}
                   </button>
@@ -144,7 +143,7 @@ function Applicantstable() {
 
               <Button
                 variant="outline"
-                className="text-red-600 border-red-600 hover:bg-red-600 hover:text-white transition duration-200"
+                className="text-red-600 border-red-600 hover:bg-red-600 hover:text-white transition duration-200 w-full sm:w-auto"
                 onClick={() => {
                   setSelectedApplicant(a._id);
                   setIsDeleteModalOpen(true);
@@ -161,6 +160,7 @@ function Applicantstable() {
         </p>
       )}
 
+      {/* Delete Confirmation Modal */}
       <Modal
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}

@@ -44,7 +44,7 @@ export const Login = () => {
     try {
       dispatch(setLoading(true));
       const endpoint = `${USER_API_END_POINT}/login`;
-      const res = await apiRequest("POST", endpoint, input, token);
+      const res = await apiRequest("POST", endpoint, input, token, dispatch);
 
       Cookies.set("token", res.data.token, {
         expires: 1,

@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Select,
   SelectContent,
@@ -19,6 +19,7 @@ import apiRequest from "../../utils/axiosUtility";
 
 function CreateRecJob() {
   const { userCompanies } = useSelector((store) => store.company);
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
@@ -63,7 +64,7 @@ function CreateRecJob() {
     try {
       const endpoint = `${JOB_API_END_POINT}/postjob`;
 
-      const res = await apiRequest("POST", endpoint, input, token);
+      const res = await apiRequest("POST", endpoint, input, token,dispatch);
 
       if (res.data.success) {
         toast.success(res.data.message);

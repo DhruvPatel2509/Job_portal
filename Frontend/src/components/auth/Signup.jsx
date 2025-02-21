@@ -79,7 +79,7 @@ export const Signup = () => {
 
       dispatch(setLoading(true));
       const endpoint = `${USER_API_END_POINT}/register`;
-      const res = await apiRequest("POST", endpoint, formData);
+      const res = await apiRequest("POST", endpoint, formData, dispatch);
 
       toast.success(`${res.data.message}`);
       navigate("/login");

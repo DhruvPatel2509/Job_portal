@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useGetSingleCompany from "../../hooks/useGetSingleCompany";
 import { toast } from "sonner";
 import apiRequest from "../../utils/axiosUtility";
@@ -24,6 +24,7 @@ function CompanySetup() {
   useGetSingleCompany(companyId);
   const { singleCompany } = useSelector((state) => state.company);
   console.log(singleCompany);
+  const dispatch = useDispatch();
 
   const [input, setInput] = useState({
     name: singleCompany?.name || "",
@@ -71,7 +72,7 @@ function CompanySetup() {
     try {
       setLoading(true);
       const endpoint = `${COMPANY_API_END_POINT}/updateCompany/${params.id}`;
-      const res = await apiRequest("PUT", endpoint, formData, token);
+      const res = await apiRequest("PUT", endpoint, formData, token, dispatch);
 
       if (res.data.success) {
         toast.success(res.data.message);
@@ -89,7 +90,7 @@ function CompanySetup() {
     try {
       setLoading(true);
       const endpoint = `${COMPANY_API_END_POINT}/deleteCompany/${params.id}`;
-      const res = await apiRequest("DELETE", endpoint, {}, token);
+      const res = await apiRequest("DELETE", endpoint, {}, token, dispatch);
 
       if (res.status === 200) {
         toast.success("Company Deleted Successfully");

@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 import useGetSingleJob from "../../hooks/useGetSingleJob";
@@ -15,6 +15,7 @@ function JobDetails() {
   const { token } = useSelector((store) => store.auth);
   const { authUser } = useSelector((state) => state.auth);
   const { singleJob } = useSelector((state) => state.job);
+  const dispatch = useDispatch();
 
   const { fetchSingleJob } = useGetSingleJob(jobId);
 
@@ -31,7 +32,7 @@ function JobDetails() {
       if(authUser.profile.resume)
       {
         const endpoint = `${APPLICATION_API_END_POINT}/applyJob/${jobId}`;
-        await apiRequest("POST", endpoint, {}, token);
+        await apiRequest("POST", endpoint, {}, token,dispatch);
         fetchSingleJob();
         toast.success("Successfully applied for the job!");
       }

@@ -69,7 +69,7 @@ function UpdateProfile({ open, setOpen }) {
     try {
       setLoading(true);
       const endpoint = `${USER_API_END_POINT}/profile/update`;
-      const res = await apiRequest("PUT", endpoint, formData, token);
+      const res = await apiRequest("PUT", endpoint, formData, token, dispatch);
       dispatch(setAuthUser(res.data.data));
       toast.success(res.data.message);
       handleClose();

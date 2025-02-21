@@ -3,7 +3,6 @@ import { JOB_API_END_POINT } from "../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllJobsAdmin } from "../redux/jobSlice";
 import apiRequest from "../utils/axiosUtility";
-import { setApiLoading } from "../redux/authSlice";
 
 function useGetJobsAdmin() {
   const dispatch = useDispatch();
@@ -13,11 +12,10 @@ function useGetJobsAdmin() {
 
   useEffect(() => {
     const fetchJobsAdmin = async () => {
-      dispatch(setApiLoading(true));
 
       try {
         const endpoint = `${JOB_API_END_POINT}/adminPostedJob`;
-        const res = await apiRequest("GET", endpoint, {}, token);
+        const res = await apiRequest("GET", endpoint, {}, token, dispatch);
 
         if (res.status === 200) {
           dispatch(setAllJobsAdmin(res.data.data));
@@ -26,9 +24,7 @@ function useGetJobsAdmin() {
       } catch (error) {
         dispatch(setAllJobsAdmin(null));
         console.log(error);
-      } finally {
-        dispatch(setApiLoading(false));
-      }
+      } 
     };
     if (authUser ) {
       fetchJobsAdmin();

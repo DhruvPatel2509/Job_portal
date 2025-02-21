@@ -11,10 +11,9 @@ function useGetSingleCompany(companyId) {
   useEffect(() => {
     const fetchSingleCompany = async () => {
       try {
-        dispatch(setApiLoading(true));
         const endpoint = `${COMPANY_API_END_POINT}/getCompany/${companyId}`;
 
-        const res = await apiRequest("GET", endpoint, {}, token);
+        const res = await apiRequest("GET", endpoint, {}, token, dispatch);
         
 
         if (res.status === 200) {
@@ -25,9 +24,7 @@ function useGetSingleCompany(companyId) {
         }
       } catch (error) {
         console.error("Error fetching company:", error.message);
-      } finally {
-        dispatch(setApiLoading(false));
-      }
+      } 
     };
 
     fetchSingleCompany();

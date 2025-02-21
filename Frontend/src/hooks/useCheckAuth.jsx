@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearAuthUser, setApiLoading, setAuthUser } from "../redux/authSlice";
+import { clearAuthUser, setAuthUser } from "../redux/authSlice";
 import { USER_API_END_POINT } from "../utils/constant";
 import apiRequest from "../utils/axiosUtility";
 
@@ -13,9 +13,8 @@ function useCheckAuth() {
       console.log("Checking authentication...");
 
       try {
-        dispatch(setApiLoading(true));
         const endpoint = `${USER_API_END_POINT}/me`;
-        const res = await apiRequest("GET", endpoint, {}, token);
+        const res = await apiRequest("GET", endpoint, {}, token, dispatch);
 
         if (res?.data?.user) {
           dispatch(setAuthUser(res.data.user));
@@ -25,9 +24,7 @@ function useCheckAuth() {
       } catch (error) {
         console.error("Authentication check failed:", error);
         dispatch(clearAuthUser());
-      } finally {
-        dispatch(setApiLoading(false));
-      }
+      } 
     };
 
     

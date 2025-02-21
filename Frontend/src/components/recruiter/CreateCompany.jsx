@@ -20,7 +20,13 @@ function CreateCompany() {
     try {
       const endpoint = `${COMPANY_API_END_POINT}/registerCompany`;
 
-      const res = await apiRequest("POST", endpoint, { companyName }, token);
+      const res = await apiRequest(
+        "POST",
+        endpoint,
+        { companyName },
+        token,
+        dispatch
+      );
 
       if (res.data.success) {
         toast.success(res.data.message);

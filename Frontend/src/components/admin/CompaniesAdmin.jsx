@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import apiRequest from "../../utils/axiosUtility";
 import { COMPANY_API_END_POINT } from "../../utils/constant";
 import { toast } from "sonner";
@@ -10,11 +10,17 @@ const CompaniesAdmin = () => {
   const { token } = useSelector((store) => store.auth);
   const [companies, setCompanies] = useState(allCompanies);
   const [expandedCompany, setExpandedCompany] = useState(null);
-
+  const dispatch = useDispatch();
   const updateStatus = async (id, status) => {
     try {
       const endpoint = `${COMPANY_API_END_POINT}/setCompanyStatus/${id}`;
-      const res = await apiRequest("PUT", endpoint, { status }, token);
+      const res = await apiRequest(
+        "PUT",
+        endpoint,
+        { status },
+        token,
+        dispatch
+      );
       toast.success(res.data.message);
 
       setCompanies((prev) =>
@@ -34,7 +40,7 @@ const CompaniesAdmin = () => {
   const handleDelete = async (id) => {
     try {
       const endpoint = `${COMPANY_API_END_POINT}/deleteCompany/${id}`;
-      const res = await apiRequest("DELETE", endpoint, {}, token);
+      const res = await apiRequest("DELETE", endpoint, {}, token, dispatch);
 
       if (res.status === 200) {
         toast.success("Company Deleted Successfully");
@@ -42,7 +48,8 @@ const CompaniesAdmin = () => {
       }
     } catch (error) {
       console.log(error);
-    }
+    } 
+
   };
 
   return (
