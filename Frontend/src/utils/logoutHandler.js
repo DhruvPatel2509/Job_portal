@@ -1,6 +1,6 @@
 import { USER_API_END_POINT } from "../utils/constant";
 import { setAllJobs, setSingleJob, setAllJobsAdmin } from "../redux/jobSlice";
-import { setAllCompanies } from "../redux/companySlice";
+import { setAllCompanies, setUserCompanies } from "../redux/companySlice";
 
 import { toast } from "sonner";
 import { setAuthUser, setToken } from "../redux/authSlice";
@@ -20,6 +20,7 @@ export const logOutHandler = async (dispatch, navigate, token) => {
       dispatch(setAllCompanies(null));
       dispatch(setToken(""));
       dispatch(setAllJobsAdmin(null));
+      dispatch(setUserCompanies(null));
       navigate("/");
     }
   } catch (error) {
