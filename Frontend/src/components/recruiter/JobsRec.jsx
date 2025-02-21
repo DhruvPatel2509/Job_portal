@@ -15,24 +15,28 @@ function JobsRec() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
+
   useEffect(() => {
     dispatch(setSearchJobByText(input));
   }, [dispatch, input]);
 
   return (
-    <>
-      <div className="max-w-6xl mx-auto my-10 ">
-        <div className="flex items-center justify-between my-5">
-          <Input
-            className="w-fit"
-            placeholder="Filter By Name"
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <Button onClick={() => navigate("/rec/jobs/create")}>New Jobs</Button>
-        </div>
-        <JobsAdminTable />
+    <div className="max-w-6xl mx-auto my-10 px-4 md:px-8">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 my-5">
+        <Input
+          className="w-full sm:w-auto"
+          placeholder="Filter By Name"
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <Button
+          className="w-full sm:w-auto"
+          onClick={() => navigate("/rec/jobs/create")}
+        >
+          New Job
+        </Button>
       </div>
-    </>
+      <JobsAdminTable />
+    </div>
   );
 }
 

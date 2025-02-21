@@ -8,14 +8,12 @@ import { Navbar } from "./ui/Navbar";
 
 function Layout() {
   useCheckAuth();
-
   const { apiLoading } = useSelector((state) => state.auth);
 
   return (
-    <div className="flex flex-col min-h-screen h-screen">
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-
-      <main className="relative flex-grow min-h-[567px]">
+      <main className="relative flex-grow min-h-[567px] px-4 md:px-8">
         <Outlet />
         {apiLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-white/30 backdrop-blur-md">
@@ -23,7 +21,6 @@ function Layout() {
           </div>
         )}
       </main>
-
       <Footer />
     </div>
   );

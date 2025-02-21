@@ -90,10 +90,10 @@ function CreateRecJob() {
   };
 
   return (
-    <div className="flex items-center justify-center w-screen my-5 ">
+    <div className="flex items-center justify-center w-screen my-4 ">
       <form
         onSubmit={submitHandler}
-        className="p-8 max-w-4xl border-gray-400 shadow-lg rounded-md"
+        className="px-6  py-4 max-w-4xl border-gray-400 shadow-lg rounded-md"
       >
         <Button
           variant="outline"
@@ -130,18 +130,18 @@ function CreateRecJob() {
           </div>
 
           <div className="col-span-2">
+            <p className="text-sm text-gray-500">
+              * Separate requirements with commas (e.g., React.js, Node.js,
+              MongoDB)
+            </p>
             <Label>Requirements</Label>
-            <textarea
+            <Input
               name="requirements"
               value={input.requirements}
               onChange={changeEventHandler}
               className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
               rows="3"
             />
-            <p className="text-sm text-gray-500">
-              * Separate requirements with commas (e.g., React.js, Node.js,
-              MongoDB)
-            </p>
           </div>
 
           <div>
