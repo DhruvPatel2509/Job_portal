@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import JobsAdminTable from "./JobsRecTable";
 import useGetJobsAdmin from "../../hooks/useGetJobsAdmin";
 import { setSearchJobByText } from "../../redux/jobSlice";
+import useGetUserCompanies from "../../hooks/useGetUserCompanies";
 
 function JobsRec() {
   useGetJobsAdmin();
+  useGetUserCompanies();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

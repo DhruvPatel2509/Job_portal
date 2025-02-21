@@ -7,6 +7,9 @@ import { setApiLoading } from "../redux/authSlice";
 
 function useGetUserCompanies() {
   const { token, authUser } = useSelector((store) => store.auth);
+  const { userCompanies } = useSelector((store) => store.company);
+  
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,10 +33,10 @@ function useGetUserCompanies() {
       }
     };
 
-    if (authUser) {
+    if (authUser && !userCompanies) {
       fetchUserCompanies();
     }
-  }, [token, authUser, dispatch]);
+  }, [token, authUser, dispatch,userCompanies]);
 }
 
 export default useGetUserCompanies;
