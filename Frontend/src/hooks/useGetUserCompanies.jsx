@@ -32,7 +32,7 @@ function useGetUserCompanies() {
     if (authUser ) {
       fetchUserCompanies();
     }
-  }, [token, authUser, dispatch,userCompanies]);
+  }, [token, authUser, dispatch]);
 }
 
 export default useGetUserCompanies;
