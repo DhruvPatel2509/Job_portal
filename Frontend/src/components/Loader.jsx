@@ -12,7 +12,7 @@ const Loader = ({ message = "Loading, this won’t take long..." }) => {
         ))}
       </div>
       {/* Loading Message */}
-      <p className="text-gray-700 text-sm font-medium">{message}</p>
+      <p className="text-gray-700 text-md font-medium">{message}</p>
     </div>
   );
 };
