@@ -29,7 +29,7 @@ function useGetUserCompanies() {
       } 
     };
 
-    if (authUser && !userCompanies) {
+    if (authUser ) {
       fetchUserCompanies();
     }
   }, [token, authUser, dispatch,userCompanies]);

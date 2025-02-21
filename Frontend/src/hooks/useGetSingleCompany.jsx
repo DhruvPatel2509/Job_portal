@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { COMPANY_API_END_POINT } from "../utils/constant";
 import { setSingleComapny } from "../redux/companySlice"; // Corrected spelling
 import apiRequest from "../utils/axiosUtility";
-import { setApiLoading } from "../redux/authSlice";
 
 function useGetSingleCompany(companyId) {
   const dispatch = useDispatch();
