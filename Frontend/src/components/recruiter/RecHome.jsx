@@ -10,7 +10,7 @@ const RecruiterHeroSection = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const token = Cookies.get("token");
-    console.log(token);
+    
 
     if (!token) {
       try {

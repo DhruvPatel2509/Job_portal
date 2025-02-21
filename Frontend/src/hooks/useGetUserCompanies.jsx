@@ -7,15 +7,13 @@ import apiRequest from "../utils/axiosUtility";
 function useGetUserCompanies() {
   const { token, authUser } = useSelector((store) => store.auth);
   const { userCompanies } = useSelector((store) => store.company);
-  
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchUserCompanies = async () => {
       const endpoint = `${COMPANY_API_END_POINT}/getCompany`;
       try {
-
         const res = await apiRequest("GET", endpoint, {}, token, dispatch);
 
         if (res.status === 200) {
@@ -26,13 +24,13 @@ function useGetUserCompanies() {
       } catch (error) {
         dispatch(setUserCompanies([]));
         console.error("Error fetching companies:", error);
-      } 
+      }
     };
 
-    if (authUser ) {
+    if ((authUser && !userCompanies) || userCompanies.length === 0) {
       fetchUserCompanies();
     }
-  }, [token, authUser, dispatch]);
+  }, [token, authUser, dispatch, userCompanies]);
 }
 
 export default useGetUserCompanies;

@@ -7,8 +7,10 @@ import useGetUserCompanies from "../../hooks/useGetUserCompanies";
 function Companies() {
   const navigate = useNavigate();
   useGetUserCompanies();
+  
 
   const { userCompanies } = useSelector((state) => state.company);
+console.log("user",userCompanies);
 
   return (
     <div className="max-w-6xl mx-auto my-10">
