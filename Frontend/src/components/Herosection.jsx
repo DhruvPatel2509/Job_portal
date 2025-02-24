@@ -35,7 +35,7 @@ export const Herosection = () => {
       </p>
 
       <div className="flex items-center w-full gap-2 px-4 py-2 mx-auto mt-8 bg-white border border-gray-300 rounded-full shadow-xl focus-within:ring-2 focus-within:ring-[#6A38C2] sm:w-[70%] md:w-[60%] lg:w-[40%]">
-        <form className="w-full"> 
+        <form className="w-full">
           <div className="flex items-center justify-between  gap-2">
             <input
               onChange={(e) => setQuery(e.target.value)}
