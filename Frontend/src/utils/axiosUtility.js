@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { setApiLoading } from "../redux/authSlice";
 
 const BASEURI = "http://localhost:8000/api/v1/";
@@ -17,9 +16,14 @@ const apiClient = axios.create({
  * @param {string} token - The authorization token (optional).
  * @returns {Promise<Object>} - The response data from the API.
  */
-const apiRequest = async (method, endpoint, data = {}, token = "" , dispatch) => {
+const apiRequest = async (
+  method,
+  endpoint,
+  data = {},
+  token = "",
+  dispatch
+) => {
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
-  
 
   try {
     dispatch(setApiLoading(true));

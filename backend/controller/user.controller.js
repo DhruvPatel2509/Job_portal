@@ -33,7 +33,6 @@ export const register = async (req, res) => {
     let profilePhotoUrl = null;
 
     if (file) {
-      // Upload the file to Cloudinary using the buffer
       const uploadResult = await uploadOnCloudinary(
         file.buffer,
         file.originalname,
@@ -140,7 +139,6 @@ export const updateProfile = async (req, res) => {
     const resumeFile = req.files["file"];
     const profilePhoto = req.files["profilePhoto"];
 
-    
     let user = await User.findById(userId);
 
     if (!user) {

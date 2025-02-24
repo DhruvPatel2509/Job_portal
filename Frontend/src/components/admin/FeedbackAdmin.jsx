@@ -26,6 +26,7 @@ export const FeedbackAdmin = () => {
       toast.error("Failed to delete feedback");
     } 
   };
+console.log(updateFeedback);
 
   return (
     <div className="p-6 bg-gray-50 rounded-lg shadow-lg max-w-6xl mx-auto">
@@ -40,14 +41,10 @@ export const FeedbackAdmin = () => {
               className="p-6 bg-white shadow-md rounded-lg hover:shadow-xl transition-shadow duration-300 relative"
             >
               <div className="flex items-center space-x-4">
-                <img
-                  src={feedback.user.profile?.profilePhoto}
-                  alt={feedback.user.fullname}
-                  className="w-16 h-16 rounded-full object-cover"
-                />
+                
                 <div>
                   <p className="font-medium text-lg text-gray-900">
-                    {feedback.user.fullname}
+                    {feedback.name}
                   </p>
                   <p className="text-sm text-gray-500">{feedback.user.role}</p>
                 </div>
