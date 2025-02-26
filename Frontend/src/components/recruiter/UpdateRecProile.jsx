@@ -22,7 +22,7 @@ function UpdateRecProfile({ open, setOpen }) {
   const dispatch = useDispatch();
   const [input, setInput] = useState({
     name: authUser?.fullname,
-    email: authUser?.email,
+
     number: authUser?.phoneNumber,
     profilePhoto: null,
   });
@@ -46,7 +46,7 @@ function UpdateRecProfile({ open, setOpen }) {
     e.preventDefault();
     const formData = new FormData();
     formData.append("fullname", input.name);
-    formData.append("email", input.email);
+
     formData.append("phoneNumber", input.number);
     if (input.profilePhoto) formData.append("profilePhoto", input.profilePhoto);
 
@@ -70,7 +70,7 @@ function UpdateRecProfile({ open, setOpen }) {
   const handleClose = () => {
     setInput({
       name: authUser?.fullname,
-      email: authUser?.email,
+
       number: authUser?.phoneNumber,
       profilePhoto: null,
     });
@@ -98,19 +98,6 @@ function UpdateRecProfile({ open, setOpen }) {
                 onChange={changeEventHandler}
                 className="col-span-3 py-1.5 border-2 border-gray-300 rounded"
                 placeholder="Enter your name"
-              />
-            </div>
-
-            <div className="grid items-center grid-cols-4 gap-4">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={input.email}
-                onChange={changeEventHandler}
-                className="col-span-3 py-1.5 border-2 border-gray-300 rounded"
-                placeholder="Enter your email"
               />
             </div>
 

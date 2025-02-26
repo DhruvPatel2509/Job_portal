@@ -22,7 +22,7 @@ function UpdateProfile({ open, setOpen }) {
   const dispatch = useDispatch();
   const [input, setInput] = useState({
     name: authUser?.fullname,
-    email: authUser?.email,
+
     number: authUser?.phoneNumber,
     bio: authUser?.profile?.bio,
     skills: authUser?.profile?.skills,
@@ -59,7 +59,7 @@ function UpdateProfile({ open, setOpen }) {
     e.preventDefault();
     const formData = new FormData();
     formData.append("fullname", input.name);
-    formData.append("email", input.email);
+
     formData.append("phoneNumber", input.number);
     formData.append("bio", input.bio);
     formData.append("skills", input.skills);
@@ -86,7 +86,7 @@ function UpdateProfile({ open, setOpen }) {
   const handleClose = () => {
     setInput({
       name: authUser?.fullname,
-      email: authUser?.email,
+
       number: authUser?.phoneNumber,
       bio: authUser?.profile?.bio,
       skills: authUser?.profile?.skills,
@@ -121,19 +121,6 @@ function UpdateProfile({ open, setOpen }) {
             </div>
 
             <div className="grid items-center grid-cols-4 gap-4">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={input.email}
-                onChange={changeEventHandler}
-                className="col-span-3 py-1.5 border-2 border-gray-300 rounded"
-                placeholder="Enter your email"
-              />
-            </div>
-
-            <div className="grid items-center grid-cols-4 gap-4">
               <label htmlFor="number">Number</label>
               <input
                 type="text"
@@ -161,15 +148,21 @@ function UpdateProfile({ open, setOpen }) {
 
             <div className="grid items-center grid-cols-4 gap-4">
               <label htmlFor="skills">Skills</label>
-              <input
-                type="text"
-                name="skills"
-                id="skills"
-                value={input.skills}
-                onChange={changeEventHandler}
-                className="col-span-3 py-1.5 border-2 border-gray-300 rounded"
-                placeholder="List your skills"
-              />
+              <div className="col-span-3">
+                <input
+                  type="text"
+                  name="skills"
+                  id="skills"
+                  value={input.skills}
+                  onChange={changeEventHandler}
+                  className="w-full py-1.5 border-2 border-gray-300 rounded"
+                  placeholder="e.g., JavaScript, React, Node.js"
+                />
+                <p className="text-sm text-gray-500">
+                  Use commas to separate multiple skills e.g., JavaScript,React,
+                  Node.js
+                </p>
+              </div>
             </div>
 
             <div className="grid items-center grid-cols-4 gap-4">
