@@ -11,7 +11,6 @@ import applicationSlice from "./applications";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"],
 };
 
 const rootReducer = combineReducers({

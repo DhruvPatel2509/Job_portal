@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { COMPANY_API_END_POINT } from "../utils/constant";
-import { setSingleComapny } from "../redux/companySlice"; // Corrected spelling
+import { setSingleComapny } from "../redux/companySlice";
 import apiRequest from "../utils/axiosUtility";
 
 function useGetSingleCompany(companyId) {
@@ -13,7 +13,6 @@ function useGetSingleCompany(companyId) {
         const endpoint = `${COMPANY_API_END_POINT}/getCompany/${companyId}`;
 
         const res = await apiRequest("GET", endpoint, {}, token, dispatch);
-        
 
         if (res.status === 200) {
           dispatch(setSingleComapny(res.data.data)); // Corrected spelling
@@ -23,7 +22,7 @@ function useGetSingleCompany(companyId) {
         }
       } catch (error) {
         console.error("Error fetching company:", error.message);
-      } 
+      }
     };
 
     fetchSingleCompany();

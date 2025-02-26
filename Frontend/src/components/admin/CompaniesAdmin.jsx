@@ -10,7 +10,10 @@ const CompaniesAdmin = () => {
   const { token } = useSelector((store) => store.auth);
   const [companies, setCompanies] = useState(allCompanies);
   const [expandedCompany, setExpandedCompany] = useState(null);
+  const [showFullDescription, setShowFullDescription] = useState({});
+
   const dispatch = useDispatch();
+
   const updateStatus = async (id, status) => {
     try {
       const endpoint = `${COMPANY_API_END_POINT}/setCompanyStatus/${id}`;
@@ -22,7 +25,6 @@ const CompaniesAdmin = () => {
         dispatch
       );
       toast.success(res.data.message);
-
       setCompanies((prev) =>
         prev.map((company) =>
           company._id === id ? { ...company, status } : company
@@ -41,15 +43,20 @@ const CompaniesAdmin = () => {
     try {
       const endpoint = `${COMPANY_API_END_POINT}/deleteCompany/${id}`;
       const res = await apiRequest("DELETE", endpoint, {}, token, dispatch);
-
       if (res.status === 200) {
         toast.success("Company Deleted Successfully");
         setCompanies((prev) => prev.filter((company) => company._id !== id));
       }
     } catch (error) {
       console.log(error);
-    } 
+    }
+  };
 
+  const toggleDescription = (id) => {
+    setShowFullDescription((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   return (
@@ -75,9 +82,38 @@ const CompaniesAdmin = () => {
               <p className="text-base sm:text-lg text-gray-600">
                 {company.location}
               </p>
-              <p className="text-sm sm:text-md text-gray-500">
-                {company.description}
+
+              {/* Created At */}
+              <p className="text-sm text-gray-500">
+                Created At: {new Date(company.createdAt).toLocaleDateString()}
               </p>
+
+              {/* Website */}
+              {company.website && (
+                <a
+                  href={company.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline text-sm sm:text-md"
+                >
+                  {company.website}
+                </a>
+              )}
+
+              {/* Description with Show More */}
+              <p className="text-sm sm:text-md text-gray-500 mt-2">
+                {showFullDescription[company._id]
+                  ? company.description
+                  : `${company.description.slice(0, 100)}...`}
+              </p>
+              {company.description.length > 100 && (
+                <button
+                  onClick={() => toggleDescription(company._id)}
+                  className="text-blue-500 text-sm hover:underline"
+                >
+                  {showFullDescription[company._id] ? "Show less" : "Show more"}
+                </button>
+              )}
 
               <div className="flex items-center gap-4 mt-4">
                 <span

@@ -27,10 +27,10 @@ function useGetUserCompanies() {
       }
     };
 
-    if ((authUser && !userCompanies) || userCompanies.length === 0) {
+    if (authUser) {
       fetchUserCompanies();
     }
-  }, [token, authUser, dispatch, userCompanies]);
+  }, [token, authUser, dispatch]);
 }
 
 export default useGetUserCompanies;

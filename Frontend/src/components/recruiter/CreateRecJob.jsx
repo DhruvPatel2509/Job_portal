@@ -20,6 +20,7 @@ import apiRequest from "../../utils/axiosUtility";
 function CreateRecJob() {
   const { userCompanies } = useSelector((store) => store.company);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
@@ -35,9 +36,6 @@ function CreateRecJob() {
   });
   const { token } = useSelector((store) => store.auth);
 
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-
   const changeEventHandler = (e) => {
     setInput({
       ...input,
@@ -45,31 +43,40 @@ function CreateRecJob() {
     });
   };
 
-  const selectChangeHandler = (value) => {
-    const selectedCompany = userCompanies?.find(
-      (company) => company.name.toLowerCase() === value
-    );
+  const selectChangeHandler = (companyId) => {
+    setInput({ ...input, company: companyId });
+  };
 
-    setInput({
-      ...input,
-      company: selectedCompany._id,
-    });
+  const isFormValid = () => {
+    return (
+      input.title.trim() &&
+      input.description.trim() &&
+      input.requirements.trim() &&
+      input.salary &&
+      input.location.trim() &&
+      input.jobType.trim() &&
+      input.position > 0 &&
+      input.experience >= 0 &&
+      input.company
+    );
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (!isFormValid()) {
+      toast.error("Please fill in all required fields before posting the job.");
+      return;
+    }
+
     setLoading(true);
-    setError("");
 
     try {
       const endpoint = `${JOB_API_END_POINT}/postjob`;
-
-      const res = await apiRequest("POST", endpoint, input, token,dispatch);
+      const res = await apiRequest("POST", endpoint, input, token, dispatch);
 
       if (res.data.success) {
         toast.success(res.data.message);
         navigate("/rec/jobs");
-        setLoading(false);
       }
       setInput({
         title: "",
@@ -83,30 +90,27 @@ function CreateRecJob() {
         company: "",
       });
     } catch (error) {
+      toast.error("Failed to create job. Please try again.");
       console.error("Error submitting the job:", error);
-      setError("Failed to create job. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center w-screen my-4 ">
+    <div className="flex items-center justify-center w-screen my-4">
       <form
         onSubmit={submitHandler}
-        className="px-6  py-4 max-w-4xl border-gray-400 shadow-lg rounded-md"
+        className="px-6 py-4 max-w-4xl border border-gray-400 shadow-lg rounded-md"
       >
         <Button
           variant="outline"
           className="flex items-center gap-2 font-semibold text-gray-500"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate(-1);
-          }}
+          onClick={() => navigate(-1)}
         >
           <ArrowLeft /> <span>Back</span>
         </Button>
-        {error && <p className="text-red-700">{error}</p>}
+
         <div className="grid grid-cols-2 gap-2">
           <div>
             <Label>Title</Label>
@@ -115,7 +119,8 @@ function CreateRecJob() {
               name="title"
               value={input.title}
               onChange={changeEventHandler}
-              className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+              required
+              className="my-1"
             />
           </div>
 
@@ -126,21 +131,21 @@ function CreateRecJob() {
               name="description"
               value={input.description}
               onChange={changeEventHandler}
-              className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+              className="my-1"
             />
           </div>
 
           <div className="col-span-2">
+            <Label>Requirements</Label>
             <p className="text-sm text-gray-500">
               * Separate requirements with commas (e.g., React.js, Node.js,
               MongoDB)
             </p>
-            <Label>Requirements</Label>
-            <Input
+            <textarea
               name="requirements"
               value={input.requirements}
               onChange={changeEventHandler}
-              className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+              className="w-full border rounded-md p-2 my-1"
               rows="3"
             />
           </div>
@@ -149,12 +154,13 @@ function CreateRecJob() {
             <Label>Salary (LPA)</Label>
             <Input
               type="number"
+              required
               placeholder="LPA"
               name="salary"
               value={input.salary}
               onChange={changeEventHandler}
               min="0"
-              className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+              className="my-1"
             />
           </div>
 
@@ -162,10 +168,11 @@ function CreateRecJob() {
             <Label>Location</Label>
             <Input
               type="text"
+              required
               name="location"
               value={input.location}
               onChange={changeEventHandler}
-              className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+              className="my-1"
             />
           </div>
 
@@ -176,7 +183,8 @@ function CreateRecJob() {
               name="jobType"
               value={input.jobType}
               onChange={changeEventHandler}
-              className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+              required
+              className="my-1"
             />
           </div>
 
@@ -187,8 +195,9 @@ function CreateRecJob() {
               name="position"
               value={input.position}
               onChange={changeEventHandler}
+              required
               min="0"
-              className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+              className="my-1"
             />
           </div>
 
@@ -199,39 +208,41 @@ function CreateRecJob() {
               name="experience"
               value={input.experience}
               onChange={changeEventHandler}
+              required
               min="0"
-              className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+              className="my-1"
             />
           </div>
 
-          <div>
+          <div className="col-span-2">
+            <Label>Company</Label>
             {userCompanies?.length > 0 &&
-              userCompanies[0]?.status === "approved" && (
-                <Select onValueChange={selectChangeHandler}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a company" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {userCompanies.map((c) => (
-                        <SelectItem key={c._id} value={c?.name?.toLowerCase()}>
-                          {c?.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              )}
+            userCompanies[0]?.status === "approved" ? (
+              <Select onValueChange={selectChangeHandler}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a company" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {userCompanies.map((c) => (
+                      <SelectItem key={c._id} value={c._id}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            ) : (
+              <p className="text-xs text-red-700 font-bold text-center my-3">
+                *Please Register a Company First before Posting New Jobs
+              </p>
+            )}
           </div>
         </div>
-        <Button className="w-full mt-4" disabled={loading}>
+
+        <Button className="w-full mt-4" disabled={loading || !isFormValid()}>
           {loading ? "Posting..." : "Post Job"}
         </Button>
-        {userCompanies.length === 0 && (
-          <p className="text-xs text-red-700 font-bold text-center my-3">
-            *Please Register a Company First before Posting New Jobs
-          </p>
-        )}
       </form>
     </div>
   );

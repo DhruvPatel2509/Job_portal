@@ -196,7 +196,7 @@ function CompanySetup() {
             )}
           </div>
           <div>
-            <Label>Choose New Logo If You Want</Label>
+            <Label>Choose New Logo </Label>
             <Input
               type="file"
               accept="image/*"

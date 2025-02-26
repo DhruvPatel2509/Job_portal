@@ -3,7 +3,12 @@ import { setAllJobs, setSingleJob, setAllJobsAdmin } from "../redux/jobSlice";
 import { setAllCompanies, setUserCompanies } from "../redux/companySlice";
 
 import { toast } from "sonner";
-import { setAuthUser, setToken } from "../redux/authSlice";
+import {
+  setAllUsers,
+  setApiLoading,
+  setAuthUser,
+  setToken,
+} from "../redux/authSlice";
 import apiRequest from "./axiosUtility";
 
 export const logOutHandler = async (dispatch, navigate, token) => {
@@ -21,6 +26,8 @@ export const logOutHandler = async (dispatch, navigate, token) => {
       dispatch(setToken(""));
       dispatch(setAllJobsAdmin(null));
       dispatch(setUserCompanies(null));
+      dispatch(setAllUsers(null));
+      dispatch(setApiLoading(false));
       navigate("/");
     }
   } catch (error) {
