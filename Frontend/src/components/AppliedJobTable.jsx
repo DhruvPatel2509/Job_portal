@@ -13,10 +13,15 @@ import { useSelector } from "react-redux";
 
 function AppliedJobTable() {
   const { allAppliedJobs } = useSelector((store) => store.job);
+
   return (
     <>
       <Table>
-        <TableCaption>A List Of Your Applied Jobs</TableCaption>
+        <TableCaption className="font-bold">
+          {allAppliedJobs?.length < 0
+            ? "A List Of Your Applied Jobs"
+            : "You Haven't Applied For The Jobs Yet"}
+        </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Job Role</TableHead>

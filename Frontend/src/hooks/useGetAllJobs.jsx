@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllJobs } from "../redux/jobSlice";
+import { setAllJobs, setSearchJobs } from "../redux/jobSlice";
 import apiRequest from "../utils/axiosUtility.js";
-import { setApiLoading } from "../redux/authSlice.js";
+import { JOB_API_END_POINT } from "../utils/constant.js";
 
 function useGetAllJobs() {
   const dispatch = useDispatch();
@@ -11,29 +11,26 @@ function useGetAllJobs() {
 
   useEffect(() => {
     const getJobs = async () => {
-      if (authUser) {
-        const endpoint = searchedQuery
-          ? `job/getAllJob/?keyword=${searchedQuery}`
-          : "job/getAllJob";
+      const endpoint = searchedQuery
+        ? `${JOB_API_END_POINT}/getAllJob/?keyword=${searchedQuery}`
+        : `${JOB_API_END_POINT}/getAllJob`;
 
-        try {
-          dispatch(setApiLoading(true));
-          const res = await apiRequest("GET", endpoint, {}, token);
+      try {
 
-          if (res.status === 200) {
+        const res = await apiRequest("GET", endpoint, {}, token,dispatch);
+
+        if (res.status === 200) {
+          if (searchedQuery) {
+            dispatch(setSearchJobs(res.data.data));
+          } else {
             dispatch(setAllJobs(res.data.data));
           }
-        } catch (error) {
-          console.log(error);
-        } finally {
-          dispatch(setApiLoading(false));
         }
-      }
+      } catch (error) {
+        console.error(error);
+      } 
     };
-
-    if (authUser) {
-      getJobs();
-    }
+    getJobs();
   }, [dispatch, searchedQuery, token, authUser]);
 }
 

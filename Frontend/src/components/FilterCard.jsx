@@ -16,7 +16,6 @@ function FilterCard() {
   useEffect(() => {
     dispatch(setSearchedQuery(String(selectedValue)));
 
-    // Cleanup function to reset searchedQuery on unmount
     return () => {
       dispatch(setSearchedQuery(""));
     };
@@ -40,13 +39,15 @@ function FilterCard() {
         <h2 className="font-semibold text-md">Job Titles</h2>
         <RadioGroup value={selectedValue} onValueChange={changeHandler}>
           <div className="flex items-center space-x-2 my-2">
-            <RadioGroupItem value="" />
-            <Label>All Jobs</Label>
+            <RadioGroupItem id="all-jobs" value="" />
+            <Label htmlFor="all-jobs">All Jobs</Label>
           </div>
           {uniqueTitles.map((title, idx) => (
             <div key={idx} className="flex items-center space-x-2 my-2">
-              <RadioGroupItem value={title} />
-              <Label>{title.charAt(0).toUpperCase() + title.slice(1)}</Label>
+              <RadioGroupItem id={`title-${idx}`} value={title} />
+              <Label htmlFor={`title-${idx}`}>
+                {title.charAt(0).toUpperCase() + title.slice(1)}
+              </Label>
             </div>
           ))}
         </RadioGroup>
@@ -57,13 +58,13 @@ function FilterCard() {
         <h2 className="font-semibold text-md">Locations</h2>
         <RadioGroup value={selectedValue} onValueChange={changeHandler}>
           <div className="flex items-center space-x-2 my-2">
-            <RadioGroupItem value="" />
-            <Label>All Locations</Label>
+            <RadioGroupItem id="all-locations" value="" />
+            <Label htmlFor="all-locations">All Locations</Label>
           </div>
           {uniqueLocations.map((location, idx) => (
             <div key={idx} className="flex items-center space-x-2 my-2">
-              <RadioGroupItem value={location} />
-              <Label>{location}</Label>
+              <RadioGroupItem id={`location-${idx}`} value={location} />
+              <Label htmlFor={`location-${idx}`}>{location}</Label>
             </div>
           ))}
         </RadioGroup>

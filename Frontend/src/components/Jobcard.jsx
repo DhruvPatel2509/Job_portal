@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { Button } from "@/components/ui/button";
-import { Bookmark } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -31,9 +30,7 @@ function Jobcard({ job }) {
           className="rounded-full"
           size="icon"
           aria-label="Bookmark Job"
-        >
-          <Bookmark />
-        </Button>
+        ></Button>
       </div>
 
       {/* Middle Section: Company Info */}
@@ -78,12 +75,9 @@ function Jobcard({ job }) {
         <Button
           onClick={() => navigate(`/jobs/jobDetails/${job._id}`)}
           variant="outline"
-          className="w-full md:w-auto"
+          className="bg-purple-800 text-white w-full md:w-auto"
         >
           Details
-        </Button>
-        <Button className="bg-purple-800 text-white w-full md:w-auto">
-          Save For Later
         </Button>
       </div>
     </div>

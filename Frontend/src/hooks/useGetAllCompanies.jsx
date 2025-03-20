@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { COMPANY_API_END_POINT } from "../utils/constant";
 import { setAllCompanies } from "../redux/companySlice";
 import apiRequest from "../utils/axiosUtility";
-import { setApiLoading } from "../redux/authSlice";
 
 function useGetAllCompanies() {
   const { token, authUser } = useSelector((store) => store.auth);
@@ -11,11 +10,10 @@ function useGetAllCompanies() {
 
   useEffect(() => {
     const fetchAllCompanies = async () => {
-      const endpoint = `${COMPANY_API_END_POINT}/getCompany`;
+      const endpoint = `${COMPANY_API_END_POINT}/getAllCompanies`;
       try {
-        dispatch(setApiLoading(true));
 
-        const res = await apiRequest("GET", endpoint, {}, token);
+        const res = await apiRequest("GET", endpoint, {}, token, dispatch);
 
         if (res.status === 200) {
           dispatch(setAllCompanies(res.data.data));
@@ -25,9 +23,7 @@ function useGetAllCompanies() {
       } catch (error) {
         dispatch(setAllCompanies([]));
         console.error("Error fetching companies:", error);
-      } finally {
-        dispatch(setApiLoading(false));
-      }
+      } 
     };
 
     if (authUser) {

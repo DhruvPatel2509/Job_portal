@@ -65,6 +65,32 @@
   }
   body {
     @apply bg-background text-foreground;
+    box-sizing: border-box;
   }
 }
 
+
+/* Success Toast Styling */
+.custom-toast[data-type="success"] {
+  background-color: #6a38c2 !important;
+  color: white !important;
+}
+
+/* Error Toast Styling */
+.custom-toast[data-type="error"] {
+  background-color: red !important;
+  color: white !important;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1.4s ease-in-out infinite;
+}

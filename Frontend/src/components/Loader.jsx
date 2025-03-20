@@ -1,17 +1,18 @@
-// Loader.js
-
-const Loader = ({ color = "border-red-500" }) => {
+const Loader = ({ message = "Loading, this won’t take long..." }) => {
   return (
-    <div className="flex justify-center items-center">
-      <div
-        className={`border-[6px] border-t-transparent border-b-transparent border-solid rounded-full animate-spin ${color}`}
-        style={{
-          width: "50px", // Use size directly for width
-          height: "50px", // Use size directly for height
-          borderTopColor: color.split("-")[1],
-          animationDuration: "0.8s",
-        }}
-      ></div>
+    <div className="flex flex-col justify-center items-center space-y-2">
+      {/* Bouncing Dots Animation */}
+      <div className="flex space-x-2">
+        {[...Array(3)].map((_, i) => (
+          <span
+            key={i}
+            className="w-3 h-3 bg-purple-700 rounded-full animate-bounce"
+            style={{ animationDelay: `${i * 0.2}s` }}
+          ></span>
+        ))}
+      </div>
+      {/* Loading Message */}
+      <p className="text-gray-700 text-md font-medium">{message}</p>
     </div>
   );
 };
