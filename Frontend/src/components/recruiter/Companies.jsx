@@ -1,33 +1,27 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import CompaniesTable from "../recruiter/CompaniesTable";
-import useGetAllCompanies from "../../hooks/useGetAllCompanies";
-import { setSearchCompanyByText } from "../../redux/companySlice";
+import CompaniesTable from "./CompaniesTable";
+import { useSelector } from "react-redux";
+import useGetUserCompanies from "../../hooks/useGetUserCompanies";
 
 function Companies() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  useGetAllCompanies();
-  const [input, setInput] = useState("");
+  useGetUserCompanies();
+  
 
-  useEffect(() => {
-    dispatch(setSearchCompanyByText(input));
-  }, [dispatch, input]);
+  const { userCompanies } = useSelector((state) => state.company);
+console.log("user",userCompanies);
 
   return (
     <div className="max-w-6xl mx-auto my-10">
       <div className="flex items-center justify-between my-5">
-        <Input
-          className="w-full sm:w-64"
-          placeholder="Filter By Name"
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <Button onClick={() => navigate("/admin/companies/create")}>
-          New Company
-        </Button>
+        {userCompanies && userCompanies.length > 0 ? (
+          ``
+        ) : (
+          <Button onClick={() => navigate("/rec/companies/create")}>
+            Add Your Company
+          </Button>
+        )}
       </div>
       <CompaniesTable />
     </div>

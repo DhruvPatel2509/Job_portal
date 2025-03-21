@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-modal";
 
 import { toast } from "sonner";
@@ -19,6 +19,7 @@ function JobSetup() {
   const params = useParams();
   const navigate = useNavigate();
   const jobId = params.id;
+  const dispatch = useDispatch();
 
   // Custom hook to fetch single job
   useGetSingleJob(jobId);
@@ -70,11 +71,11 @@ function JobSetup() {
     try {
       setLoading(true);
       const endpoint = `${JOB_API_END_POINT}/updateJob/${jobId}`;
-      const res = await apiRequest("PUT", endpoint, input, token);
+      const res = await apiRequest("PUT", endpoint, input, token, dispatch);
 
       if (res.data.success) {
         toast.success(res.data.message);
-        navigate("/admin/jobs");
+        navigate("/rec/jobs");
       }
     } catch (error) {
       const message =
@@ -92,11 +93,11 @@ function JobSetup() {
       setLoading(true);
       const endpoint = `${JOB_API_END_POINT}/deleteJob/${params.id}`;
 
-      const res = await apiRequest("DELETE", endpoint, {}, token);
+      const res = await apiRequest("DELETE", endpoint, {}, token, dispatch);
 
       if (res.status === 200) {
         toast.success("Job Deleted Successfully");
-        navigate("/admin/jobs");
+        navigate("/rec/jobs");
       }
     } catch (error) {
       console.log(error);
@@ -107,7 +108,7 @@ function JobSetup() {
   };
 
   return (
-    <div className="flex items-center justify-center w-screen my-5">
+    <div className="flex items-center justify-center w-screen my-5 ">
       <form
         onSubmit={handleSubmit}
         className="p-8 max-w-4xl border-gray-400 shadow-lg rounded-md"

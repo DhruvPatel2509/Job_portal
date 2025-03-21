@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useGetSingleCompany from "../../hooks/useGetSingleCompany";
 import { toast } from "sonner";
 import apiRequest from "../../utils/axiosUtility";
@@ -23,6 +23,8 @@ function CompanySetup() {
   const companyId = params.id;
   useGetSingleCompany(companyId);
   const { singleCompany } = useSelector((state) => state.company);
+  console.log(singleCompany);
+  const dispatch = useDispatch();
 
   const [input, setInput] = useState({
     name: singleCompany?.name || "",
@@ -70,11 +72,11 @@ function CompanySetup() {
     try {
       setLoading(true);
       const endpoint = `${COMPANY_API_END_POINT}/updateCompany/${params.id}`;
-      const res = await apiRequest("PUT", endpoint, formData, token);
+      const res = await apiRequest("PUT", endpoint, formData, token, dispatch);
 
       if (res.data.success) {
         toast.success(res.data.message);
-        navigate("/admin/companies");
+        navigate("/rec/companies");
       }
     } catch (error) {
       console.error(error);
@@ -88,11 +90,11 @@ function CompanySetup() {
     try {
       setLoading(true);
       const endpoint = `${COMPANY_API_END_POINT}/deleteCompany/${params.id}`;
-      const res = await apiRequest("DELETE", endpoint, {}, token);
+      const res = await apiRequest("DELETE", endpoint, {}, token, dispatch);
 
       if (res.status === 200) {
         toast.success("Company Deleted Successfully");
-        navigate("/admin/companies");
+        navigate("/rec/companies");
       }
     } catch (error) {
       console.log(error);
@@ -112,7 +114,7 @@ function CompanySetup() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md ">
       <form onSubmit={handleSubmit}>
         <div className="flex items-center justify-between py-4 border-b mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Company Setup</h1>
@@ -183,7 +185,18 @@ function CompanySetup() {
             />
           </div>
           <div>
-            <Label>Logo</Label>
+            <p>Your Current Logo</p>
+            {singleCompany?.logo && (
+              <div>
+                <img
+                  src={singleCompany.logo}
+                  className="w-20 h-20 object-cover"
+                />
+              </div>
+            )}
+          </div>
+          <div>
+            <Label>Choose New Logo </Label>
             <Input
               type="file"
               accept="image/*"
