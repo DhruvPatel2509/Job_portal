@@ -1,9 +1,10 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { FaEdit, FaTrash, FaTimes } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "sonner";
 import { ADMIN_API_END_POINT, USER_API_END_POINT } from "../../utils/constant";
+import apiRequest from "../../utils/axiosUtility";
 
 const UserAdmin = () => {
   const { allUsers: initialUsers } = useSelector((store) => store.auth);
@@ -18,6 +19,7 @@ const UserAdmin = () => {
     skills: "",
     role: "",
   });
+  const dispatch = useDispatch();
 
   // Open Edit Form with Selected User Data
   const handleEditClick = (user) => {
@@ -56,10 +58,10 @@ const UserAdmin = () => {
     if (!isChanged) return;
 
     try {
-      const res = await axios.put(
-        `${ADMIN_API_END_POINT}/editUser/${selectedUser._id}`,
-        formData
-      );
+      const endpoint  = `${ADMIN_API_END_POINT}/editUser/${selectedUser._id}`;
+      const res = await apiRequest("DELETE", endpoint, formData, dispatch);
+      console.log(res);
+
       if (res.status === 200) {
         setAllUsers((prevUsers) =>
           prevUsers.map((user) =>
@@ -80,7 +82,10 @@ const UserAdmin = () => {
   // Delete User
   const handleDelete = async (userId) => {
     try {
-      await axios.delete(`${USER_API_END_POINT}/deleteUser/${userId}`);
+      const res = await axios.delete(
+        `${USER_API_END_POINT}/deleteUser/${userId}`
+      );
+      console.log(res);
 
       // Remove deleted user from the UI
       setAllUsers((prevUsers) =>

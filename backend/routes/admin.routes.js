@@ -1,8 +1,8 @@
 import express from "express";
 import { editUser } from "../controller/admin.controller.js";
 
-const adminRoute = express.Router();
+const adminRouter = express.Router();
 
-adminRoute.put("/editUser/:userId", editUser);
+adminRouter.put("/editUser/:userId", editUser);
 
-export default adminRoute;
+export default adminRouter;

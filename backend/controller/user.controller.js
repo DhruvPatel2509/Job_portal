@@ -3,6 +3,9 @@ import { User } from "../models/user.model.js";
 import sendResponse from "../utils/response.util.js";
 import jwt from "jsonwebtoken";
 import uploadOnCloudinary from "../utils/cloudinary.js";
+import { Job } from "../models/job.model.js";
+import { Application } from "../models/application.model.js";
+import { Company } from "../models/company.model.js";
 
 export const register = async (req, res) => {
   try {
@@ -216,10 +219,40 @@ export const retriveUser = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find()
-   return sendResponse(res, 200, users, "Users fetched successfully");
+    const users = await User.find();
+    return sendResponse(res, 200, users, "Users fetched successfully");
   } catch (error) {
     console.error("Error fetching users:", error);
     return sendResponse(res, 500, null, "Internal server error");
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Find the user
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).send("User not found.");
+
+    // Delete all jobs created by the user
+    await Job.deleteMany({ createdBy: userId });
+
+    // Delete all applications submitted by the user
+    await Application.deleteMany({ applicant: userId });
+
+    // If the user is a recruiter, delete their company and associated jobs
+    if (user.role === "recruiter" && user.profile.company) {
+      await Job.deleteMany({ company: user.profile.company });
+      await Company.findByIdAndDelete(user.profile.company);
+    }
+
+    // Finally, delete the user
+    await User.findByIdAndDelete(userId);
+
+    return res.status(200).send("User and related data deleted successfully.");
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).send("Internal Server Error.");
   }
 };

@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  deleteUser,
   getAllUsers,
   login,
   logOut,
@@ -26,5 +27,6 @@ userRouter.put(
 );
 userRouter.get("/me", auth, retriveUser);
 userRouter.get("/getAllUsers", auth, getAllUsers);
+userRouter.delete("/deleteUser/:userId", deleteUser);
 
 export default userRouter;
