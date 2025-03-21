@@ -12,6 +12,7 @@ function CompaniesTable() {
   };
 
   const company = userCompanies?.[0];
+  console.log(company);
 
   if (!company) {
     return (

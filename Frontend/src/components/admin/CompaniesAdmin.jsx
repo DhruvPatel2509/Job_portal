@@ -28,6 +28,8 @@ const CompaniesAdmin = () => {
         token,
         dispatch
       );
+      console.log(res);
+      
       toast.success(res.data.message);
       setCompanies((prev) =>
         prev.map((company) =>

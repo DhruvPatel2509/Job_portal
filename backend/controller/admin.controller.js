@@ -36,12 +36,17 @@ export const changeCompanyStatus = async (req, res) => {
   try {
     const { companyId } = req.params;
     const { status } = req.body;
+
+    // Find the company
     const company = await Company.findById(companyId);
     if (!company) {
       return sendResponse(res, 404, null, "Company Not Found");
     }
+
+    // Update the status
     company.status = status;
     await company.save();
+
     return sendResponse(
       res,
       200,
@@ -53,3 +58,4 @@ export const changeCompanyStatus = async (req, res) => {
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
+
