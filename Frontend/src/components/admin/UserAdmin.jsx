@@ -11,6 +11,8 @@ const UserAdmin = () => {
   const [allUsers, setAllUsers] = useState(initialUsers);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isChanged, setIsChanged] = useState(false);
+  const { token } = useSelector((store) => store.auth);
+
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -58,8 +60,8 @@ const UserAdmin = () => {
     if (!isChanged) return;
 
     try {
-      const endpoint  = `${ADMIN_API_END_POINT}/editUser/${selectedUser._id}`;
-      const res = await apiRequest("DELETE", endpoint, formData, dispatch);
+      const endpoint = `${ADMIN_API_END_POINT}/editUser/${selectedUser._id}`;
+      const res = await apiRequest("PUT", endpoint, formData, token, dispatch);
       console.log(res);
 
       if (res.status === 200) {
@@ -85,14 +87,15 @@ const UserAdmin = () => {
       const res = await axios.delete(
         `${USER_API_END_POINT}/deleteUser/${userId}`
       );
-      console.log(res);
 
       // Remove deleted user from the UI
-      setAllUsers((prevUsers) =>
-        prevUsers.filter((user) => user._id !== userId)
-      );
+      if (res.status === 200) {
+        setAllUsers((prevUsers) =>
+          prevUsers.filter((user) => user._id !== userId)
+        );
 
-      toast.success("User deleted successfully!");
+        toast.success("User deleted successfully!");
+      }
     } catch (error) {
       toast.error("Error deleting user!");
       console.error("Delete Error:", error);

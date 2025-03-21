@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import apiRequest from "../../utils/axiosUtility";
-import { COMPANY_API_END_POINT } from "../../utils/constant";
+import {
+  ADMIN_API_END_POINT,
+  COMPANY_API_END_POINT,
+} from "../../utils/constant";
 import { toast } from "sonner";
 import { MoreHorizontal } from "lucide-react";
 
@@ -11,12 +14,13 @@ const CompaniesAdmin = () => {
   const [companies, setCompanies] = useState(allCompanies);
   const [expandedCompany, setExpandedCompany] = useState(null);
   const [showFullDescription, setShowFullDescription] = useState({});
+  console.log(token);
 
   const dispatch = useDispatch();
 
   const updateStatus = async (id, status) => {
     try {
-      const endpoint = `${COMPANY_API_END_POINT}/setCompanyStatus/${id}`;
+      const endpoint = `${ADMIN_API_END_POINT}/changeCompanyStatus/${id}`;
       const res = await apiRequest(
         "PUT",
         endpoint,
@@ -65,7 +69,7 @@ const CompaniesAdmin = () => {
         Companies List
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {companies.map((company) => (
+        {companies?.map((company) => (
           <div
             key={company._id}
             className="bg-white shadow-lg rounded-xl p-6 border border-gray-200 transition-transform transform hover:scale-105 hover:shadow-2xl relative"

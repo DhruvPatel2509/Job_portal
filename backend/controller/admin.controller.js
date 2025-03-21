@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js";
 import sendResponse from "../utils/response.util.js";
+import { Company } from "../models/company.model.js";
 
 export const editUser = async (req, res) => {
   try {
@@ -27,6 +28,28 @@ export const editUser = async (req, res) => {
     return sendResponse(res, 200, user, "User Updated Successfully");
   } catch (error) {
     console.error("User Delte Error:", error);
+    return sendResponse(res, 500, null, "Internal Server Error");
+  }
+};
+
+export const changeCompanyStatus = async (req, res) => {
+  try {
+    const { companyId } = req.params;
+    const { status } = req.body;
+    const company = await Company.findById(companyId);
+    if (!company) {
+      return sendResponse(res, 404, null, "Company Not Found");
+    }
+    company.status = status;
+    await company.save();
+    return sendResponse(
+      res,
+      200,
+      company,
+      "Company Status Updated Successfully"
+    );
+  } catch (error) {
+    console.error("Change Company Status Error:", error);
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
