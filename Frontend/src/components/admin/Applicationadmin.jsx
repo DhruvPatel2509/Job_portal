@@ -1,12 +1,31 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Trash2 } from "lucide-react";
+import { APPLICATION_API_END_POINT } from "../../utils/constant";
+import apiRequest from "../../utils/axiosUtility";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const ApplicationAdmin = () => {
   const { allApplications } = useSelector((store) => store.application);
+  const { token } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
+  const [updatedApplications, setUpdatedApplications] =
+    useState(allApplications);
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this application?")) {
-      console.log(id);
+  const handleDelete = async (id) => {
+    try {
+      const endpoint = `${APPLICATION_API_END_POINT}/deleteApplicant/${id}`;
+      const res = await apiRequest("DELETE", endpoint, {}, token, dispatch);
+
+      if (res.status === 200) {
+        setUpdatedApplications((prev) =>
+          prev.filter((allApplications) => allApplications._id !== id)
+        );
+        toast.success("Application deleted successfully");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete application");
     }
   };
 
@@ -16,12 +35,12 @@ const ApplicationAdmin = () => {
         Application Management
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {allApplications.length === 0 ? (
+        {updatedApplications.length === 0 ? (
           <p className="text-center text-lg font-medium col-span-full">
             No Applications Yet..
           </p>
         ) : (
-          allApplications.map((application) => (
+          updatedApplications.map((application) => (
             <div
               key={application._id}
               className="border rounded-lg p-5 shadow-md bg-white hover:shadow-lg transition-shadow relative"

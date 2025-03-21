@@ -9,23 +9,14 @@ function ProtectedRoute({ role, children }) {
   useEffect(() => {
     if (!authUser) {
       navigate("/login");
-      return;
-    }
-
-    // Define role-based redirection paths
-    const rolePaths = {
-      student: "/studenthome",
-      recruiter: "/recHome",
-      admin: "/AdminHomepage",
-    };
-
-    // Redirect if user tries to access a different role's route
-    if (authUser.role !== role) {
-      navigate(rolePaths[authUser.role] || "/");
+    } else if (role === "student" && authUser.role === "recruiter") {
+      navigate("/admin/companies");
+    } else if (role === "admin" && authUser.role === "student") {
+      navigate("/");
     }
   }, [authUser, navigate, role]);
 
-  return authUser ? children : null;
+  return <>{authUser ? children : null}</>;
 }
 
 export default ProtectedRoute;

@@ -18,7 +18,6 @@ const Dashboard = () => {
   const { allApplications } = useSelector((store) => store.application);
   const { allJobs } = useSelector((store) => store.job);
   const { feedbacks } = useSelector((store) => store.feedback);
-  console.log(allUsers);
 
   const mockStats = {
     totalCompanies: allCompanies?.length,
