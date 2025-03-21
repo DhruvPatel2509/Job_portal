@@ -127,3 +127,17 @@ export const deleteApplicant = async (req, res) => {
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
+
+export const getAllApplications = async (req, res) => {
+  try {
+    const applications = await Application.find({})
+      .sort({ createdAt: -1 })
+      .populate("applicant")
+      .populate("job");
+
+    return sendResponse(res, 200, applications, "Applications Found");
+  } catch (error) {
+    console.error("Error fetching applications:", error);
+    return sendResponse(res, 500, null, "Internal Server Error");
+  }
+}

@@ -12,9 +12,8 @@ function useGetAllCompanies() {
     const fetchAllCompanies = async () => {
       const endpoint = `${COMPANY_API_END_POINT}/getAllCompanies`;
       try {
-
         const res = await apiRequest("GET", endpoint, {}, token, dispatch);
-
+       
         if (res.status === 200) {
           dispatch(setAllCompanies(res.data.data));
         } else {
@@ -23,7 +22,7 @@ function useGetAllCompanies() {
       } catch (error) {
         dispatch(setAllCompanies([]));
         console.error("Error fetching companies:", error);
-      } 
+      }
     };
 
     if (authUser) {

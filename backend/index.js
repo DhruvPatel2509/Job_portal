@@ -7,6 +7,7 @@ import userRouter from "./routes/user.routes.js";
 import companyRouter from "./routes/company.routes.js";
 import jobRouter from "./routes/job.routes.js";
 import applicationRoute from "./routes/application.routes.js";
+import feedBackRoute from "./routes/feedBack.routes.js";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -34,6 +35,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/company", companyRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRoute);
+app.use("/api/v1/feedback", feedBackRoute);
 
 // Define a basic route for the root URL
 app.get("/", (req, res) => {

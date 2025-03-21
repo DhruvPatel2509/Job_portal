@@ -1,6 +1,7 @@
 import express from "express";
 import {
   deleteCompany,
+  getAllCompanies,
   getCompany,
   getCompanyById,
   registerCompany,
@@ -22,5 +23,6 @@ companyRouter.put(
   updateCompany
 );
 companyRouter.delete("/deleteCompany/:id", auth, deleteCompany);
+companyRouter.get("/getAllCompanies",getAllCompanies);
 
 export default companyRouter;

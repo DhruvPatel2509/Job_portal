@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getAllUsers,
   login,
   logOut,
   register,
@@ -24,5 +25,6 @@ userRouter.put(
   updateProfile
 );
 userRouter.get("/me", auth, retriveUser);
+userRouter.get("/getAllUsers", auth, getAllUsers);
 
 export default userRouter;

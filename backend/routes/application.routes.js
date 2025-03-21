@@ -2,6 +2,7 @@ import express from "express";
 import {
   applyJob,
   deleteApplicant,
+  getAllApplications,
   getApplicant,
   getAppliedJob,
   updateStatus,
@@ -15,5 +16,6 @@ applicationRoute.get("/getAppliedJob", auth, getAppliedJob);
 applicationRoute.get("/getApplicant/:id", auth, getApplicant);
 applicationRoute.put("/updateStatus/:id", auth, updateStatus);
 applicationRoute.delete("/deleteApplicant/:id", auth, deleteApplicant);
+applicationRoute.get("/getAllApplications", auth, getAllApplications);
 
 export default applicationRoute;

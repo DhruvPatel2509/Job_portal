@@ -158,3 +158,18 @@ export const deleteCompany = async (req, res) => {
     return sendResponse(res, 500, null, "Internal Server Error");
   }
 };
+
+export const getAllCompanies = async (req, res) => {
+try {
+  const companies = await Company.find({});
+
+  if (!companies || companies.length === 0) {
+    return sendResponse(res, 404, null, "Companies Not Found");
+  }
+
+  return sendResponse(res, 200, companies, "Companies Found");
+} catch (error) {
+  console.error("Error fetching companies:", error);
+  return sendResponse(res, 500, null, "Internal Server Error");
+}
+}

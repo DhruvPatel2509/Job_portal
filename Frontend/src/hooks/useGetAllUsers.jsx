@@ -14,6 +14,9 @@ const useGetAllUsers = () => {
       const endpoint = `${USER_API_END_POINT}/getAllUsers`;
       try {
         const res = await apiRequest("GET", endpoint, {}, token, dispatch);
+   
+       
+       
         if (res.status === 200) {
           dispatch(setAllUsers(res.data.data));
         } else {
