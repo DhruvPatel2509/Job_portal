@@ -46,7 +46,7 @@ export const Navbar = () => {
   const viewProfileHandler = () => {
     setIsPopoverOpen(false);
     console.log(authUser.role);
-    
+
     if (authUser.role === "student") {
       navigate("/profile");
     } else if (authUser.role === "recruiter") {
@@ -147,15 +147,13 @@ export const Navbar = () => {
                 </div>
                 <hr />
                 <div className="flex flex-col gap-6 p-4 items-start">
-                  
-                    <button
-                      onClick={viewProfileHandler}
-                      className="text-[#20B2AA]"
-                    >
-                      <User2 className="inline-block mr-2" />
-                      View Profile
-                    </button>
-                  
+                  <button
+                    onClick={viewProfileHandler}
+                    className="text-[#20B2AA]"
+                  >
+                    <User2 className="inline-block mr-2" />
+                    View Profile
+                  </button>
 
                   <button className="text-red-500" onClick={handleLogout}>
                     <LogOut className="inline-block mr-2" />

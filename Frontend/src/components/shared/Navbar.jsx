@@ -31,7 +31,7 @@ export const Navbar = () => {
   const logOutHandler = async () => {
     try {
       const endpoint = `${USER_API_END_POINT}/logOut`;
-      const res = await apiRequest("GET", endpoint, {}, token);
+      
 
       if (res.data.success) {
         dispatch(setAuthUser(null));
