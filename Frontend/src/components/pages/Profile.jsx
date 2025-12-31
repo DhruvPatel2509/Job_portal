@@ -22,10 +22,11 @@ function Profile() {
       <div className="max-w-4xl p-6 mx-auto my-5 bg-white border border-gray-200 rounded-2xl shadow-md ">
         <div className="flex flex-col sm:flex-row sm:justify-between">
           <div className="flex items-center gap-4 mb-4 sm:mb-0">
-            <Avatar className="w-24 h-24 sm:w-28 sm:h-28 ">
-              <AvatarImage src={authUser?.profile?.profilePhoto} />
-            </Avatar>
-
+            <img
+              src={authUser?.profile?.profilePhoto}
+              alt=""
+              className="w-24 h-24 sm:w-28 sm:h-28 object-contain rounded-full"
+            />
             <div>
               <h1 className="text-xl font-semibold">{authUser?.fullname}</h1>
               <p className="text-gray-600">{authUser?.profile?.bio}</p>

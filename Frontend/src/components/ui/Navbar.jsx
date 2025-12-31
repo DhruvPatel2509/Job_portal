@@ -115,16 +115,13 @@ export const Navbar = () => {
           {authUser ? (
             <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
               <PopoverTrigger>
-                <Avatar className="cursor-pointer ml-4">
-                  <AvatarImage
-                    src={
-                      authUser?.profile?.profilePhoto ||
-                      "/images/default-avatar.png"
-                    }
-                    alt="User Avatar"
+                <div className="cursor-pointer ml-4">
+                  <img
+                    src={authUser?.profile?.profilePhoto}
+                    alt={authUser?.fullname}
+                    className="w-12 h-12  object-cover rounded-full"
                   />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
+                </div>
               </PopoverTrigger>
               <PopoverContent className="w-80 mt-3 bg-white shadow-md text-black">
                 <div className="flex items-center gap-4 p-4">
